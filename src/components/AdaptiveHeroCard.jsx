@@ -15,7 +15,11 @@ const AdaptiveHeroCard = ({
   return (
     <div className={`hero-card glass ${isParentingWeek ? 'parenting' : 'solo'}`} onClick={onClick}>
       <div className="card-image">
-        <img src={event.image} alt={event.title} />
+        <img
+          src={event.image}
+          alt={event.title}
+          onError={(e) => { e.target.src = '/placeholder.png'; }}
+        />
         <div className="vibe-tag">{event.vibe}</div>
       </div>
 

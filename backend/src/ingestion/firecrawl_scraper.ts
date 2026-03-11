@@ -46,6 +46,11 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
       const $milesPara = $article.find('p.miles').first();
       const locationRaw = $milesPara.text().replace(/\(\d+.*?\)/, '').trim();
 
+      const mapLink = $article.find('a.b1').first().attr('href') || '';
+      const ticketLink = $article.find('a.b2').first().attr('href') || '';
+      const photoLink = $article.find('a.b3').first().attr('href') || '';
+      const videoLink = $article.find('a.b5').first().attr('href') || '';
+
       events.push({
         title,
         description: text.slice(0, 500),
@@ -53,6 +58,10 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
         location_name: locationRaw || 'Seattle, WA',
         source: 'Events12',
         url: url?.startsWith('http') ? url : url ? new URL(url, baseUrl).href : baseUrl,
+        image: photoLink || undefined,
+        map_url: mapLink || undefined,
+        ticket_url: ticketLink || undefined,
+        video_url: videoLink || undefined,
       });
     });
   });
@@ -77,6 +86,7 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
       location_name: location || 'Seattle, WA',
       source: 'Events12',
       url: url ? (url.startsWith('http') ? url : new URL(url, baseUrl).href) : baseUrl,
+      ticket_url: url?.includes('stubhub') ? url : undefined,
     });
   });
 
@@ -215,6 +225,12 @@ export async function scrapeEventSources(): Promise<RawScrapedEvent[]> {
   }
 
   console.log(`[Events] Total events scraped: ${allEvents.length}`);
+  
+  const withTickets = allEvents.filter(e => e.ticket_url).length;
+  const withMaps = allEvents.filter(e => e.map_url).length;
+  console.log(`[Events] Events with ticket links: ${withTickets}`);
+  console.log(`[Events] Events with map links: ${withMaps}`);
+  
   return allEvents;
 }
 

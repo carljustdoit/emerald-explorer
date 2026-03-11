@@ -18,6 +18,9 @@ export const EmeraldEventSchema = z.object({
   location: LocationSchema,
   url: z.string().url(),
   image: z.string().url().optional(),
+  ticket_url: z.string().url().optional(),
+  map_url: z.string().url().optional(),
+  video_url: z.string().url().optional(),
 });
 
 export const EnvironmentDataSchema = z.object({
@@ -57,6 +60,9 @@ export const RawScrapedEventSchema = z.object({
   location_address: z.string().optional(),
   url: z.string().optional(),
   image: z.string().optional(),
+  ticket_url: z.string().optional(),
+  map_url: z.string().optional(),
+  video_url: z.string().optional(),
   source: z.string(),
 });
 
@@ -74,6 +80,9 @@ export const EnrichedEventSchema = z.object({
   location: LocationSchema,
   url: z.string(),
   image: z.string().optional(),
+  ticket_url: z.string().optional(),
+  map_url: z.string().optional(),
+  video_url: z.string().optional(),
 });
 
 export type EnrichedEvent = z.infer<typeof EnrichedEventSchema>;

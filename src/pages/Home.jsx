@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import WeatherInsight from '../components/WeatherInsight';
 import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
+import EventDetailModal from '../components/EventDetailModal';
 import BrandBanner from '../components/BrandBanner';
 import { MapPin } from 'lucide-react';
 
 const Home = () => {
-  const { agenda, rotation, viability, preferences, mockResources } = useApp();
+  const { agenda, rotation, viability, preferences, mockResources, addToAgenda, removeFromAgenda } = useApp();
+  const [viewingEvent, setViewingEvent] = useState(null);
 
   const todayAgenda = agenda.filter(event => {
     const eventDate = new Date(event.startDate).toDateString();
@@ -42,7 +44,7 @@ const Home = () => {
             <div className="route-visual">
               {todayAgenda.map((event, i) => (
                 <React.Fragment key={event.id}>
-                  <div className="map-dot" title={event.title} />
+                  <div className="map-dot" title={event.title} onClick={() => setViewingEvent(event)} style={{ cursor: 'pointer' }} />
                   {i < todayAgenda.length - 1 && <div className="route-line" />}
                 </React.Fragment>
               ))}
@@ -64,14 +66,26 @@ const Home = () => {
           <div className="day-group">
             <h3>Today</h3>
             <div className="event-list">
-              {todayAgenda.map(event => (
-                <AdaptiveHeroCard
-                  key={event.id}
-                  event={event}
-                  isParentingWeek={rotation.isParentingWeek}
-                  score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
-                />
-              ))}
+              {todayAgenda.map(event => {
+                const agendaItem = agenda.find(item => item.id === event.id);
+                const isAdded = !!agendaItem;
+                const isCommitted = agendaItem?.status === 'committed';
+
+                return (
+                  <AdaptiveHeroCard
+                    key={event.id}
+                    event={event}
+                    isParentingWeek={rotation.isParentingWeek}
+                    score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
+                    isAdded={isAdded}
+                    isCommitted={isCommitted}
+                    onAdd={() => addToAgenda(event)}
+                    onRemove={() => removeFromAgenda(event.id)}
+                    onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
+                    onClick={() => setViewingEvent(event)}
+                  />
+                );
+              })}
             </div>
           </div>
         )}
@@ -80,18 +94,38 @@ const Home = () => {
           <div className="day-group">
             <h3>This Week</h3>
             <div className="event-list">
-              {weekAgenda.map(event => (
-                <AdaptiveHeroCard
-                  key={event.id}
-                  event={event}
-                  isParentingWeek={rotation.isParentingWeek}
-                  score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
-                />
-              ))}
+              {weekAgenda.map(event => {
+                const agendaItem = agenda.find(item => item.id === event.id);
+                const isAdded = !!agendaItem;
+                const isCommitted = agendaItem?.status === 'committed';
+
+                return (
+                  <AdaptiveHeroCard
+                    key={event.id}
+                    event={event}
+                    isParentingWeek={rotation.isParentingWeek}
+                    score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
+                    isAdded={isAdded}
+                    isCommitted={isCommitted}
+                    onAdd={() => addToAgenda(event)}
+                    onRemove={() => removeFromAgenda(event.id)}
+                    onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
+                    onClick={() => setViewingEvent(event)}
+                  />
+                );
+              })}
             </div>
           </div>
         )}
       </section>
+
+      {/* Event Detail Modal */}
+      {viewingEvent && (
+        <EventDetailModal
+          event={viewingEvent}
+          onClose={() => setViewingEvent(null)}
+        />
+      )}
 
       <style jsx>{`
         .home-page {
@@ -143,7 +177,9 @@ const Home = () => {
           background: var(--accent-primary);
           border-radius: 50%;
           box-shadow: 0 0 15px var(--accent-soft);
+          transition: transform 0.2s;
         }
+        .map-dot:hover { transform: scale(1.4); }
         .solo-mode .map-dot { background: var(--solo-accent); box-shadow: 0 0 15px var(--solo-accent-soft); }
         
         .route-line {

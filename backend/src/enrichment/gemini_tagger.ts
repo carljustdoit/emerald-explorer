@@ -236,6 +236,9 @@ export function enrichEvent(event: RawScrapedEvent): EnrichedEvent {
     location,
     url: event.url || '',
     image: event.image,
+    ticket_url: event.ticket_url,
+    map_url: event.map_url,
+    video_url: event.video_url,
   };
 }
 

@@ -167,6 +167,16 @@ app.get('/api/sources', async (req, res) => {
   }
 });
 
+app.get('/api/debug', async (req, res) => {
+  try {
+    const feed = await loadFeed();
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(feed, null, 2));
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch feed' });
+  }
+});
+
 async function triggerScrape(): Promise<void> {
   try {
     const { spawn } = await import('child_process');

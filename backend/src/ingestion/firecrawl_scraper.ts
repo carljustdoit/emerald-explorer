@@ -27,67 +27,56 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
   const $ = cheerio.load(html);
   const events: RawScrapedEvent[] = [];
 
-  const eventSelectors = [
-    '.event-item',
-    '.event-listing',
-    '.event-card',
-    '.event-list-item',
-    'article.event',
-    '.event-item-wrapper',
-  ];
+  $('article').each((_, article) => {
+    const $article = $(article);
+    const $eventPara = $article.find('p.event');
 
-  let $events = $();
-  for (const selector of eventSelectors) {
-    $events = $(selector);
-    if ($events.length > 0) break;
-  }
+    $eventPara.each((_, el) => {
+      const $p = $(el);
+      const text = $p.text().trim();
+      const $link = $p.find('a').first();
+      const title = $link.text().trim() || text.slice(0, 50);
+      const url = $link.attr('href') || baseUrl;
 
-  if ($events.length === 0) {
-    $events = $('div[class*="event"]').filter((_, el) => $(el).find('a').length > 0);
-  }
+      if (title.length < 3) return;
 
-  $events.each((_, el) => {
-    const $el = $(el);
+      const $datePara = $article.find('p.date').first();
+      const dateStr = $datePara.text().trim();
 
-    const title = $el.find('h2, h3, .title, .event-title, [class*="title"]').first().text().trim()
-      || $el.find('a').first().text().trim();
+      const $milesPara = $article.find('p.miles').first();
+      const locationRaw = $milesPara.text().replace(/\(\d+.*?\)/, '').trim();
+
+      events.push({
+        title,
+        description: text.slice(0, 500),
+        date: dateStr,
+        location_name: locationRaw || 'Seattle, WA',
+        source: 'Events12',
+        url: url?.startsWith('http') ? url : url ? new URL(url, baseUrl).href : baseUrl,
+      });
+    });
+  });
+
+  $('table.concerts tbody tr').each((_, row) => {
+    const $row = $(row);
+    const $cells = $row.find('td');
+    if ($cells.length < 3) return;
+
+    const dateStr = $cells.eq(0).text().trim();
+    const $link = $cells.eq(1).find('a');
+    const title = $link.text().trim();
+    const url = $link.attr('href');
+    const location = $cells.eq(2).text().trim();
 
     if (!title || title.length < 3) return;
 
-    const description = $el.find('.description, .excerpt, .summary, [class*="desc"]').first().text().trim()
-      || $el.find('p').first().text().trim()
-      || '';
-
-    let dateStr = '';
-    const dateSelectors = ['.date', '.event-date', '.datetime', '[class*="date"]', 'time'];
-    for (const selector of dateSelectors) {
-      const $date = $el.find(selector);
-      if ($date.length > 0) {
-        dateStr = $date.text().trim() || $date.attr('datetime') || $date.attr('content') || '';
-        break;
-      }
-    }
-
-    let location = '';
-    const locationSelectors = ['.location', '.venue', '.address', '[class*="location"]', '[class*="venue"]'];
-    for (const selector of locationSelectors) {
-      const $loc = $el.find(selector);
-      if ($loc.length > 0) {
-        location = $loc.text().trim();
-        break;
-      }
-    }
-
-    const link = $el.find('a').first().attr('href');
-    const url = link?.startsWith('http') ? link : link ? new URL(link, baseUrl).href : baseUrl;
-
     events.push({
-      title: title.slice(0, 200),
-      description: description.slice(0, 500),
+      title,
+      description: `Concert at ${location}`,
       date: dateStr,
       location_name: location || 'Seattle, WA',
       source: 'Events12',
-      url,
+      url: url ? (url.startsWith('http') ? url : new URL(url, baseUrl).href) : baseUrl,
     });
   });
 

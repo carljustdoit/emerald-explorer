@@ -58,34 +58,42 @@ function parseDate(dateStr: string | undefined): { start_time: string; end_time:
     };
   }
 
-  let startTime = today;
-  let endTime = today;
   let startHour = 19;
   let startMin = 0;
   let endHour = 22;
   let endMin = 0;
 
-  const timeMatch = dateStr.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
-  if (timeMatch) {
-    startHour = parseInt(timeMatch[1]);
-    startMin = timeMatch[2] ? parseInt(timeMatch[2]) : 0;
-    if (timeMatch[3]?.toLowerCase() === 'pm' && startHour < 12) startHour += 12;
-    if (timeMatch[3]?.toLowerCase() === 'am' && startHour === 12) startHour = 0;
+  const timeWithAmPm = /(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?)/gi;
+  const timeMatches = [...dateStr.matchAll(timeWithAmPm)];
+  
+  if (timeMatches.length > 0) {
+    const firstTime = timeMatches[0];
+    startHour = parseInt(firstTime[1]);
+    startMin = firstTime[2] ? parseInt(firstTime[2]) : 0;
+    const ampm = (firstTime[3] || '').replace(/\./g, '').toLowerCase();
+    if (ampm === 'pm' && startHour < 12) startHour += 12;
+    if (ampm === 'am' && startHour === 12) startHour = 0;
   }
 
-  const times = dateStr.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–to]+\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
-  if (times && times[4]) {
-    endHour = parseInt(times[4]);
-    endMin = times[5] ? parseInt(times[5]) : 0;
-    if (times[6]?.toLowerCase() === 'pm' && endHour < 12) endHour += 12;
-    if (times[6]?.toLowerCase() === 'am' && endHour === 12) endHour = 0;
+  if (timeMatches.length > 1) {
+    const secondTime = timeMatches[1];
+    endHour = parseInt(secondTime[1]);
+    endMin = secondTime[2] ? parseInt(secondTime[2]) : 0;
+    const ampm = (secondTime[3] || '').replace(/\./g, '').toLowerCase();
+    if (ampm === 'pm' && endHour < 12) endHour += 12;
+    if (ampm === 'am' && endHour === 12) endHour = 0;
   } else {
     endHour = startHour + 2;
   }
 
+  const cleanDateStr = dateStr.replace(/\(.*?\)/g, '').replace(/\d{1,2}(:\d{2})?\s*(am|pm)/gi, '').trim();
+  
   const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-  const monthMatch = dateStr.toLowerCase().match(new RegExp(`(${monthNames.join('|')})\\s+(\\d{1,2})`));
-  const dateNumMatch = dateStr.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
+  const monthMatch = cleanDateStr.toLowerCase().match(new RegExp(`(${monthNames.join('|')})\\s+(\\d{1,2})`));
+  const dateNumMatch = cleanDateStr.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
+  
+  let startTime = today;
+  let endTime = today;
   
   if (monthMatch) {
     const month = monthNames.indexOf(monthMatch[1]) + 1;

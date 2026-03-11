@@ -41,7 +41,13 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
       if (title.length < 3) return;
 
       const $datePara = $article.find('p.date').first();
-      const dateStr = $datePara.text().trim();
+      let dateStr = $datePara.text().trim();
+      const $timeSpan = $datePara.find('span.nobreak').first();
+      const timeStr = $timeSpan.text().trim();
+      
+      if (timeStr && !dateStr.includes(timeStr)) {
+        dateStr = `${dateStr} ${timeStr}`;
+      }
 
       const $milesPara = $article.find('p.miles').first();
       const locationRaw = $milesPara.text().replace(/\(\d+.*?\)/, '').trim();

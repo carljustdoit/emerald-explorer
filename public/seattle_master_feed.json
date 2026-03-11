@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "last_updated": "2026-03-11T18:37:53.538Z",
+    "last_updated": "2026-03-11T18:48:59.858Z",
     "environment": {
       "snoqualmie_snow_inches": 0,
       "stevens_pass_snow_inches": 0,
       "lake_union_temp_f": 55,
-      "cedar_river_flow_cfs": 1340,
+      "cedar_river_flow_cfs": 1350,
       "wind_speed_mph": 8,
       "sunset_time": "2026-03-11T19:08",
-      "conditions": "Light Rain"
+      "conditions": "Heavy Drizzle"
     }
   },
   "events": [
@@ -17,16 +17,16 @@
       "source": "Events12",
       "title": "Fellow Travelers",
       "description": "Set in the nation’s capital, Fellow Travelers is “heart-wrenching” [NY Times] historical fiction about two men in a relationship who must make impossible choices as they struggle to survive the Lavender Scare of the 1950s at McCaw Hall, 321 Mercer St. in Seattle.",
-      "start_time": "2026-03-11T01:00:00",
-      "end_time": "2026-03-11T03:00:00",
+      "start_time": "2026-03-11T14:00:00",
+      "end_time": "2026-03-11T16:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art"
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.58354676536542,
-        "lon": -122.31465777990867
+        "lat": 47.64587030068506,
+        "lon": -122.32670746937502
       },
       "url": "https://www.seattleopera.org/performances-events/fellow-travelers/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=McCaw%20Hall%2C%20321%20Mercer%20St%2C%20Seattle%2C%20WA%2098109",
@@ -37,8 +37,8 @@
       "source": "Events12",
       "title": "Sewing and Stitchery Expo",
       "description": "Browse hundreds of booths and sign up for classes and seminars at the Sewing and Stitchery Expo at Washington State Fair Events Center, 110 9th Ave. SW in Puyallup.",
-      "start_time": "2026-03-11T01:00:00",
-      "end_time": "2026-03-11T03:00:00",
+      "start_time": "2026-03-11T09:30:00",
+      "end_time": "2026-03-11T16:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -47,8 +47,8 @@
       ],
       "location": {
         "name": "Puyallup",
-        "lat": 47.61063583542063,
-        "lon": -122.33102797728777
+        "lat": 47.568928103661584,
+        "lon": -122.35312758745471
       },
       "url": "https://sewexpo.com",
       "image": "https://sewexpo.com/#jp-carousel-4621",
@@ -60,8 +60,8 @@
       "source": "Events12",
       "title": "Kids & Critters Weekends",
       "description": "Each paying adult can bring two children for free (age 12 or younger) during Kids & Critters Weekends at Northwest Trek Wildlife Park, 11610 Trek Drive E in Eatonville. Valid on Friday, Saturday, and Sunday.",
-      "start_time": "2026-03-11T01:00:00",
-      "end_time": "2026-03-11T03:00:00",
+      "start_time": "2026-03-11T09:30:00",
+      "end_time": "2026-03-11T15:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "outdoor",
@@ -69,8 +69,8 @@
       ],
       "location": {
         "name": "Eatonville",
-        "lat": 47.63914378177094,
-        "lon": -122.35541860186926
+        "lat": 47.63512357738729,
+        "lon": -122.29474533908332
       },
       "url": "https://www.nwtrek.org/event/kids-n-critters/",
       "image": "https://www.facebook.com/NWtrek/posts/pfbid027whxynTMg2nJQ8QAdzWm2aAHde89MUk2CLuQBxq1C96Bdq36PKL5MguJxMrhjevSl",
@@ -81,8 +81,8 @@
       "source": "Events12",
       "title": "Tacoma Beer Week",
       "description": "Bars and breweries host 55 beer-tasting and food-pairing events during Tacoma Beer Week.",
-      "start_time": "2026-03-11T01:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "tech",
@@ -91,8 +91,8 @@
       ],
       "location": {
         "name": "Tacoma",
-        "lat": 47.592912584847184,
-        "lon": -122.31571230058896
+        "lat": 47.602928957837705,
+        "lon": -122.34632966180487
       },
       "url": "https://www.tacomabeerweek.com/beer-week-events",
       "image": "https://www.facebook.com/tacomabeerweek/posts/pfbid0qrwf2DLh38Lw3iDdkdxNk559aSNrVKF6NxoS8EJ9DoqBW3MArYSCGz3Hoffw3YtVl"
@@ -102,16 +102,16 @@
       "source": "Events12",
       "title": "The Notebook",
       "description": "Based on the novel and popular film, The Notebook tells the story of a couple who share a lifetime of love despite forces that threaten to pull them apart at The Paramount Theatre, 911 Pine St. in Seattle.",
-      "start_time": "2026-03-11T03:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T18:30:00",
+      "end_time": "2026-03-11T20:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art"
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.58970225129154,
-        "lon": -122.30509633826408
+        "lat": 47.5731542998727,
+        "lon": -122.35826894332841
       },
       "url": "https://www.stgpresents.org/events/the-notebook/",
       "image": "https://notebookmusical.com/gallery/",
@@ -124,16 +124,16 @@
       "source": "Events12",
       "title": "Emerald City Comic Con",
       "description": "Emerald City Comic Con is a giant “comics, anime, gaming, entertainment, and pop culture event” that encourages attendees to wear costumes. Located at Seattle Convention Center, 705 Pike St. in Seattle.",
-      "start_time": "2026-03-11T05:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech"
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.621027205619995,
-        "lon": -122.3379483306944
+        "lat": 47.606195596632205,
+        "lon": -122.31493619980054
       },
       "url": "https://www.emeraldcitycomiccon.com",
       "image": "https://www.facebook.com/emeraldcitycomiccon/photos_albums",
@@ -145,8 +145,8 @@
       "source": "Events12",
       "title": "Camille A. Brown & Dancers",
       "description": "Award-winning Camille A. Brown & Dancers perform a new work called I am, featuring dance genres of the African Diaspora and creating a creative space for cultural liberation where anything is possible at The 5th Avenue Theatre, 1308 5th Ave. in Seattle.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T09:00:00",
+      "start_time": "2026-03-11T20:00:00",
+      "end_time": "2026-03-11T22:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -155,8 +155,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.58668656954278,
-        "lon": -122.30022756742432
+        "lat": 47.58727685604639,
+        "lon": -122.36730751018881
       },
       "url": "https://www.stgpresents.org/events/camille-a-brown/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=The%205th%20Avenue%20Theatre%2C%201308%205th%20Ave%2C%20Seattle%2C%20WA%2098101",
@@ -167,8 +167,8 @@
       "source": "Events12",
       "title": "A Black Tie Affair",
       "description": "Creative dress is welcome at $130 A Black Tie Affair, which has performances, live music, snacks, a no-host bar, and an art preview to benefit the Erotic Art Festival (held in May) at Gallery Erato, 309 1st Ave. in Seattle for age 21+.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T11:30:00",
+      "start_time": "2026-03-11T23:30:00",
+      "end_time": "2026-03-11T25:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "tech",
@@ -177,8 +177,8 @@
       ],
       "location": {
         "name": "Pioneer Square",
-        "lat": 47.58900528949708,
-        "lon": -122.35775514084403
+        "lat": 47.62430399017454,
+        "lon": -122.33727020367841
       },
       "url": "https://www.strangertickets.com/events/177860197/a-black-tie-affair",
       "image": "https://www.flickr.com/photos/seattleeroticartfestival/albums/72177720315568877/",
@@ -189,8 +189,8 @@
       "source": "Events12",
       "title": "Lunar New Year Celebration",
       "description": "Join the Lunar New Year Celebration in Chinatown, which includes lion and dragon dances, martial arts demonstrations, arts & crafts, and a food walk that has 40 destinations surrounding Hing Hay Park, 423 Maynard Ave. S in Seattle.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T09:00:00",
+      "start_time": "2026-03-11T11:00:00",
+      "end_time": "2026-03-11T17:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "food",
@@ -199,8 +199,8 @@
       ],
       "location": {
         "name": "International District",
-        "lat": 47.59235573133105,
-        "lon": -122.32664590860196
+        "lat": 47.60174309513985,
+        "lon": -122.34469756768232
       },
       "url": "https://www.seattlechinatownid.com/experiences/lunar-new-year",
       "image": "https://www.facebook.com/sifujohann.sasynuik.3/posts/pfbid0vvdB318mF1SEzNtA5jbCqVU4PjpUrRQvVtXhrSsBBqwbozrmChdjKgMsfj6jQ8dcl",
@@ -211,16 +211,16 @@
       "source": "Events12",
       "title": "Bellevue Bourbon Bash",
       "description": "Sample dozens of bourbons with heavy appetizers, and admire the view from the 21st floor, at $263 Bellevue Bourbon Bash at Daniel’s Broiler, 10500 NE 8th St. in Bellevue. Bring age 21+ ID.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T20:00:00",
+      "end_time": "2026-03-11T22:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "general"
       ],
       "location": {
         "name": "Bellevue",
-        "lat": 47.58832798610539,
-        "lon": -122.32068318853365
+        "lat": 47.57839776157356,
+        "lon": -122.30321681294316
       },
       "url": "https://www.eventbrite.com/e/the-15th-annual-bellevue-bourbon-bash-tickets-1979921829490?aff=events12com",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Daniel%E2%80%99s%20Broiler%2C%2010500%20NE%208th%20St%2C%20Bellevue%2C%20WA%2098004"
@@ -230,8 +230,8 @@
       "source": "Events12",
       "title": "Edmonds International Women’s Day",
       "description": "A $75 ticket to Edmonds International Women’s Day includes lunch, a speaker, two breakout sessions, and a happy hour at Edmonds Waterfront Center, 220 Railroad Ave. in Edmonds for age 13+.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T09:00:00",
+      "start_time": "2026-03-11T11:00:00",
+      "end_time": "2026-03-11T16:30:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -240,8 +240,8 @@
       ],
       "location": {
         "name": "Edmonds",
-        "lat": 47.5993850388819,
-        "lon": -122.33278336772125
+        "lat": 47.59084483938064,
+        "lon": -122.31082927342997
       },
       "url": "https://www.edmondswaterfrontcenter.org/events/international-womens-day/",
       "image": "https://www.facebook.com/permalink.php?story_fbid=pfbid02gWQsJqDoGogg7Po5t99XDuyg5e3mzGXpz7P3qik2qtesrGLSxqnF4D3bbagqhi2Ll&id=61562539463786",
@@ -253,8 +253,8 @@
       "source": "Events12",
       "title": "Kent Kids’ Arts Day",
       "description": "Kids create hands-on art projects for one flat fee of $10 at Kent Kids’ Arts Day in Kent Commons, 525 4th Ave. N in Kent. Visit the food truck or bring your own lunch. Adults and children age 2 and younger are free.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T09:00:00",
+      "start_time": "2026-03-11T10:00:00",
+      "end_time": "2026-03-11T15:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "food",
@@ -263,8 +263,8 @@
       ],
       "location": {
         "name": "Kent",
-        "lat": 47.56796230498628,
-        "lon": -122.3474372839617
+        "lat": 47.5980148034443,
+        "lon": -122.33535831576064
       },
       "url": "https://www.kentwa.gov/departments/kent-parks/arts/kent-kids-arts-day",
       "image": "https://www.facebook.com/MyKentParks/posts/pfbid02DgoMikJzokNNUGFmf4quL1hm85T4YTkmDw4DGtMas1xmViBRXW8GgBh4WMPxrNSxl",
@@ -276,8 +276,8 @@
       "source": "Events12",
       "title": "Snohomish Wine Festival",
       "description": "Snohomish Wine Festival features 20 wineries, with beer, cider, spirits, kombucha, and optional food at Thomas Family Farm, 9010 Marsh Road in Snohomish for age 21+. Your $45 ticket includes a glass, 8 tastes, and a $5 food voucher. No children or pets.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T09:00:00",
+      "start_time": "2026-03-11T16:00:00",
+      "end_time": "2026-03-11T18:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "food",
@@ -286,8 +286,8 @@
       ],
       "location": {
         "name": "Snohomish",
-        "lat": 47.567986320768206,
-        "lon": -122.32716425125182
+        "lat": 47.61638489542579,
+        "lon": -122.33770703534466
       },
       "url": "https://snohomishchamber.org/winefestival/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Thomas%20Family%20Farm%2C%209010%20Marsh%20Rd%2C%20Snohomish%2C%20WA%2098296"
@@ -297,8 +297,8 @@
       "source": "Events12",
       "title": "Lacey Cultural Celebration",
       "description": "Lacey Cultural Celebration has music and dance performances, demonstrations, displays, food and craft vendors, and kids’ crafts in the Marcus Pavilion at Saint Martin's University, 5300 Pacific Ave. SE in Olympia. No pets.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T09:00:00",
+      "start_time": "2026-03-11T10:00:00",
+      "end_time": "2026-03-11T18:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -307,8 +307,8 @@
       ],
       "location": {
         "name": "Lacey",
-        "lat": 47.620158245770604,
-        "lon": -122.35913722916153
+        "lat": 47.57472765879834,
+        "lon": -122.36548967917945
       },
       "url": "https://laceyparks.org/cultural/",
       "image": "https://www.facebook.com/cityoflacey/posts/pfbid02LbHLbDe9N3DN5akMpRKVDEn8qxNBNyodHKk17F5b5vBwZ6XeRpSR791ZLoUja5DYl",
@@ -320,8 +320,8 @@
       "source": "Events12",
       "title": "Seattle International Dance Festival (SIDF) Winter Mini-Fest",
       "description": "Seattle International Dance Festival (SIDF) Winter Mini-Fest features works by Khambatta Dance Company of Seattle plus Colectivo Glovo of Spain and Portugal, onstage at Erickson Theatre, 1524 Harvard Ave. in Seattle.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T19:30:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "tech",
@@ -342,8 +342,8 @@
       "source": "Events12",
       "title": "Seattle Miniature Show",
       "description": "The $15 Seattle Miniature Show has exhibits, 40 vendors, and workshops at DoubleTree Suites Southcenter, 16500 Southcenter Pkwy in Tukwila. Children younger than age 12 are free.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T10:00:00",
+      "end_time": "2026-03-11T16:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -352,8 +352,8 @@
       ],
       "location": {
         "name": "Tukwila",
-        "lat": 47.57439775223417,
-        "lon": -122.32030359621211
+        "lat": 47.64035102851206,
+        "lon": -122.29583134566927
       },
       "url": "https://www.pnwminiatureshows.com/seattle-miniature-show",
       "ticket_url": "https://www.pnwminiatureshows.com/",
@@ -365,8 +365,8 @@
       "source": "Events12",
       "title": "Tacoma Remodeling Expo",
       "description": "Get ideas for your dream home from speakers, vendors, and remodeling experts at Tacoma Remodeling Expo at Tacoma Convention Center, 1500 Commerce St. in Tacoma. Children younger than age 18 are free.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T11:00:00",
+      "end_time": "2026-03-11T17:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "market",
@@ -374,8 +374,8 @@
       ],
       "location": {
         "name": "Tacoma",
-        "lat": 47.6208634299087,
-        "lon": -122.34276658651248
+        "lat": 47.60240674530442,
+        "lon": -122.34816867032954
       },
       "url": "https://www.homeshowcenter.com/overview/tacomahome",
       "image": "https://www.homeshowcenter.com/picturegallery/tacomahome",
@@ -387,8 +387,8 @@
       "source": "Events12",
       "title": "Penn Cove MusselFest",
       "description": "Penn Cove MusselFest offers food vendors, cooking demonstrations, mussel farm tours by boat ($22, $6 child), chowder tasting ($54), a beer & wine garden, mussel-eating competitions, and kids’ activities at Coupeville Wharf, 24 Front St. NW in Coupeville on Whidbey Island. The $54 Mussel Mingle for adults is Fri. & Sat. evening.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "food",
@@ -397,8 +397,8 @@
       ],
       "location": {
         "name": "Coupeville",
-        "lat": 47.60079296813283,
-        "lon": -122.32676822972977
+        "lat": 47.6418566314891,
+        "lon": -122.31377312606581
       },
       "url": "https://www.penncovemusselfest.com/",
       "image": "https://www.facebook.com/media/set/?set=a.10158954844267675",
@@ -409,8 +409,8 @@
       "source": "Events12",
       "title": "Winthrop Balloon Roundup",
       "description": "If the weather cooperates, watch a dozen hot-air balloons inflate and launch each morning (7 to 9 a.m.) at Winthrop Balloon Roundup. Park at Methow Valley Thriftway, 920 State Rte 20 in Winthrop. The Saturday night glow (5:30 p.m.) is on Riverside Ave. No pets or smoking.",
-      "start_time": "2026-03-11T07:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -419,8 +419,8 @@
       ],
       "location": {
         "name": "Winthrop",
-        "lat": 47.61891423664217,
-        "lon": -122.32791431669114
+        "lat": 47.64136850204071,
+        "lon": -122.33526879034225
       },
       "url": "https://www.winthropwashington.com/event-details/winthrop-hot-air-balloon-round-up",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Methow%20Valley%20Thriftway%2C%20920%20State%20Rte%2020%2C%20Winthrop%2C%20WA%2098862",
@@ -431,8 +431,8 @@
       "source": "Events12",
       "title": "Northwest Record Show",
       "description": "“Find tons of collectible records, CDs, and other music-related collectibles for sale” on 50 tables during Northwest Record Show at Seattle Center Armory, 305 Harrison St. in Seattle. Early admission at 8 a.m. costs more. Held in spring and fall. Poster.",
-      "start_time": "2026-03-11T08:00:00",
-      "end_time": "2026-03-11T10:00:00",
+      "start_time": "2026-03-11T10:00:00",
+      "end_time": "2026-03-11T17:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -440,8 +440,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.62238333421678,
-        "lon": -122.3473849441122
+        "lat": 47.58385019167875,
+        "lon": -122.35043943333602
       },
       "url": "https://www.facebook.com/events/1670363693948541",
       "image": "https://www.facebook.com/NorthwestRecordShow/posts/pfbid02khfW1z4fBrxdzXJ1MN1BVnYDtGBnGkKd41Lb6faf6FENhSu2h8De6v4wFjYqx7Mbl",
@@ -452,8 +452,8 @@
       "source": "Events12",
       "title": "Seattle Sister Cities’ Soup Sampling",
       "description": "A $10 donation online gets you five tastes of soup from around the world at Seattle Sister Cities’ Soup Sampling at National Nordic Museum, 2655 NW Market St. in Seattle.",
-      "start_time": "2026-03-11T08:00:00",
-      "end_time": "2026-03-11T10:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -472,8 +472,8 @@
       "source": "Events12",
       "title": "Magical Strings",
       "description": "Magical Strings performs “ancient airs and their own unique compositions — on hand-crafted Celtic harps and hammered dulcimers along with pennywhistles, button accordion, and concertina” with a fiddler and Irish dancers at Kenyon Hall, 7904 35th Ave. SW in Seattle.",
-      "start_time": "2026-03-11T08:00:00",
-      "end_time": "2026-03-11T10:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -482,8 +482,8 @@
       ],
       "location": {
         "name": "Fauntleroy",
-        "lat": 47.615456814764904,
-        "lon": -122.33014531735243
+        "lat": 47.60764948935253,
+        "lon": -122.35017656735808
       },
       "url": "https://www.kenyonhall.org/events/magicalstrings",
       "ticket_url": "https://donorbox.org/events/907038",
@@ -494,8 +494,8 @@
       "source": "Events12",
       "title": "Festival of Color",
       "description": "Attended by 10,000 people, Festival of Color has music, dancers, food vendors, and colored powder flying through the air at Redmond City Hall Campus, 15670 NE 85th St. in Redmond. Admission and parking are free, but there is a cost to buy colored powder.",
-      "start_time": "2026-03-11T08:00:00",
-      "end_time": "2026-03-11T05:00:00",
+      "start_time": "2026-03-11T17:00:00",
+      "end_time": "2026-03-11T19:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -504,8 +504,8 @@
       ],
       "location": {
         "name": "Redmond",
-        "lat": 47.59395370847692,
-        "lon": -122.31633830580417
+        "lat": 47.58541632766646,
+        "lon": -122.32000975697662
       },
       "url": "https://www.festivalofcolor.us/",
       "image": "https://festivalofcolor.us/photos-gallery/",
@@ -517,16 +517,16 @@
       "source": "Events12",
       "title": "WWE Monday Night Raw",
       "description": "Watch the mega personalities of professional wrestling square off in the ring during WWE Monday Night Raw at Climate Pledge Arena, 334 1st Ave. N in Seattle.",
-      "start_time": "2026-03-11T09:00:00",
-      "end_time": "2026-03-11T11:00:00",
+      "start_time": "2026-03-11T16:30:00",
+      "end_time": "2026-03-11T18:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "nightlife"
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.645577251439946,
-        "lon": -122.30083135893122
+        "lat": 47.59931257311082,
+        "lon": -122.3306718794231
       },
       "url": "https://climatepledgearena.com/event/wwe-monday-night-raw-26/",
       "ticket_url": "https://stubhub.prf.hn/l/KzVWR3b/",
@@ -538,16 +538,16 @@
       "source": "Events12",
       "title": "Ignite Seattle",
       "description": "Hear a dozen speakers, each talking 5 minutes about an interesting subject while projecting photos at Ignite Seattle at Benaroya Hall, 200 University St. in Seattle. Doors open 6:30 p.m.",
-      "start_time": "2026-03-11T10:00:00",
-      "end_time": "2026-03-11T12:00:00",
+      "start_time": "2026-03-11T19:30:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "education"
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.62768884649581,
-        "lon": -122.32784417422253
+        "lat": 47.576485394696626,
+        "lon": -122.36642030952234
       },
       "url": "https://igniteseattle.com/",
       "image": "https://www.flickr.com/groups/ignite/pool/with/53607766737",
@@ -560,8 +560,8 @@
       "source": "Events12",
       "title": "Happy Hour & Hellos",
       "description": "Happy Hour & Hellos includes beer, wine, mocktails, appetizers, and networking at Terry's Kitchen, 5625 119th Ave. SE in Bellevue. Click their RSVP button for a $10 ticket. Repeats several times a year.",
-      "start_time": "2026-03-11T10:00:00",
-      "end_time": "2026-03-11T12:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -570,8 +570,8 @@
       ],
       "location": {
         "name": "Bellevue",
-        "lat": 47.632113206178495,
-        "lon": -122.3384418845543
+        "lat": 47.570548576038505,
+        "lon": -122.3506643543538
       },
       "url": "https://www.uwkc.org/event/happy-hour-hellos-creating-third-spaces/",
       "image": "https://www.facebook.com/UnitedWayKC/posts/pfbid02vcPL5AqLcNse8pYn94kELPzXNkDajrdQzkpKTNkUKPg1wWKTq4Cn5QXQcYGGbcswl",
@@ -582,8 +582,8 @@
       "source": "Events12",
       "title": "Preview some of the Oscar Nominated Short Films no",
       "description": "Preview some of the Oscar Nominated Short Films nominated for this year’s Academy Awards, grouped by category: animated or live action. Tacoma also has documentaries.",
-      "start_time": "2026-03-11T11:00:00",
-      "end_time": "2026-03-11T12:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -591,8 +591,8 @@
       ],
       "location": {
         "name": "Shoreline & Tacoma",
-        "lat": 47.610702308040494,
-        "lon": -122.33984094093967
+        "lat": 47.644245927912074,
+        "lon": -122.33867643467829
       },
       "url": "https://www.events12.com/seattle/",
       "video_url": "https://www.youtube.com/watch?v=pMaRf1vCBbM"
@@ -602,8 +602,8 @@
       "source": "Events12",
       "title": "Echo",
       "description": "A female heroine discovers that her choices can influence the world as she progresses through the stages of evolution in Echo, performed by Cirque du Soleil in a giant heated tent at Marymoor Park, 6046 West Lake Sammamish Pkwy NE in Redmond.",
-      "start_time": "2026-03-11T11:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -611,8 +611,8 @@
       ],
       "location": {
         "name": "Redmond",
-        "lat": 47.623084368633194,
-        "lon": -122.31130595095621
+        "lat": 47.62285053509234,
+        "lon": -122.30485910345497
       },
       "url": "https://www.cirquedusoleil.com/usa/seattle/echo/buy-tickets",
       "ticket_url": "https://stubhub.prf.hn/l/zpkP4gb/",
@@ -624,8 +624,8 @@
       "source": "Events12",
       "title": "Baskerville",
       "description": "Baskerville is a “madcap sendup” of Sir Arthur Conan Doyle’s classic whodunit, a fast-paced adventure full of clues, silly accents, disguises, and deceit at Everett Performing Arts Center, 2710 Wetmore Ave. in Everett.",
-      "start_time": "2026-03-11T11:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -633,8 +633,8 @@
       ],
       "location": {
         "name": "Everett",
-        "lat": 47.57310912613967,
-        "lon": -122.31860505543702
+        "lat": 47.61273450930644,
+        "lon": -122.3661167587658
       },
       "url": "https://villagetheatre.org/see-a-show/baskerville/",
       "image": "https://www.facebook.com/VillageTheatre/posts/pfbid0CHtem2LghTQgsZYf17LTRXxdTxGMFuKr7xtNjJVx8RCEYjyN5kTPSPx666meUtLfl",
@@ -646,16 +646,16 @@
       "source": "Events12",
       "title": "Bubble Planet",
       "description": "“Step into a planet beyond your imagination with virtual-reality technology, 10 rooms with different themes, and fantastic landscapes” at Bubble Planet, 103 110th Ave. NE in Bellevue. Closed Tuesdays.",
-      "start_time": "2026-03-11T11:00:00",
-      "end_time": "2026-03-11T13:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech"
       ],
       "location": {
         "name": "Bellevue",
-        "lat": 47.60239242485212,
-        "lon": -122.32675339385376
+        "lat": 47.610209514268355,
+        "lon": -122.35342704123137
       },
       "url": "https://fever.pxf.io/raXe2y",
       "image": "https://www.facebook.com/FeverUpUS/posts/pfbid0CzXw7wLFPcvpCn1wRuHUKTYq1AuhJ9eQGqrvq1e6KMmEVMjJ2hi22BtjBMWDgHMzl",
@@ -667,8 +667,8 @@
       "source": "Events12",
       "title": "Take a guided walking tour with tasting stops:",
       "description": "Take a guided walking tour with tasting stops:",
-      "start_time": "2026-03-11T11:00:00",
-      "end_time": "2026-03-11T13:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "food",
@@ -677,8 +677,8 @@
       ],
       "location": {
         "name": "Seattle",
-        "lat": 47.60221325578833,
-        "lon": -122.29538981312494
+        "lat": 47.6432635438545,
+        "lon": -122.34137253071087
       },
       "url": "https://www.events12.com/seattle/"
     },
@@ -687,8 +687,8 @@
       "source": "Events12",
       "title": "The Totally 2K Sing Along",
       "description": "The Totally 2K Sing Along features music video “hits from 2000 to 2010” with subtitles so you can sing along to Lady Gaga, Linkin Park, Beyoncé, Justin Bieber, Missy Elliott, and Daft Punk at Central Cinema, 1411 21st Ave. in Seattle. To buy a $17 ticket, click the “tickets” button below, then “Continue As Guest.”",
-      "start_time": "2026-03-11T12:00:00",
-      "end_time": "2026-03-11T11:15:00",
+      "start_time": "2026-03-11T23:15:00",
+      "end_time": "2026-03-11T25:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -697,8 +697,8 @@
       ],
       "location": {
         "name": "Central District",
-        "lat": 47.63417059415944,
-        "lon": -122.36936021631664
+        "lat": 47.59124889267988,
+        "lon": -122.31011470800743
       },
       "url": "https://www.facebook.com/events/2099456674186786",
       "ticket_url": "https://central-cinema.com/checkout/showing/the-totally-2k-sing-along/2712754",
@@ -710,16 +710,16 @@
       "source": "Events12",
       "title": "Misfit Cabaret: Circus",
       "description": "“A seductive circus comes to town with amazing aerialists, drag clowns, burlesque lions, and more” when Kat Robichaud presents Misfit Cabaret: Circus at The Triple Door, 216 Union St. in Seattle for age 17+ (9 p.m. 21+).",
-      "start_time": "2026-03-11T12:00:00",
-      "end_time": "2026-03-11T14:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "drinks"
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.636527035796135,
-        "lon": -122.31779995626611
+        "lat": 47.606252719948756,
+        "lon": -122.36939823772504
       },
       "url": "https://tickets.thetripledoor.net/eventperformances.asp?evt=1925",
       "map_url": "https://www.google.com/maps/search/?api=1&query=The%20Triple%20Door%2C%20216%20Union%20St%2C%20Seattle%2C%20WA%2098101",
@@ -730,8 +730,8 @@
       "source": "Events12",
       "title": "Seattle RV Show",
       "description": "See hundreds of new recreational vehicles and accessories at Seattle RV Show, which also has seminars, and a beer & wine area at Lumen Field Event Center, 800 Occidental Ave. S in Seattle. Children age 17 and younger are free.",
-      "start_time": "2026-03-11T12:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "drinks",
@@ -740,8 +740,8 @@
       ],
       "location": {
         "name": "SoDo",
-        "lat": 47.593767339725574,
-        "lon": -122.31931843372747
+        "lat": 47.60518776010799,
+        "lon": -122.3658512073071
       },
       "url": "https://seattlervshow.com/show-information/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Lumen%20Field%20Event%20Center%2C%20800%20Occidental%20Ave%20S%2C%20Seattle%2C%20WA%2098134",
@@ -752,8 +752,8 @@
       "source": "Events12",
       "title": "Seattle Art Walks",
       "description": "Walk between venues displaying artwork in the evening during Seattle Art Walks and more.",
-      "start_time": "2026-03-11T12:00:00",
-      "end_time": "2026-03-11T20:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "outdoor",
@@ -762,8 +762,8 @@
       ],
       "location": {
         "name": "multiple locations",
-        "lat": 47.62475022135128,
-        "lon": -122.36381645419343
+        "lat": 47.63657435383958,
+        "lon": -122.3064532577487
       },
       "url": "https://www.seattle.gov/arts/experience/art-walks"
     },
@@ -772,8 +772,8 @@
       "source": "Events12",
       "title": "Candlelight Concerts",
       "description": "Candlelight Concerts feature a string quartet playing familiar songs for an hour in the warm glow of simulated candles.",
-      "start_time": "2026-03-11T12:00:00",
-      "end_time": "2026-03-11T29:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -782,8 +782,8 @@
       ],
       "location": {
         "name": "Seattle & Woodinville",
-        "lat": 47.641919998611634,
-        "lon": -122.33696271289233
+        "lat": 47.63179842954525,
+        "lon": -122.32501419426572
       },
       "url": "https://fever.pxf.io/Kj6j5x",
       "video_url": "https://www.youtube.com/watch?v=tfFe9hZJQuk"
@@ -793,16 +793,16 @@
       "source": "Events12",
       "title": "Enjoy exceptional acoustics in luxurious Benaroya ",
       "description": "Enjoy exceptional acoustics in luxurious Benaroya Hall, 200 University St. in Seattle.",
-      "start_time": "2026-03-11T12:00:00",
-      "end_time": "2026-03-11T29:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "general"
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.5951999949538,
-        "lon": -122.33105310700329
+        "lat": 47.61687493339743,
+        "lon": -122.35107555858778
       },
       "url": "https://www.events12.com/seattle/",
       "image": "https://www.facebook.com/media/set/?set=a.78400485972",
@@ -813,16 +813,16 @@
       "source": "Events12",
       "title": "Seattle Kraken",
       "description": "Watch Seattle Kraken play a home game on the ice at Climate Pledge Arena, 334 1st Ave. N in Seattle.",
-      "start_time": "2026-03-11T12:00:00",
-      "end_time": "2026-03-11T14:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "sports"
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.63485669265952,
-        "lon": -122.36703434634526
+        "lat": 47.60810102962704,
+        "lon": -122.36460182320647
       },
       "url": "https://www.nhl.com/kraken/",
       "ticket_url": "https://stubhub.prf.hn/l/lQBpaMd/",
@@ -833,8 +833,8 @@
       "source": "Events12",
       "title": "Beats, Barrels and Brews",
       "description": "A $50 ticket to Beats, Barrels and Brews [formerly Boots, Barrels and Brews] includes 3 drink tickets, a catered buffet dinner, dessert, dancing, games, and a band playing the hits of Abba in Pickering Barn, 1730 10th Ave. NW in Issaquah. Bring age 21+ ID.",
-      "start_time": "2026-03-11T13:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T18:30:00",
+      "end_time": "2026-03-11T18:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "music",
@@ -843,8 +843,8 @@
       ],
       "location": {
         "name": "Issaquah",
-        "lat": 47.60220015374678,
-        "lon": -122.34489620930378
+        "lat": 47.57295854222078,
+        "lon": -122.33845116182454
       },
       "url": "https://k01873.site.kiwanis.org/beats-barrels-and-brews/",
       "image": "https://www.facebook.com/IssaquahKiwanis/posts/pfbid09LtHFAf2D8qkZ5qxEeQydjL7CdaXLy8Do8NFNkRH5Cq2yzs72p5ZcSt3GkXR8ScGl",
@@ -857,8 +857,8 @@
       "source": "Events12",
       "title": "Quilters Anonymous Annual Quilt Show",
       "description": "Admire 400 quilts, see demonstrations, and shop from vendors at $15 Quilters Anonymous Annual Quilt Show at Evergreen State Fairgrounds, 14405 179th Ave. SE in Monroe. Children age 12 and younger are free.",
-      "start_time": "2026-03-11T13:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -867,8 +867,8 @@
       ],
       "location": {
         "name": "Monroe",
-        "lat": 47.58661341205778,
-        "lon": -122.35224948688993
+        "lat": 47.573767028039406,
+        "lon": -122.35510774313568
       },
       "url": "https://www.quiltersanonymous.org/quilt-show/",
       "image": "https://www.facebook.com/quiltersanonymousguild/posts/pfbid0266NyDua3JUGs4t4gxJkzxQrcKquAmiP7zPV1T1Motv4EbuRXCdT1q1cs6yiB5z3Al",
@@ -880,8 +880,8 @@
       "source": "Events12",
       "title": "Seattle Golf Show",
       "description": "Seattle Golf Show has 150 exhibitors, free lessons, a junior golfer area, games with prizes, stage presentations, and a bar at Washington State Fair Events Center, 110 9th Ave. SW in Puyallup. Children age 12 and younger are free.",
-      "start_time": "2026-03-11T13:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -890,8 +890,8 @@
       ],
       "location": {
         "name": "Puyallup",
-        "lat": 47.61083204324326,
-        "lon": -122.31765678250724
+        "lat": 47.6412649725791,
+        "lon": -122.31251192557723
       },
       "url": "https://www.seattlegolfshow.com",
       "image": "https://www.facebook.com/seattlegolfshow/posts/pfbid0cBeo4jVzd7tYptDESmQgY8NkpkykQabNUbHpkgBvtStZoHZfqoShWhvTJaqXWtxtl",
@@ -903,8 +903,8 @@
       "source": "Events12",
       "title": "Wings Over Water Northwest Birding Festival",
       "description": "Wings Over Water Northwest Birding Festival celebrates migratory birds that flock to the pristine coastal area near Blaine and has expert speakers, exhibits, and kids’ activities. Some field trips are not free. Shop from vendors in the Pavilion at the Blaine Community Center, 635 8th St. in Blaine.",
-      "start_time": "2026-03-11T13:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -913,8 +913,8 @@
       ],
       "location": {
         "name": "Blaine",
-        "lat": 47.62184339231386,
-        "lon": -122.35548436927363
+        "lat": 47.60451585124248,
+        "lon": -122.3300284261697
       },
       "url": "https://www.wingsoverwaterbirdingfestival.com/",
       "image": "https://www.facebook.com/WingsOverWater/posts/pfbid02DscxkkToLqFgHmmmdRPmTodoMphSpqUbVC1LATewwZN9BrN5yiCvAjMTgMZdmYjyl",
@@ -926,8 +926,8 @@
       "source": "Events12",
       "title": "Firebird",
       "description": "Pacific Northwest Ballet performs Firebird about a beautiful, mythical bird that comes to the aid of two lovers after a sorcerer casts a cruel spell, plus two other works at McCaw Hall, 321 Mercer St. in Seattle.",
-      "start_time": "2026-03-11T13:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "tech",
@@ -935,8 +935,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.59675828001081,
-        "lon": -122.36102781765946
+        "lat": 47.6017124621697,
+        "lon": -122.32845454667137
       },
       "url": "https://www.pnb.org/season/firebird/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=McCaw%20Hall%2C%20321%20Mercer%20St%2C%20Seattle%2C%20WA%2098109"
@@ -946,8 +946,8 @@
       "source": "Events12",
       "title": "Dining in the Dark",
       "description": "Your sense of taste is enhanced when you eat a three-course meal blindfolded during Dining in the Dark at The Collective Seattle, 400 Dexter Ave. N in Seattle for age 12+. Choice of fish, meat, or vegan. Drinks and tip extra.",
-      "start_time": "2026-03-11T13:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "drinks"
@@ -967,7 +967,7 @@
       "title": "St. Patrick’s Day Parade",
       "description": "St. Patrick’s Day Parade includes Irish bands, bagpipers, dancers, marchers, floats, and antique cars. The 2026 parade on Alaskan Way goes from Pier 66 to Pier 58.",
       "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T02:00:00",
+      "end_time": "2026-03-11T16:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -976,8 +976,8 @@
       ],
       "location": {
         "name": "Seattle waterfront",
-        "lat": 47.57619707569757,
-        "lon": -122.37181808208311
+        "lat": 47.57629898045464,
+        "lon": -122.33992464217204
       },
       "url": "https://irishclub.org/event/st-patricks-day-parade-2/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Pier%2066%2C%202225%20Alaskan%20Way%2C%20Seattle%2C%20WA%2098101",
@@ -996,8 +996,8 @@
       ],
       "location": {
         "name": "Pioneer Square (multiple locations)",
-        "lat": 47.58305173194733,
-        "lon": -122.33706966104681
+        "lat": 47.612898959610796,
+        "lon": -122.2963174338886
       },
       "url": "https://www.eventbrite.com/e/seattle-leprecon-2026-tickets-1975718960596",
       "image": "https://www.facebook.com/media/set/?set=a.1082432940346493"
@@ -1007,8 +1007,8 @@
       "source": "Events12",
       "title": "Balkan Night Northwest",
       "description": "Balkan Night Northwest features multiple bands, dancing, performances, and food and drink for sale at St. Demetrios Greek Orthodox Church, 2100 Boyer Ave. E in Seattle. Children younger than age 15 are free. [The Balkan countries are located between Italy and Turkey.]",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1017,8 +1017,8 @@
       ],
       "location": {
         "name": "Montlake",
-        "lat": 47.59185036862634,
-        "lon": -122.32836622520405
+        "lat": 47.59264079400032,
+        "lon": -122.30263486375766
       },
       "url": "https://www.balkannightnw.com",
       "image": "https://www.facebook.com/media/set/?set=a.1737922196308423",
@@ -1030,8 +1030,8 @@
       "source": "Events12",
       "title": "Holi",
       "description": "Welcome spring at the colorful Hindu festival of Holi, with DJ dance music, Indian food for sale, and colored powder you can buy and throw at Crossroads Park, 16140 NE 8th St. in Bellevue.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T11:00:00",
+      "end_time": "2026-03-11T17:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1040,8 +1040,8 @@
       ],
       "location": {
         "name": "Bellevue",
-        "lat": 47.6144484175083,
-        "lon": -122.29580761969285
+        "lat": 47.61801263145426,
+        "lon": -122.2931679385415
       },
       "url": "https://www.facebook.com/events/crossroads-park/crossroads-wali-holi-the-colors-fest-2026/1426343092167453/",
       "ticket_url": "https://www.zeffy.com/en-US/ticketing/crossroads-wali-holi-the-colors-fest--2026",
@@ -1052,8 +1052,8 @@
       "source": "Events12",
       "title": "Jet City Roller Derby",
       "description": "Watch the women of Jet City Roller Derby play exciting games, and visit the beer garden at Edmonds Community College in Seaview Gym, 200th St. SW in Lynnwood.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T17:00:00",
+      "end_time": "2026-03-11T19:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1062,8 +1062,8 @@
       ],
       "location": {
         "name": "Lynnwood",
-        "lat": 47.607011785938944,
-        "lon": -122.31499033172715
+        "lat": 47.60605887672134,
+        "lon": -122.34705653319251
       },
       "url": "https://www.facebook.com/events/4244309189217335",
       "image": "https://www.facebook.com/anthonyfloydphotography/posts/pfbid0L23dPoxCV3ncmHyJpGX6qKwXDBsVotyxvXdXSn8exrPT1dBC8gZ4TF5m12Xc2pu3l",
@@ -1075,8 +1075,8 @@
       "source": "Events12",
       "title": "A Celtic Celebration",
       "description": "A Celtic Celebration features “Celtic fiddle tunes, Irish songs and ballads, and Irish step dancing” with Celtic folk group The Gothard Sisters at Edmonds Center for the Arts, 410 4th Ave. N in Edmonds.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T19:30:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1085,8 +1085,8 @@
       ],
       "location": {
         "name": "Edmonds",
-        "lat": 47.60597340024423,
-        "lon": -122.32518598162228
+        "lat": 47.64431622464435,
+        "lon": -122.34141722834876
       },
       "url": "https://www.edmondscenterforthearts.org/events/celtic-celebration-2026/",
       "image": "https://www.facebook.com/gothardsisters/posts/pfbid0RAfUHaGB8yJuYd2wL9cwEX4dRtYkyaEdwh5HhfNvE5RAh2HGRoY6xWufysxsFkCvl",
@@ -1098,8 +1098,8 @@
       "source": "Events12",
       "title": "Shamrock Shuffle Wine, Beer & Spirits Walk",
       "description": "A $39 ticket to Shamrock Shuffle Wine, Beer & Spirits Walk includes 10 tastes from Washington wineries & breweries in retail shops, beginning at First & Main Design Market, 10100 Main St. in Bothell for age 21+. Bring a glass and wear green.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T07:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "tech",
@@ -1108,8 +1108,8 @@
       ],
       "location": {
         "name": "Bothell",
-        "lat": 47.5673529628527,
-        "lon": -122.30084977641985
+        "lat": 47.57842685564192,
+        "lon": -122.34708178403801
       },
       "url": "https://bothellkenmorechamber.org/event/the-lucky-pour-wine-beer-spirits-walk/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=First%20%26%20Main%20Design%20Market%2C%2010100%20Main%20St%2C%20Bothell%2C%20WA%2098011"
@@ -1119,8 +1119,8 @@
       "source": "Events12",
       "title": "St. Paddy’s Day Run",
       "description": "Wear green on the St. Paddy’s Day Run, a scenic 5K run/walk, plus 10K and half-marathon running events, which begin outside The Forum, 815 Pacific Ave. A in Tacoma. No pets.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "outdoor",
@@ -1128,8 +1128,8 @@
       ],
       "location": {
         "name": "Tacoma",
-        "lat": 47.609820771622374,
-        "lon": -122.34252828376533
+        "lat": 47.622248047708524,
+        "lon": -122.37013276162133
       },
       "url": "https://tcmaevents.com/st-paddys-day-run-tacoma/",
       "image": "https://www.facebook.com/tacomacitymarathonassociation/posts/pfbid02dtHSoTS9QtxU9o8aZr6bX8cMPiPnDWZ8wWUXUe7fW8rqaPsNGtoFaaLQjuWACenol",
@@ -1140,8 +1140,8 @@
       "source": "Events12",
       "title": "Irish Festival",
       "description": "Irish music, dancing, films, exhibits, vendors, and children’s activities await you at the Irish Festival in Seattle Center Armory, 305 Harrison St. in Seattle.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1150,8 +1150,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.62120994105813,
-        "lon": -122.29422820918853
+        "lat": 47.5694673716321,
+        "lon": -122.3430189575468
       },
       "url": "https://seattlecenter.com/events/featured-events/festal/irish-festival",
       "image": "https://www.facebook.com/media/set/?set=a.10157234584366942",
@@ -1162,8 +1162,8 @@
       "source": "Events12",
       "title": "Emerald City Irish Film Festival",
       "description": "Emerald City Irish Film Festival screens seven Irish films plus a program of short films in the Imax theater at Pacific Science Center, 200 2nd Ave. N in Seattle.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "art",
@@ -1171,8 +1171,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.576367221191866,
-        "lon": -122.31353478979115
+        "lat": 47.60611959723725,
+        "lon": -122.34356402858639
       },
       "url": "https://www.emeraldcityirishfilmfest.com/",
       "image": "https://www.facebook.com/emeraldcityirishfilmfest/posts/pfbid02XiQCB8yBwx1YkD2GXC7yGVoQ2sWAsEu2ecjU2Yb2DXKQnCDDEK6hAdtHmkQ6gE77l",
@@ -1184,8 +1184,8 @@
       "source": "Events12",
       "title": "St. Patrick's Irish Festival",
       "description": "St. Patrick's Irish Festival features music by eight bands, beginning at noon at Kells Irish Restaurant & Pub, 1916 Post Alley in Seattle. for age 21+. Your $24 ticket also includes both March 14 & 17.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "music",
@@ -1194,8 +1194,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.62081454589445,
-        "lon": -122.36326735421366
+        "lat": 47.57632091653619,
+        "lon": -122.32916588796107
       },
       "url": "https://kellsseattle.com/pages/st-patricks-fest",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Kells%20Irish%20Restaurant%20%26%20Pub%2C%201916%20Post%20Alley%20Walk%20Wy%2C%20Seattle%2C%20WA%2098101",
@@ -1206,8 +1206,8 @@
       "source": "Events12",
       "title": "St. Patrick’s Day Celebration",
       "description": "St. Patrick’s Day Celebration promises food & drink specials, live music, a roaming bagpiper, and “plenty of hijinks” at McMenamins Anderson School, 18607 Bothell Way NE in Bothell. Free parking.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T17:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1216,8 +1216,8 @@
       ],
       "location": {
         "name": "Bothell",
-        "lat": 47.58152672418463,
-        "lon": -122.3575822348342
+        "lat": 47.576851812966275,
+        "lon": -122.35595570910303
       },
       "url": "https://www.mcmenamins.com/event.aspx?id=275085",
       "map_url": "https://www.google.com/maps/search/?api=1&query=McMenamins%20Anderson%20School%2C%2018607%20Bothell%20Way%20NE%2C%20Bothell%2C%20WA%2098011"
@@ -1227,8 +1227,8 @@
       "source": "Events12",
       "title": "classes",
       "description": "Enjoy an appetizer as you watch a professional chef prepare a meal, and then get “substantial tastes” at classes offered by Hot Stove Society in Hotel Andra, 2000 4th Ave. in Seattle.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T28:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "food",
@@ -1248,8 +1248,8 @@
       "source": "Events12",
       "title": "Taste Tour",
       "description": "A $78 ticket to Taste Tour includes “a curated taste of food & wine at four locations,” with a choice of four different itineraries centered around the city of Chelan, WA. Transportation is not included.",
-      "start_time": "2026-03-14T14:00:00",
-      "end_time": "2026-03-14T28:00:00",
+      "start_time": "2026-03-14T19:00:00",
+      "end_time": "2026-03-14T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "food",
@@ -1257,8 +1257,8 @@
       ],
       "location": {
         "name": "Chelan",
-        "lat": 47.601112304311215,
-        "lon": -122.33425822961719
+        "lat": 47.61960134365004,
+        "lon": -122.36697232651039
       },
       "url": "https://lakechelanwinevalley.com/taste-chelan/",
       "ticket_url": "https://www.eventbrite.com/cc/taste-chelan-2026-4183503",
@@ -1269,8 +1269,8 @@
       "source": "Events12",
       "title": "Seattle Jewish Film Festival",
       "description": "Seattle Jewish Film Festival celebrates Jewish culture, filmmaking, and history. Special events include an opening-night dessert party (March 14), a brunch (March 15), shorts (March 18), guest speakers on several dates, and a closing reception (March 29). Held in Seattle theaters and at Stroum Jewish Community Center on Mercer Island. Brochure.",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T29:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "food",
@@ -1279,8 +1279,8 @@
       ],
       "location": {
         "name": "Mercer Island & Seattle",
-        "lat": 47.60143972892839,
-        "lon": -122.31777993506769
+        "lat": 47.62717757792719,
+        "lon": -122.36426911516048
       },
       "url": "https://seattlejff.org/",
       "image": "https://www.facebook.com/SeattleJFF/posts/pfbid0QHgmSDGSMp9pXk1KaBhf7LZH8oYL6gAa4tdYJhcRe5esREXQVwqbWmwquDDdAVvBl",
@@ -1291,8 +1291,8 @@
       "source": "Events12",
       "title": "St. Patrick’s Day Dash",
       "description": "Wear green or a costume to the St. Patrick’s Day Dash 5K at Seattle Center. Afterward, head to the giant beer garden at Fisher Pavilion for age 21+. The Leprechaun Lap is a 1K dash for kids age 10 and younger.",
-      "start_time": "2026-03-11T15:00:00",
-      "end_time": "2026-03-11T17:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "drinks",
@@ -1313,16 +1313,16 @@
       "source": "Events12",
       "title": "Watch the Academy Awards broadcast live.",
       "description": "Watch the Academy Awards broadcast live.",
-      "start_time": "2026-03-11T15:00:00",
-      "end_time": "2026-03-11T17:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "general"
       ],
       "location": {
         "name": "Seattle",
-        "lat": 47.579330178119,
-        "lon": -122.30111156049233
+        "lat": 47.62991009893496,
+        "lon": -122.30827811087826
       },
       "url": "https://www.events12.com/seattle/"
     },
@@ -1331,8 +1331,8 @@
       "source": "Events12",
       "title": "Awards Watch Party",
       "description": "The Awards Watch Party [formerly Film Awards Party] features a red carpet, drinks & snacks for sale, costume contests, a competition to guess the winners, and at 4 p.m. a live broadcast of the Academy Awards onscreen at Grand Cinema, 606 Fawcett Ave. in Tacoma. Click “4:00 PM” on their page then “Continue as guest.”",
-      "start_time": "2026-03-11T15:00:00",
-      "end_time": "2026-03-11T07:30:00",
+      "start_time": "2026-03-11T19:30:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "sports",
@@ -1341,8 +1341,8 @@
       ],
       "location": {
         "name": "Tacoma",
-        "lat": 47.58595679360638,
-        "lon": -122.30577082564832
+        "lat": 47.57278832620606,
+        "lon": -122.30234332977496
       },
       "url": "https://grandcinema.com/awardswatchparty/",
       "image": "https://www.facebook.com/media/set/?set=a.792159926279867",
@@ -1354,8 +1354,8 @@
       "source": "Events12",
       "title": "Enjoy brunch or dinner at your own private table, ",
       "description": "Enjoy brunch or dinner at your own private table, with a beverage upon boarding and a two-hour guided cruise on Lake Union & Lake Washington. Departs from Waterways Cruises, 901 Fairview Ave. N in Seattle.",
-      "start_time": "2026-03-11T15:00:00",
-      "end_time": "2026-03-11T17:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1364,8 +1364,8 @@
       ],
       "location": {
         "name": "Eastlake",
-        "lat": 47.57081337945354,
-        "lon": -122.3223272103066
+        "lat": 47.59073264730703,
+        "lon": -122.36174404401916
       },
       "url": "https://www.events12.com/seattle/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Waterways%20Cruises%2C%20901%20Fairview%20Ave%20N%2C%20Seattle%2C%20WA%2098109",
@@ -1376,8 +1376,8 @@
       "source": "Events12",
       "title": "St. Patrick’s Day",
       "description": "Celebrate St. Patrick’s Day with live music until 11 p.m. for $29 at Conor Byrne Pub, 5140 Ballard Ave. NW in Seattle for age 21+. Irish dancers at 1:30 & 7:30 p.m.",
-      "start_time": "2026-03-11T17:00:00",
-      "end_time": "2026-03-11T19:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "music",
@@ -1398,7 +1398,7 @@
       "title": "Pacific Standard",
       "description": "A $203 ticket to Pacific Standard includes “all of the food and beverage you like at this walk around event” with seafood and wine at The Admiral's House, 2500 W Marina Place in Seattle for age 21+. This event is part of Taste Washington.",
       "start_time": "2026-03-11T19:00:00",
-      "end_time": "2026-03-11T21:00:00",
+      "end_time": "2026-03-11T18:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "food",
@@ -1407,8 +1407,8 @@
       ],
       "location": {
         "name": "Interbay",
-        "lat": 47.64277992737493,
-        "lon": -122.34539278710339
+        "lat": 47.593803494821564,
+        "lon": -122.29349495361623
       },
       "url": "https://www.tastewashington.org/pacific-standard/",
       "image": "https://www.facebook.com/adriennedahlin/posts/pfbid02DmdSvBdCGGt7VJWg27afZvL1RKyQb9kBsmCVPuwypLzEzxwoymSA1Y3MfBV7c6C1l",
@@ -1420,8 +1420,8 @@
       "source": "Events12",
       "title": "Samantha Bee",
       "description": "Woke comedian Samantha Bee of The Daily Show and Full Frontal delivers sharp wit and biting sarcasm in her show How to Survive Menopause at Neptune Theatre, 1303 NE 45th St. in Seattle.",
-      "start_time": "2026-03-11T19:00:00",
-      "end_time": "2026-03-11T21:00:00",
+      "start_time": "2026-03-11T20:00:00",
+      "end_time": "2026-03-11T22:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1450,8 +1450,8 @@
       ],
       "location": {
         "name": "All state parks",
-        "lat": 47.627218804431955,
-        "lon": -122.36614261093061
+        "lat": 47.57161344354154,
+        "lon": -122.29884856183176
       },
       "url": "https://discoverpass.wa.gov/about-pass/free-ways-visit/free-parking-days"
     },
@@ -1482,8 +1482,8 @@
       "source": "Events12",
       "title": "The New Vintage",
       "description": "Dress up and taste wine, drink signature cocktails, meet winemakers, eat gourmet appetizers, play retro video games, dance to DJ music, and hear musicians at $174 The New Vintage at Lotte Hotel, 811 5th Ave. in Seattle. Must be age 21+. This event is part of Taste Washington.",
-      "start_time": "2026-03-11T20:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:30:00",
+      "end_time": "2026-03-11T18:30:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "tech",
@@ -1492,8 +1492,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.627731210717066,
-        "lon": -122.30798623900439
+        "lat": 47.58397818455692,
+        "lon": -122.2951664334941
       },
       "url": "https://www.tastewashington.org/the-new-vintage/",
       "image": "https://www.facebook.com/TasteWashington/posts/pfbid02zTBgsVV6UW8VWDm5HLPxdepVF8tdL9H4rYjq5UMjivKsBKB5kUeWbZTdfkqZ98FLl",
@@ -1505,8 +1505,8 @@
       "source": "Events12",
       "title": "Square Dance",
       "description": "The Square Dance has a live band and a caller to instruct beginners at Urban Family Brewing, 1103 NW 52nd St. in Seattle. Children younger than age 18 are free.",
-      "start_time": "2026-03-11T20:00:00",
-      "end_time": "2026-03-11T09:30:00",
+      "start_time": "2026-03-11T21:30:00",
+      "end_time": "2026-03-11T23:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "music",
@@ -1526,8 +1526,8 @@
       "source": "Events12",
       "title": "Alvin Ailey American Dance Theater",
       "description": "Award-winning Alvin Ailey American Dance Theater performs thought-provoking new works and perennial favorites at Paramount Theatre, 911 Pine St. in Seattle.",
-      "start_time": "2026-03-11T20:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1536,8 +1536,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.57034435403606,
-        "lon": -122.3331719610385
+        "lat": 47.5990454366266,
+        "lon": -122.36989441266384
       },
       "url": "https://www.stgpresents.org/events/alvin-ailey/",
       "image": "https://www.facebook.com/AileyOrganization/posts/pfbid0gm2qrdam89oKyuWyXie1VXQAc8WAVhCLi96fX21Jntii4JY1mrxMvF4pEzwEGxajl",
@@ -1550,8 +1550,8 @@
       "source": "Events12",
       "title": "Razor Clam & Seafood Festival",
       "description": "Razor Clam & Seafood Festival has clam chowder, a raw oyster bar, Dungeness crab dinners, adult beverages, live music, Crab Benedict (Sun. reserve online $30), and vendors selling clams, scallops, fish & chips, salmon, burgers, and funnel cakes at Ocean Shores Visitor Information Center, 120 W Chance a La Mer NW in Ocean Shores.",
-      "start_time": "2026-03-11T20:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1560,8 +1560,8 @@
       ],
       "location": {
         "name": "Ocean Shores",
-        "lat": 47.57981583092264,
-        "lon": -122.29585851016566
+        "lat": 47.60236211048038,
+        "lon": -122.35354900024257
       },
       "url": "https://tourismoceanshores.com/razor-clam-and-seafood-festival/",
       "image": "https://www.facebook.com/oceanshoreswashington/posts/pfbid02rTV9sxkjtbgPFXPtEUCPctWidPAUgJFdbiXCmMc9vPGnVLPAuzKqmnHKXPg1VZDLl",
@@ -1573,8 +1573,8 @@
       "source": "Events12",
       "title": "Plate of Nations",
       "description": "Plate of Nations offers special deals on international meals. Click any of the 50 restaurants to see prices.",
-      "start_time": "2026-03-11T20:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1583,8 +1583,8 @@
       ],
       "location": {
         "name": "Rainier Valley",
-        "lat": 47.63078432282322,
-        "lon": -122.30516598740132
+        "lat": 47.62795443222657,
+        "lon": -122.31271115023522
       },
       "url": "https://www.plateofnations.com/",
       "image": "https://www.facebook.com/plateofnations/posts/pfbid02EdSmv5ixkogaXZcaPV9Vk5mhyXawYHKiiy7cmxFRmZrzJ67XnLq29fxyJ7BFm7Ml",
@@ -1595,8 +1595,8 @@
       "source": "Events12",
       "title": "BrainFest",
       "description": "BrainFest includes shows, talks, and exhibitions about the human brain at Pacific Science Center, 200 2nd Ave. N in Seattle.",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T23:00:00",
+      "start_time": "2026-03-11T10:00:00",
+      "end_time": "2026-03-11T17:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1605,8 +1605,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.64019660354193,
-        "lon": -122.3138956669592
+        "lat": 47.57835619452032,
+        "lon": -122.33735714474724
       },
       "url": "https://pacificsciencecenter.org/events/brainfest/",
       "image": "https://www.facebook.com/UWMedicine/posts/pfbid0211HQTJe76ojP1uVz52ZLAiuEiQRXwdb4ys82YN9h8B2nucEACZWToxShyazyV8ubl",
@@ -1618,8 +1618,8 @@
       "source": "Events12",
       "title": "Post Alley Film Festival",
       "description": "Watch 24 “woman-centric” short films from around the world during Post Alley Film Festival at SIFF Film Center, 305 Harrison St. in Seattle. The last two hours are a reception. All day admission ranges from $20 to $32.",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T23:00:00",
+      "start_time": "2026-03-11T11:00:00",
+      "end_time": "2026-03-11T20:45:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -1627,8 +1627,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.63345383288176,
-        "lon": -122.32180387646869
+        "lat": 47.619051465971445,
+        "lon": -122.32857607514808
       },
       "url": "https://womeninfilmseattle.org/post-alley-film-festival",
       "image": "https://photos.google.com/share/AF1QipNiQg0jKWpLr9LZLMpbarW1ClQpcw3JrfxqmZ5QAp4TJUsnf1Dw8Bh9ksL7HGzokw?key=aW1SdTk4cUtBbzJ0R0dZX1kwUERVV01pc1M1T1l3",
@@ -1640,8 +1640,8 @@
       "source": "Events12",
       "title": "Holi Celebration",
       "description": "Celebrate the traditional Hindu festival at Holi Celebration with entertainment, food vendors, and colored powder flying through the air at Phinney Center, 6532 Phinney Ave. N in Seattle. Adult $20, child $8.",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T03:00:00",
+      "start_time": "2026-03-11T15:00:00",
+      "end_time": "2026-03-11T17:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1650,8 +1650,8 @@
       ],
       "location": {
         "name": "Phinney Ridge",
-        "lat": 47.625921010061845,
-        "lon": -122.35453934482912
+        "lat": 47.619392344025904,
+        "lon": -122.29911985564189
       },
       "url": "https://www.phinneycenter.org/events/holi-celebration/",
       "image": "https://www.facebook.com/media/set/?set=a.2210046445700259",
@@ -1662,8 +1662,8 @@
       "source": "Events12",
       "title": "Georgetown Bites",
       "description": "Buy $5 tickets for Georgetown Bites in the parking lot of Star Brass Works Lounge (5813 Airport Way South), and then exchange the tickets for bites and beverages at 35 participating businesses.",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T23:00:00",
+      "start_time": "2026-03-11T11:00:00",
+      "end_time": "2026-03-11T17:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1672,8 +1672,8 @@
       ],
       "location": {
         "name": "Georgetown",
-        "lat": 47.61864226578539,
-        "lon": -122.36222937067203
+        "lat": 47.62703993438839,
+        "lon": -122.36772019209455
       },
       "url": "https://georgetownseattle.org/event/georgetown-bites-sites/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Star%20Brass%20Works%20Lounge%2C%205813%20Airport%20Way%20S%2C%20Seattle%2C%20WA%2098108"
@@ -1683,8 +1683,8 @@
       "source": "Events12",
       "title": "Columbia City Night Market",
       "description": "Monthly Columbia City Night Market has 8 food trucks, 20 makers and vendors, live music, and a beer garden on 37th Avenue S. (from S. Ferdinand to S. Edmunds). Walk 10 minutes from Columbia City rail station to 4850 37th Ave. S in Seattle.",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T10:00:00",
+      "start_time": "2026-03-11T22:00:00",
+      "end_time": "2026-03-11T24:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1693,8 +1693,8 @@
       ],
       "location": {
         "name": "Columbia City",
-        "lat": 47.60684704158648,
-        "lon": -122.32742983707416
+        "lat": 47.61042462706328,
+        "lon": -122.33573155395165
       },
       "url": "https://www.peacepeloton.com/night-market",
       "image": "https://www.facebook.com/peacepeloton/posts/pfbid027aoExZTd8MtzjgUk99xDGrgkrDe7wjdAdSsQc7LMPndeZ2ZDh1LLJUQXus1a9xdbl",
@@ -1706,8 +1706,8 @@
       "source": "Events12",
       "title": "Rat City Roller Derby",
       "description": "Watch Rat City Roller Derby play exciting home games at 4:30 & 7 p.m., with snacks for sale (but no alcohol) at Edmonds College in Seaview Hall, 200th St. SW in Lynnwood. Doors open 4 p.m.",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T23:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1715,8 +1715,8 @@
       ],
       "location": {
         "name": "Lynnwood",
-        "lat": 47.61542221725357,
-        "lon": -122.35294386653271
+        "lat": 47.616341108989225,
+        "lon": -122.31893648593527
       },
       "url": "https://ratcityrollerderby.com/events/rat-city-roller-derby-home-team-season-20-bout-3/",
       "image": "https://www.facebook.com/dannyngan/posts/pfbid025EGSk7Y1ZecsBoxaYRm5CDBSrbHKPGsGNmNUeWgpr7GLj9Je656GAc6svhHzFgxTl",
@@ -1728,16 +1728,16 @@
       "source": "Events12",
       "title": "Taste Washington events are for age 21+.",
       "description": "Taste Washington events are for age 21+.",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "general"
       ],
       "location": {
         "name": "SoDo",
-        "lat": 47.587053375288015,
-        "lon": -122.33755181209301
+        "lat": 47.5871832695606,
+        "lon": -122.35661992181308
       },
       "url": "https://www.events12.com/seattle/",
       "image": "https://www.facebook.com/lumenfield/posts/pfbid0Czxu8DkqWghzcaAgtPynCfQusUBzVXZvtzR3LvUqNNynftyURX6hgr1x12geFK2Rl",
@@ -1749,8 +1749,8 @@
       "source": "Events12",
       "title": "Momotaro",
       "description": "Based on a Japanese folk tale, Momotaro is the story of a young boy who befriends animals, fights ogres, and seeks treasures for his family, performed by ballet students at McCaw Hall, 321 Mercer St. in Seattle.",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T23:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1759,8 +1759,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.58790684252878,
-        "lon": -122.34093372991336
+        "lat": 47.59063432080044,
+        "lon": -122.31505389379522
       },
       "url": "https://www.pnb.org/season/momotaro/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=McCaw%20Hall%2C%20321%20Mercer%20St%2C%20Seattle%2C%20WA%2098109"
@@ -1770,8 +1770,8 @@
       "source": "Events12",
       "title": "French Fest",
       "description": "French Fest is a celebration of French-speaking culture, with art, live music, dancing, films, wine tasting, a baguette tasting contest, vendors, and sustainability workshops, both upstairs and on the main floor of the Seattle Center Armory, 305 Harrison St. in Seattle.",
-      "start_time": "2026-03-11T22:00:00",
-      "end_time": "2026-03-11T24:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1780,8 +1780,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.63759263878484,
-        "lon": -122.33133871973058
+        "lat": 47.593054244966844,
+        "lon": -122.32464656356825
       },
       "url": "https://seattlecenter.com/events/featured-events/festal/seattles-french-fest",
       "image": "https://www.facebook.com/faccpnw/posts/pfbid09J52WtRCN1oXRi9avTyAq5rgaid4X7ZNdJMURq5DF3yH3Ea3RQ12178Wicr2BEtml",
@@ -1792,16 +1792,16 @@
       "source": "Events12",
       "title": "National Geographic Live",
       "description": "National Geographic Live presents scientists, photographers, filmmakers, and adventurers live on stage with amazing photos and video at Benaroya Hall, 200 University St. in Seattle. March is about the Galapagos.",
-      "start_time": "2026-03-11T22:00:00",
-      "end_time": "2026-03-11T24:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art"
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.57947373789195,
-        "lon": -122.34564953778178
+        "lat": 47.58413893796637,
+        "lon": -122.36397855037816
       },
       "url": "https://www.seattlesymphony.org/en/benaroyahall/bh-calendar/2025-2026/25-nat-geo-4",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Benaroya%20Hall%2C%20200%20University%20St%2C%20Seattle%2C%20WA%2098101"
@@ -1811,8 +1811,8 @@
       "source": "Events12",
       "title": "Grease",
       "description": "Take a rollicking trip back to the 1950s with the cast of Grease as they navigate the social waters of high school and love at Village Theatre, 303 Front St. N in Issaquah. Repeats later in Everett.",
-      "start_time": "2026-05-03T24:00:00",
-      "end_time": "2026-05-03T26:00:00",
+      "start_time": "2026-05-03T19:00:00",
+      "end_time": "2026-05-03T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -1821,8 +1821,8 @@
       ],
       "location": {
         "name": "Issaquah",
-        "lat": 47.6387501688926,
-        "lon": -122.34591477418245
+        "lat": 47.601270632123864,
+        "lon": -122.3208350005737
       },
       "url": "https://villagetheatre.org/see-a-show/grease/",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Village%20Theatre%2C%20303%20Front%20St%20N%2C%20Issaquah%2C%20WA%2098027",
@@ -1833,8 +1833,8 @@
       "source": "Events12",
       "title": "Emerald City Hoedown",
       "description": "Emerald City Hoedown is an LGBTQ friendly weekend of dancing, with 24 workshops and lots of social events at Renaissance Seattle Hotel, 515 Madison St. in Seattle.",
-      "start_time": "2026-03-11T26:00:00",
-      "end_time": "2026-03-11T29:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1843,8 +1843,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.5779244207264,
-        "lon": -122.29755315173415
+        "lat": 47.60629526567475,
+        "lon": -122.30407494514573
       },
       "url": "https://raincountrydance.org/page-18148",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Renaissance%20Seattle%20Hotel%2C%20515%20Madison%20St%2C%20Seattle%2C%20WA%2098104",
@@ -1855,8 +1855,8 @@
       "source": "Events12",
       "title": "National Film Festival for Talented Youth (NFFTY)",
       "description": "National Film Festival for Talented Youth (NFFTY) showcases the best directors age 24 and younger, with a focus on “young persons from traditionally marginalized communities” at SIFF Cinema Uptown, 511 Queen Anne Ave. N in Seattle. Opening night March 26 begins with a red carpet and ends with an after-party at SIFF Cinema Downtown, 2100 4th Ave. in Seattle.",
-      "start_time": "2026-03-11T26:00:00",
-      "end_time": "2026-03-11T29:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -1877,8 +1877,8 @@
       "source": "Events12",
       "title": "Seattle Mariners",
       "description": "Watch the Seattle Mariners play an exciting home game at T-Mobile Park, 1250 1st Ave. S in Seattle.",
-      "start_time": "2026-03-11T26:00:00",
-      "end_time": "2026-03-11T28:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "outdoor",
@@ -1886,8 +1886,8 @@
       ],
       "location": {
         "name": "SoDo",
-        "lat": 47.59358225566566,
-        "lon": -122.30102059943069
+        "lat": 47.60240378651571,
+        "lon": -122.37132319739938
       },
       "url": "https://www.mlb.com/mariners/schedule/2026-02",
       "ticket_url": "https://stubhub.prf.hn/l/lQO9240/",
@@ -1898,8 +1898,8 @@
       "source": "Events12",
       "title": "Hot Java Cool Jazz",
       "description": "Top jazz bands from five local high schools wow the audience at Hot Java Cool Jazz in The Paramount Theatre, 911 Pine St. in Seattle.",
-      "start_time": "2026-03-11T27:00:00",
-      "end_time": "2026-03-11T29:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -1907,8 +1907,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.64223543548784,
-        "lon": -122.31936170804711
+        "lat": 47.63384412558875,
+        "lon": -122.29765842204999
       },
       "url": "https://www.stgpresents.org/events/starbucks-29th-annual-hot-java-cool-jazz/",
       "image": "https://www.facebook.com/rhsjazzseattle/posts/pfbid0ezcp1X2UbzVEdqBfSS1JMXZfz9t7Ab21wxvjwpzjMzyzQtqP8B7ffjjfz8dM5gxAl",
@@ -1920,8 +1920,8 @@
       "source": "Events12",
       "title": "SAM Remix",
       "description": "A $65 ticket to SAM Remix includes “innovative performances, art-making activities, live music, and gallery admission” with snacks for sale and a no-host bar at Seattle Art Museum, 1300 1st Ave. in Seattle for age 21+.",
-      "start_time": "2026-03-11T27:00:00",
-      "end_time": "2026-03-11T11:00:00",
+      "start_time": "2026-03-11T23:00:00",
+      "end_time": "2026-03-11T25:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "music",
@@ -1930,8 +1930,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.62262143186638,
-        "lon": -122.34713202126673
+        "lat": 47.59998220894765,
+        "lon": -122.32576410171919
       },
       "url": "https://seattleartmuseum.org/whats-on/events/remix-mar-27",
       "image": "https://www.facebook.com/seattleartmuseum/posts/pfbid022m8j5uGUhvxzqfUii3kyDgsczA2Z7Q2gykjsi51tiv1E6EuCoWZuiT6MEH69HoShl",
@@ -1942,8 +1942,8 @@
       "source": "Events12",
       "title": "Seattle Color Festival",
       "description": "Wear clothes you don’t mind staining to Seattle Color Festival, which has food trucks, DJ music, colored powder for sale, and dancing to celebrate Indian Holi at Seattle Center in the Mural Amphitheater, 305 Harrison St. in Seattle.",
-      "start_time": "2026-03-11T28:00:00",
-      "end_time": "2026-03-11T30:00:00",
+      "start_time": "2026-03-11T11:00:00",
+      "end_time": "2026-03-11T16:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -1952,8 +1952,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.641690436962584,
-        "lon": -122.30323856903523
+        "lat": 47.61055819110578,
+        "lon": -122.31617815295165
       },
       "url": "https://www.eventbrite.com/e/seattle-color-festival-holi-2026-tickets-1981915860691",
       "image": "https://seattlerefined.com/lifestyle/vibrant-scenes-from-seattle-color-festival-holi-2023-seattle-center-march-26-pnw-washington",
@@ -1965,8 +1965,8 @@
       "source": "Events12",
       "title": "Metropolitan Fashion Week Seattle",
       "description": "“Fashion designers present their most inspired masterpiece creations” during $82 Metropolitan Fashion Week Seattle at 415 Westlake Ave. N in Seattle for age 13+. Cash bar and after-party.",
-      "start_time": "2026-03-11T28:00:00",
-      "end_time": "2026-03-11T09:30:00",
+      "start_time": "2026-03-11T21:30:00",
+      "end_time": "2026-03-11T23:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "art",
@@ -1986,16 +1986,16 @@
       "source": "Events12",
       "title": "UFC Fight Night",
       "description": "Watch Adesanya vs. Pyfer during UFC Fight Night in Climate Pledge Arena, 334 1st Ave. N in Seattle.",
-      "start_time": "2026-03-11T28:00:00",
-      "end_time": "2026-03-11T30:00:00",
+      "start_time": "2026-03-11T14:00:00",
+      "end_time": "2026-03-11T16:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "nightlife"
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.56723785688417,
-        "lon": -122.37050921543099
+        "lat": 47.593673253343944,
+        "lon": -122.36587796206851
       },
       "url": "https://climatepledgearena.com/event/ufc-26/",
       "ticket_url": "https://stubhub.prf.hn/l/QL1JaZb/",
@@ -2006,8 +2006,8 @@
       "source": "Events12",
       "title": "Polish Spring Bazaar",
       "description": "Eat pierogi, sausage, cabbage rolls, borscht, beer, coffee, and pastries downstairs (or buy food to go), and then browse Polish crafts for sale upstairs at the Polish Spring Bazaar at the Polish Cultural Center, 1714 18th Ave. in Seattle.",
-      "start_time": "2026-03-11T28:00:00",
-      "end_time": "2026-03-11T05:00:00",
+      "start_time": "2026-03-11T17:00:00",
+      "end_time": "2026-03-11T19:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -2028,8 +2028,8 @@
       "source": "Events12",
       "title": "Ballard Wine Walk",
       "description": "Get 10 tastes in 15 Ballard shops that host pop-up tasting rooms featuring Washington wines during $45 Ballard Wine Walk for age 21+. Check in at Columbia Bank, 5512 22nd Ave. NW in Seattle. Bring a glass or pay extra. Held in March and October.",
-      "start_time": "2026-03-11T28:00:00",
-      "end_time": "2026-03-11T08:00:00",
+      "start_time": "2026-03-11T20:00:00",
+      "end_time": "2026-03-11T22:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "food",
@@ -2051,8 +2051,8 @@
       "source": "Events12",
       "title": "Evergreen Dance Festival",
       "description": "Watch dance performances (ballet, flamenco, and more) by participating dance schools during $28 Evergreen Dance Festival at Renton IKEA Performing Arts Center, 400 S 2nd St. in Renton.",
-      "start_time": "2026-03-11T28:00:00",
-      "end_time": "2026-03-11T30:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "art",
@@ -2061,8 +2061,8 @@
       ],
       "location": {
         "name": "Renton",
-        "lat": 47.644774981585485,
-        "lon": -122.37163863147207
+        "lat": 47.61251568730677,
+        "lon": -122.346341401341
       },
       "url": "https://www.evergreencityballet.org/edf",
       "ticket_url": "https://www.onthestage.tickets/show/evergreen-city-ballet/697d295901d7a5244768375d/tickets#/productions-view",
@@ -2073,8 +2073,8 @@
       "source": "Events12",
       "title": "Spring into Adventure",
       "description": "Spring into Adventure typically includes a 3k walk, yoga, art, adoptable dogs, kids’ activities, food trucks, and 40 vendors at Lake Sammamish State Park, 2000 NW Sammamish Road in Issaquah. Donation. Parking is $10 if you don’t have a Discover Pass.",
-      "start_time": "2026-03-11T28:00:00",
-      "end_time": "2026-03-11T30:00:00",
+      "start_time": "2026-03-11T10:00:00",
+      "end_time": "2026-03-11T14:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "food",
@@ -2083,8 +2083,8 @@
       ],
       "location": {
         "name": "Issaquah",
-        "lat": 47.61226059467155,
-        "lon": -122.32368962216393
+        "lat": 47.59624574442248,
+        "lon": -122.3667172796397
       },
       "url": "https://www.lakesammamishfriends.org/events-old/2025/5/3/get-outdoors-mccpx",
       "image": "https://www.facebook.com/media/set/?set=a.1727298290801389",
@@ -2096,8 +2096,8 @@
       "source": "Events12",
       "title": "Tartan Ball",
       "description": "Listen to Scottish pipes and drums, wear the tartan of a Scottish clan, and join Scottish Highland dancing at the Tartan Ball at Washington State Fair Events Center, 110 9th Ave. SW in Puyallup. In previous years, music began at 6:45 p.m. “Feel free to bring your own food for yourself or to share with your table.”",
-      "start_time": "2026-03-11T28:00:00",
-      "end_time": "2026-03-11T30:00:00",
+      "start_time": "2026-03-11T18:00:00",
+      "end_time": "2026-03-11T20:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",
@@ -2106,8 +2106,8 @@
       ],
       "location": {
         "name": "Puyallup",
-        "lat": 47.57470589821887,
-        "lon": -122.35463081596583
+        "lat": 47.57711509178068,
+        "lon": -122.30653452946449
       },
       "url": "https://www.cgpb.org/tartan-ball.html",
       "map_url": "https://www.google.com/maps/search/?api=1&query=Washington%20State%20Fair%20Events%20Center%2C%20110%209th%20Ave%20SW%2C%20Puyallup%2C%20WA%2098371",
@@ -2118,16 +2118,16 @@
       "source": "Events12",
       "title": "Omar Sosa trio",
       "description": "Concert at Jazz Alley",
-      "start_time": "2026-03-11T11:00:00",
-      "end_time": "2026-03-11T13:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Jazz Alley",
-        "lat": 47.56800556450414,
-        "lon": -122.34249253783882
+        "lat": 47.5682774265203,
+        "lon": -122.31864551042601
       },
       "url": "https://www.jazzalley.com/www-home/artist.jsp?shownum=8750"
     },
@@ -2136,16 +2136,16 @@
       "source": "Events12",
       "title": "Madeleine Peyroux",
       "description": "Concert at Jazz Alley",
-      "start_time": "2026-03-11T12:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Jazz Alley",
-        "lat": 47.6365121255162,
-        "lon": -122.3336522787985
+        "lat": 47.60287261931847,
+        "lon": -122.30650630854312
       },
       "url": "https://www.jazzalley.com/www-home/artist.jsp?shownum=8740"
     },
@@ -2154,16 +2154,16 @@
       "source": "Events12",
       "title": "Bossa nova / pop",
       "description": "Concert at Royal Room",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Royal Room",
-        "lat": 47.589648017276716,
-        "lon": -122.36828176235944
+        "lat": 47.59782532573789,
+        "lon": -122.30399451764724
       },
       "url": "https://theroyalroomseattle.com/event/eduardo-mendonca-quartet/"
     },
@@ -2172,8 +2172,8 @@
       "source": "Events12",
       "title": "Silence Wang",
       "description": "Concert at Climate Pledge",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2191,16 +2191,16 @@
       "source": "Events12",
       "title": "Soul Asylum",
       "description": "Concert at Tulalip",
-      "start_time": "2026-03-11T14:00:00",
-      "end_time": "2026-03-11T16:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Tulalip",
-        "lat": 47.63384308569174,
-        "lon": -122.32046626583814
+        "lat": 47.60388718497282,
+        "lon": -122.29476040481312
       },
       "url": "https://stubhub.prf.hn/l/MdPqlA3/",
       "ticket_url": "https://stubhub.prf.hn/l/MdPqlA3/"
@@ -2210,8 +2210,8 @@
       "source": "Events12",
       "title": "Black Label Society",
       "description": "Concert at Paramount",
-      "start_time": "2026-03-11T16:00:00",
-      "end_time": "2026-03-11T18:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2229,8 +2229,8 @@
       "source": "Events12",
       "title": "Conan Gray",
       "description": "Concert at Climate Pledge",
-      "start_time": "2026-03-11T16:00:00",
-      "end_time": "2026-03-11T18:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2248,16 +2248,16 @@
       "source": "Events12",
       "title": "Crankdat (electronic)",
       "description": "Concert at Tacoma Dome",
-      "start_time": "2026-03-11T21:00:00",
-      "end_time": "2026-03-11T23:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Tacoma Dome",
-        "lat": 47.590597289282215,
-        "lon": -122.3370306239536
+        "lat": 47.63910405655957,
+        "lon": -122.3651753228023
       },
       "url": "https://stubhub.prf.hn/l/yzVEoAw/",
       "ticket_url": "https://stubhub.prf.hn/l/yzVEoAw/"
@@ -2267,16 +2267,16 @@
       "source": "Events12",
       "title": "Ashnikko",
       "description": "Concert at Showbox SoDo",
-      "start_time": "2026-03-11T23:00:00",
-      "end_time": "2026-03-11T25:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Showbox SoDo",
-        "lat": 47.64478542223747,
-        "lon": -122.34174379391132
+        "lat": 47.64123408489635,
+        "lon": -122.30892541682913
       },
       "url": "https://stubhub.prf.hn/l/VxGalLj/",
       "ticket_url": "https://stubhub.prf.hn/l/VxGalLj/"
@@ -2286,16 +2286,16 @@
       "source": "Events12",
       "title": "Lauren S. Smith",
       "description": "Concert at Moore",
-      "start_time": "2026-03-11T23:00:00",
-      "end_time": "2026-03-11T25:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Moore",
-        "lat": 47.57106280045781,
-        "lon": -122.37031625310559
+        "lat": 47.632548523437606,
+        "lon": -122.34375744525234
       },
       "url": "https://stubhub.prf.hn/l/p3MJMmq/",
       "ticket_url": "https://stubhub.prf.hn/l/p3MJMmq/"
@@ -2305,16 +2305,16 @@
       "source": "Events12",
       "title": "Calum Scott",
       "description": "Concert at Moore",
-      "start_time": "2026-03-11T25:00:00",
-      "end_time": "2026-03-11T27:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Moore",
-        "lat": 47.585294955590584,
-        "lon": -122.30888562213106
+        "lat": 47.57334114756219,
+        "lon": -122.33585895263384
       },
       "url": "https://stubhub.prf.hn/l/NdXbG3Z/",
       "ticket_url": "https://stubhub.prf.hn/l/NdXbG3Z/"
@@ -2324,16 +2324,16 @@
       "source": "Events12",
       "title": "Foreigner",
       "description": "Concert at Auburn",
-      "start_time": "2026-03-11T29:00:00",
-      "end_time": "2026-03-11T31:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Auburn",
-        "lat": 47.59442333026726,
-        "lon": -122.33073999291265
+        "lat": 47.56785560127918,
+        "lon": -122.35870546912228
       },
       "url": "https://stubhub.prf.hn/l/eOzV8Yd/",
       "ticket_url": "https://stubhub.prf.hn/l/eOzV8Yd/"
@@ -2343,16 +2343,16 @@
       "source": "Events12",
       "title": "Raye",
       "description": "Concert at Wamu",
-      "start_time": "2026-03-11T03:00:00",
-      "end_time": "2026-03-11T05:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.57906110845121,
-        "lon": -122.30353921412157
+        "lat": 47.58897181056535,
+        "lon": -122.31133130391284
       },
       "url": "https://stubhub.prf.hn/l/6qROkPE/",
       "ticket_url": "https://stubhub.prf.hn/l/6qROkPE/"
@@ -2362,16 +2362,16 @@
       "source": "Events12",
       "title": "bbno$",
       "description": "Concert at Wamu",
-      "start_time": "2026-03-11T04:00:00",
-      "end_time": "2026-03-11T06:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.6181406445497,
-        "lon": -122.34248272725075
+        "lat": 47.58986425279799,
+        "lon": -122.29860421727862
       },
       "url": "https://stubhub.prf.hn/l/p3ow8q0/",
       "ticket_url": "https://stubhub.prf.hn/l/p3ow8q0/"
@@ -2381,16 +2381,16 @@
       "source": "Events12",
       "title": "Hatsune Miku",
       "description": "Concert at Wamu",
-      "start_time": "2026-03-11T20:00:00",
-      "end_time": "2026-03-11T22:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.571723089519594,
-        "lon": -122.3638828623529
+        "lat": 47.635360160935456,
+        "lon": -122.30077395571405
       },
       "url": "https://stubhub.prf.hn/l/6qZvYep/",
       "ticket_url": "https://stubhub.prf.hn/l/6qZvYep/"
@@ -2400,16 +2400,16 @@
       "source": "Events12",
       "title": "Charlie Puth",
       "description": "Concert at Wamu",
-      "start_time": "2026-05-03T03:00:00",
-      "end_time": "2026-05-03T05:00:00",
+      "start_time": "2026-05-03T19:00:00",
+      "end_time": "2026-05-03T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.602577137141516,
-        "lon": -122.30327698111195
+        "lat": 47.63635198936234,
+        "lon": -122.3056181053868
       },
       "url": "https://stubhub.prf.hn/l/W42oWgd/",
       "ticket_url": "https://stubhub.prf.hn/l/W42oWgd/"
@@ -2419,8 +2419,8 @@
       "source": "Events12",
       "title": "Florence + Machine",
       "description": "Concert at Climate Pledge",
-      "start_time": "2026-05-12T12:00:00",
-      "end_time": "2026-05-12T14:00:00",
+      "start_time": "2026-05-12T19:00:00",
+      "end_time": "2026-05-12T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2438,8 +2438,8 @@
       "source": "Events12",
       "title": "Demi Lovato",
       "description": "Concert at Climate Pledge",
-      "start_time": "2026-05-13T13:00:00",
-      "end_time": "2026-05-13T15:00:00",
+      "start_time": "2026-05-13T19:00:00",
+      "end_time": "2026-05-13T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2457,16 +2457,16 @@
       "source": "Events12",
       "title": "Yungblud",
       "description": "Concert at Wamu",
-      "start_time": "2026-05-15T15:00:00",
-      "end_time": "2026-05-15T17:00:00",
+      "start_time": "2026-05-15T19:00:00",
+      "end_time": "2026-05-15T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.64454440540059,
-        "lon": -122.32988174752117
+        "lat": 47.5845629613375,
+        "lon": -122.32796030590343
       },
       "url": "https://stubhub.prf.hn/l/6l5PDYY/",
       "ticket_url": "https://stubhub.prf.hn/l/6l5PDYY/"
@@ -2476,16 +2476,16 @@
       "source": "Events12",
       "title": "The Paper Kites",
       "description": "Concert at Moore",
-      "start_time": "2026-05-21T21:00:00",
-      "end_time": "2026-05-21T23:00:00",
+      "start_time": "2026-05-21T19:00:00",
+      "end_time": "2026-05-21T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Moore",
-        "lat": 47.64341954862368,
-        "lon": -122.30957875481579
+        "lat": 47.642451995711966,
+        "lon": -122.32403683739926
       },
       "url": "https://stubhub.prf.hn/l/rynVYx4/",
       "ticket_url": "https://stubhub.prf.hn/l/rynVYx4/"
@@ -2495,8 +2495,8 @@
       "source": "Events12",
       "title": "Louis Tomlinson",
       "description": "Concert at Climate Pledge",
-      "start_time": "2026-03-11T04:00:00",
-      "end_time": "2026-03-11T06:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2514,16 +2514,16 @@
       "source": "Events12",
       "title": "Human League",
       "description": "Concert at Marymoor",
-      "start_time": "2026-03-11T08:00:00",
-      "end_time": "2026-03-11T10:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Marymoor",
-        "lat": 47.60254062093698,
-        "lon": -122.33467401661593
+        "lat": 47.58695687585876,
+        "lon": -122.30450679726275
       },
       "url": "https://stubhub.prf.hn/l/aWMgO1g/",
       "ticket_url": "https://stubhub.prf.hn/l/aWMgO1g/"
@@ -2533,8 +2533,8 @@
       "source": "Events12",
       "title": "Alex Warren",
       "description": "Concert at Climate Pledge",
-      "start_time": "2026-03-11T13:00:00",
-      "end_time": "2026-03-11T15:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2552,8 +2552,8 @@
       "source": "Events12",
       "title": "Natalia Lafourcade",
       "description": "Concert at Paramount",
-      "start_time": "2026-03-11T17:00:00",
-      "end_time": "2026-03-11T19:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2571,16 +2571,16 @@
       "source": "Events12",
       "title": "Forrest Frank",
       "description": "Concert at Tacoma Dome",
-      "start_time": "2026-03-11T10:00:00",
-      "end_time": "2026-03-11T12:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
       ],
       "location": {
         "name": "Tacoma Dome",
-        "lat": 47.57946126254728,
-        "lon": -122.31698070555767
+        "lat": 47.6130684774583,
+        "lon": -122.29827809647516
       },
       "url": "https://stubhub.prf.hn/l/y81qQ4A/",
       "ticket_url": "https://stubhub.prf.hn/l/y81qQ4A/"
@@ -2590,8 +2590,8 @@
       "source": "Events12",
       "title": "Ed Sheeran",
       "description": "Concert at Lumen Field",
-      "start_time": "2026-03-11T01:00:00",
-      "end_time": "2026-03-11T03:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2609,8 +2609,8 @@
       "source": "Events12",
       "title": "Megan Moroney",
       "description": "Concert at Climate Pledge",
-      "start_time": "2026-03-11T02:00:00",
-      "end_time": "2026-03-11T04:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2628,8 +2628,8 @@
       "source": "Events12",
       "title": "Noah Kahan",
       "description": "Concert at T-Mobile Park",
-      "start_time": "2026-03-11T30:00:00",
-      "end_time": "2026-03-11T32:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music",
@@ -2648,8 +2648,8 @@
       "source": "Events12",
       "title": "Doja Cat",
       "description": "Concert at Climate Pledge",
-      "start_time": "2026-03-11T15:00:00",
-      "end_time": "2026-03-11T17:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "music"
@@ -2667,8 +2667,8 @@
       "source": "EverOut",
       "title": "Weekly Trivia Night",
       "description": "Test your knowledge at Seattle's favorite weekly trivia. Teams of up to 6 compete for prizes.",
-      "start_time": "2026-03-11T03:00:00",
-      "end_time": "2026-03-11T05:00:00",
+      "start_time": "2026-03-11T19:00:00",
+      "end_time": "2026-03-11T21:00:00",
       "is_kid_friendly": false,
       "vibe_tags": [
         "drinks",
@@ -2706,8 +2706,8 @@
       "source": "EverOut",
       "title": "Tech Meetup: AI in Seattle",
       "description": "Monthly meetup for Seattle tech enthusiasts. This month: Large Language Models workshop.",
-      "start_time": "2026-03-13T03:00:00",
-      "end_time": "2026-03-13T05:00:00",
+      "start_time": "2026-03-13T18:30:00",
+      "end_time": "2026-03-13T20:00:00",
       "is_kid_friendly": true,
       "vibe_tags": [
         "tech",

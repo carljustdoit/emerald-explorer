@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { RawScrapedEvent, EnrichedEvent, Location } from '../types/schema.js';
 import { createHash } from 'crypto';
 
@@ -23,6 +22,24 @@ const KNOWN_VENUES: Record<string, Location> = {
   'seattle aquarium': { name: 'Seattle Aquarium', lat: 47.6067, lon: -122.3406 },
   'paramount': { name: 'Paramount Theatre', lat: 47.6129, lon: -122.3320 },
   'climate pledge': { name: 'Climate Pledge Arena', lat: 47.5952, lon: -122.3316 },
+  't-mobile park': { name: 'T-Mobile Park', lat: 47.5917, lon: -122.3327 },
+  'lumen field': { name: 'Lumen Field', lat: 47.5952, lon: -122.3316 },
+  'chihuly': { name: 'Chihuly Garden and Glass', lat: 47.6206, lon: -122.3506 },
+  'museum of pop culture': { name: 'MoPOP', lat: 47.6219, lon: -122.3480 },
+  'woodland park zoo': { name: 'Woodland Park Zoo', lat: 47.6651, lon: -122.3523 },
+  'seattle art museum': { name: 'Seattle Art Museum', lat: 47.6073, lon: -122.3358 },
+  'seattle central library': { name: 'Seattle Central Library', lat: 47.6065, lon: -122.3304 },
+  'kerry park': { name: 'Kerry Park', lat: 47.6321, lon: -122.3603 },
+  'gas works park': { name: 'Gas Works Park', lat: 47.6456, lon: -122.3345 },
+  'discovery park': { name: 'Discovery Park', lat: 47.6564, lon: -122.4069 },
+  'volunteer park': { name: 'Volunteer Park', lat: 47.6304, lon: -122.3167 },
+  'cal anderson park': { name: 'Cal Anderson Park', lat: 47.6258, lon: -122.3169 },
+  'seward park': { name: 'Seward Park', lat: 47.6866, lon: -122.2952 },
+  'green lake': { name: 'Green Lake', lat: 47.6793, lon: -122.3389 },
+  'golden gardens': { name: 'Golden Gardens', lat: 47.6904, lon: -122.4021 },
+  'alki beach': { name: 'Alki Beach', lat: 47.5778, lon: -122.4078 },
+  'lake union': { name: 'Lake Union', lat: 47.6253, lon: -122.3370 },
+  'lake washington': { name: 'Lake Washington', lat: 47.6097, lon: -122.3331 },
 };
 
 function generateEventId(event: RawScrapedEvent): string {
@@ -30,13 +47,10 @@ function generateEventId(event: RawScrapedEvent): string {
   return createHash('sha256').update(str).digest('hex').slice(0, 12);
 }
 
-function parseDate(dateStr: string): { start_time: string; end_time: string } {
+function parseDate(dateStr: string | undefined): { start_time: string; end_time: string } {
   const now = new Date();
   const today = now.toISOString().split('T')[0];
-  
-  let startTime = today;
-  let endTime = today;
-  
+
   if (!dateStr) {
     return {
       start_time: `${today}T19:00:00`,
@@ -44,115 +58,159 @@ function parseDate(dateStr: string): { start_time: string; end_time: string } {
     };
   }
 
+  let startTime = today;
+  let endTime = today;
+  let startHour = 19;
+  let startMin = 0;
+  let endHour = 22;
+  let endMin = 0;
+
   const timeMatch = dateStr.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
-  let hour = 19;
-  let minute = 0;
-  
   if (timeMatch) {
-    hour = parseInt(timeMatch[1]);
-    if (timeMatch[2]) minute = parseInt(timeMatch[2]);
-    if (timeMatch[3]?.toLowerCase() === 'pm' && hour < 12) hour += 12;
-    if (timeMatch[3]?.toLowerCase() === 'am' && hour === 12) hour = 0;
+    startHour = parseInt(timeMatch[1]);
+    startMin = timeMatch[2] ? parseInt(timeMatch[2]) : 0;
+    if (timeMatch[3]?.toLowerCase() === 'pm' && startHour < 12) startHour += 12;
+    if (timeMatch[3]?.toLowerCase() === 'am' && startHour === 12) startHour = 0;
   }
 
-  const dateMatch = dateStr.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
-  if (dateMatch) {
-    const month = parseInt(dateMatch[1]);
-    const day = parseInt(dateMatch[2]);
-    const year = dateMatch[3] ? parseInt(dateMatch[3]) : now.getFullYear();
+  const times = dateStr.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–to]+\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+  if (times && times[4]) {
+    endHour = parseInt(times[4]);
+    endMin = times[5] ? parseInt(times[5]) : 0;
+    if (times[6]?.toLowerCase() === 'pm' && endHour < 12) endHour += 12;
+    if (times[6]?.toLowerCase() === 'am' && endHour === 12) endHour = 0;
+  } else {
+    endHour = startHour + 2;
+  }
+
+  const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+  const monthMatch = dateStr.toLowerCase().match(new RegExp(`(${monthNames.join('|')})\\s+(\\d{1,2})`));
+  const dateNumMatch = dateStr.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
+  
+  if (monthMatch) {
+    const month = monthNames.indexOf(monthMatch[1]) + 1;
+    const day = parseInt(monthMatch[2]);
+    startTime = `${now.getFullYear()}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  } else if (dateNumMatch) {
+    const month = parseInt(dateNumMatch[1]);
+    const day = parseInt(dateNumMatch[2]);
+    const year = dateNumMatch[3] ? parseInt(dateNumMatch[3]) : now.getFullYear();
     const fullYear = year < 100 ? 2000 + year : year;
     startTime = `${fullYear}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-  } else if (dateStr.toLowerCase().includes('saturday')) {
-    const saturday = new Date(now);
-    saturday.setDate(now.getDate() + (6 - now.getDay()));
-    startTime = saturday.toISOString().split('T')[0];
-  } else if (dateStr.toLowerCase().includes('sunday')) {
-    const sunday = new Date(now);
-    sunday.setDate(now.getDate() + (7 - now.getDay()));
-    startTime = sunday.toISOString().split('T')[0];
+  }
+
+  const dayOfWeek: Record<string, number> = {
+    'sunday': 0, 'monday': 1, 'tuesday': 2, 'wednesday': 3,
+    'thursday': 4, 'friday': 5, 'saturday': 6,
+  };
+
+  const dayMatch = dateStr.toLowerCase().match(/(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i);
+  if (dayMatch && !monthMatch && !dateNumMatch) {
+    const targetDay = dayOfWeek[dayMatch[1].toLowerCase()];
+    const currentDay = now.getDay();
+    let daysToAdd = targetDay - currentDay;
+    if (daysToAdd <= 0) daysToAdd += 7;
+    const targetDate = new Date(now);
+    targetDate.setDate(now.getDate() + daysToAdd);
+    startTime = targetDate.toISOString().split('T')[0];
   }
 
   endTime = startTime;
-  
-  const endHourMatch = dateStr.match(/-?\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
-  if (endHourMatch && endHourMatch[1] !== timeMatch?.[1]) {
-    let endHour = parseInt(endHourMatch[1]);
-    if (endHourMatch[3]?.toLowerCase() === 'pm' && endHour < 12) endHour += 12;
-    if (endHourMatch[3]?.toLowerCase() === 'am' && endHour === 12) endHour = 0;
-    endTime = `${startTime}T${String(endHour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
-  }
 
   return {
-    start_time: `${startTime}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`,
-    end_time: `${endTime}T${String(hour + 2).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`,
+    start_time: `${startTime}T${String(startHour).padStart(2, '0')}:${String(startMin).padStart(2, '0')}:00`,
+    end_time: `${endTime}T${String(endHour).padStart(2, '0')}:${String(endMin).padStart(2, '0')}:00`,
   };
 }
 
 function parseLocation(locationName: string | undefined): Location {
   if (!locationName) return DEFAULT_SEATTLE_COORDS;
-  
+
   const lower = locationName.toLowerCase();
-  
+
   for (const [key, coords] of Object.entries(KNOWN_VENUES)) {
     if (lower.includes(key)) {
       return coords;
     }
   }
-  
+
+  const addressMatch = locationName.match(/(\d{1,5})\s+(\w+)/);
+  if (addressMatch) {
+    return {
+      name: locationName,
+      lat: 47.6062 + (Math.random() - 0.5) * 0.05,
+      lon: -122.3321 + (Math.random() - 0.5) * 0.05,
+    };
+  }
+
   return {
     name: locationName,
-    lat: 47.6062 + (Math.random() - 0.5) * 0.1,
-    lon: -122.3321 + (Math.random() - 0.5) * 0.1,
+    lat: DEFAULT_SEATTLE_COORDS.lat + (Math.random() - 0.5) * 0.08,
+    lon: DEFAULT_SEATTLE_COORDS.lon + (Math.random() - 0.5) * 0.08,
   };
 }
 
 function estimateIsKidFriendly(event: RawScrapedEvent): boolean {
   const text = `${event.title} ${event.description} ${event.location_name}`.toLowerCase();
-  
+
   const adultIndicators = [
-    '21+', '18+', 'adult', 'nightclub', 'cocktail', 'bar', 'brewery',
-    'dance club', 'late night', 'after dark', '21 and over',
-    'speakeasy', 'wine bar', 'pub crawl'
+    { pattern: /\b(21|18|plus)\s*\+?\b/i, name: '21+/18+' },
+    { pattern: /\b(adults?\s*only|21\s*and\s*over|18\s*and\s*over)\b/i, name: 'adults only' },
+    { pattern: /\b(nightclub|dance\s*club|speakeasy)\b/i, name: 'nightclub' },
+    { pattern: /\b(cocktail\s*bar|wine\s*bar|brewery)\b/i, name: 'bar' },
+    { pattern: /\b(late\s*night|after\s*dark)\b/i, name: 'late night' },
+    { pattern: /\b(pub\s*crawl|bar\s*crawl)\b/i, name: 'pub crawl' },
+    { pattern: /\b(strip|gentleman|ladies\s*night)\b/i, name: 'adult venue' },
   ];
-  
+
+  for (const { pattern, name } of adultIndicators) {
+    if (pattern.test(text)) return false;
+  }
+
   const kidFriendlyIndicators = [
-    'family', 'kids', 'children', 'all ages', 'kid friendly',
-    'farmers market', 'story time', 'playground', 'zoo', 'aquarium',
-    'museum', 'park', 'nature', 'walk', 'market', 'festival'
+    { pattern: /\b(family|kids?|children|all\s*ages)\b/i, name: 'family' },
+    { pattern: /\b(farmers?\s*market|market)\b/i, name: 'market' },
+    { pattern: /\b(zoo|aquarium|museum)\b/i, name: 'zoo/aquarium/museum' },
+    { pattern: /\b(park|playground|trail|hike)\b/i, name: 'outdoor' },
+    { pattern: /\b(story\s*time|music\s*class|kids\s*club)\b/i, name: 'kids activity' },
+    { pattern: /\b(festival|fair|celebration)\b/i, name: 'festival' },
+    { pattern: /\b(movie\s*night|film|concert)\b/i, name: 'film/concert' },
   ];
-  
-  for (const indicator of adultIndicators) {
-    if (text.includes(indicator)) return false;
+
+  for (const { pattern, name } of kidFriendlyIndicators) {
+    if (pattern.test(text)) return true;
   }
-  
-  for (const indicator of kidFriendlyIndicators) {
-    if (text.includes(indicator)) return true;
+
+  if (text.includes('bar') || text.includes('brew') || text.includes('night')) {
+    return false;
   }
-  
+
   return true;
 }
 
 function estimateVibeTags(event: RawScrapedEvent): string[] {
   const text = `${event.title} ${event.description} ${event.location_name}`.toLowerCase();
   const tags: string[] = [];
-  
+
   const tagMappings: [string, string[]][] = [
-    ['tech', ['technology', 'code', 'developer', 'software', 'ai', 'startup']],
-    ['music', ['concert', 'live music', 'dj', 'band', 'jazz', 'rock']],
-    ['food', ['dinner', 'lunch', 'brunch', 'food', 'restaurant', 'tasting']],
-    ['outdoor', ['hike', 'walk', 'park', 'trail', 'kayak', 'paddle']],
-    ['sports', ['game', 'match', 'watch party', 'sports bar']],
-    ['art', ['gallery', 'art exhibit', 'museum', 'theater', 'theatre']],
-    ['fitness', ['yoga', 'run', 'marathon', 'workout', 'gym']],
-    ['drinks', ['wine', 'beer', 'cocktail', 'brew', 'happy hour']],
-    ['market', ['market', 'fair', 'festival', 'vendor']],
-    ['education', ['class', 'workshop', 'learn', 'talk', 'meetup']],
-    ['nightlife', ['night', 'evening', 'late', 'club']],
-    ['family', ['family', 'kids', 'children', 'all ages']],
+    ['tech', ['tech', 'technology', 'code', 'developer', 'software', 'ai', 'startup', 'coding', 'programming', 'data science', 'machine learning', 'llm']],
+    ['music', ['music', 'concert', 'live music', 'dj', 'band', 'jazz', 'rock', 'hip hop', 'electronic', 'edm', 'folk', 'indie', 'orchestra', 'symphony']],
+    ['food', ['food', 'dinner', 'lunch', 'brunch', 'restaurant', 'tasting', 'cooking', 'chef', 'wine tasting', 'brewery', 'food truck', 'pizza']],
+    ['outdoor', ['outdoor', 'hike', 'walk', 'park', 'trail', 'kayak', 'paddle', 'camping', 'climbing', 'biking', 'running', 'fitness', 'nature']],
+    ['sports', ['sports', 'game', 'match', 'watch party', 'seahawks', 'mariners', 'sounders', 'tennis', 'golf', 'football', 'baseball', 'soccer']],
+    ['art', ['art', 'gallery', 'exhibit', 'museum', 'theater', 'theatre', 'film', 'dance', 'performance', 'opera', 'ballet', 'comedy']],
+    ['drinks', ['drinks', 'wine', 'beer', 'cocktail', 'brew', 'happy hour', 'pub', 'bar', 'speakeasy', 'tasting']],
+    ['market', ['market', 'fair', 'festival', 'vendor', 'craft', 'artisan', 'farmers', 'flea', 'pop-up']],
+    ['education', ['education', 'class', 'workshop', 'learn', 'talk', 'meetup', 'conference', 'seminar', 'training']],
+    ['nightlife', ['nightlife', 'night', 'evening', 'late', 'club', 'party', 'dance', 'clubbing']],
+    ['family', ['family', 'kids', 'children', 'all ages', 'parent', 'tot']],
+    ['fitness', ['fitness', 'yoga', 'pilates', 'gym', 'workout', 'run', 'marathon', 'spin', 'crossfit']],
+    ['wellness', ['wellness', 'health', 'spa', 'meditation', 'yoga', 'sound bath', 'healing', 'reiki']],
+    ['community', ['community', 'volunteer', 'meetup', 'social', 'network', 'connect', 'group']],
   ];
 
   for (const [tag, keywords] of tagMappings) {
-    if (keywords.some((kw: string) => text.includes(kw)) && !tags.includes(tag)) {
+    if (keywords.some(kw => text.includes(kw)) && !tags.includes(tag)) {
       tags.push(tag);
     }
   }
@@ -162,68 +220,7 @@ function estimateVibeTags(event: RawScrapedEvent): string[] {
   return tags.slice(0, 3);
 }
 
-export async function enrichEventWithAI(event: RawScrapedEvent): Promise<EnrichedEvent> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  
-  if (!apiKey) {
-    return enrichEventLocally(event);
-  }
-
-  try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
-    const prompt = `Analyze this Seattle event and return JSON with:
-1. is_kid_friendly: boolean (true if appropriate for families with children)
-2. vibe_tags: array of 1-3 lowercase tags from: tech, music, food, outdoor, sports, art, fitness, drinks, market, education, nightlife, family, chill, high-energy
-3. location_lat: number (latitude, default 47.6062 if unknown)
-4. location_lon: number (longitude, default -122.3321 if unknown)
-5. cleaned_description: string (2-3 sentence description)
-
-Event: ${event.title}
-Description: ${event.description}
-Location: ${event.location_name}
-Source: ${event.source}
-
-Respond ONLY with valid JSON like:
-{"is_kid_friendly": true, "vibe_tags": ["tech", "outdoor"], "location_lat": 47.6185, "location_lon": -122.3389, "cleaned_description": "..."}`;
-
-    const result = await model.generateContent(prompt);
-    const response = result.response.text();
-    
-    const jsonMatch = response.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return enrichEventLocally(event);
-    }
-
-    const parsed = JSON.parse(jsonMatch[0]);
-    
-    const times = parseDate(event.date || '');
-    const location = parseLocation(event.location_name);
-
-    return {
-      id: generateEventId(event),
-      source: event.source,
-      title: event.title,
-      description: parsed.cleaned_description || event.description || '',
-      start_time: times.start_time,
-      end_time: times.end_time,
-      is_kid_friendly: parsed.is_kid_friendly ?? estimateIsKidFriendly(event),
-      vibe_tags: parsed.vibe_tags || estimateVibeTags(event),
-      location: {
-        name: event.location_name || location.name,
-        lat: parsed.location_lat ?? location.lat,
-        lon: parsed.location_lon ?? location.lon,
-      },
-      url: event.url || '',
-    };
-  } catch (error) {
-    console.error(`[Gemini] Error enriching event "${event.title}":`, error);
-    return enrichEventLocally(event);
-  }
-}
-
-function enrichEventLocally(event: RawScrapedEvent): EnrichedEvent {
+export function enrichEvent(event: RawScrapedEvent): EnrichedEvent {
   const times = parseDate(event.date || '');
   const location = parseLocation(event.location_name);
 
@@ -243,18 +240,20 @@ function enrichEventLocally(event: RawScrapedEvent): EnrichedEvent {
 
 export async function enrichAllEvents(events: RawScrapedEvent[]): Promise<EnrichedEvent[]> {
   console.log(`[Enrichment] Processing ${events.length} events...`);
-  
-  const enrichedEvents: EnrichedEvent[] = [];
-  
-  const batchSize = 5;
-  for (let i = 0; i < events.length; i += batchSize) {
-    const batch = events.slice(i, i + batchSize);
-    const results = await Promise.all(batch.map(enrichEventWithAI));
-    enrichedEvents.push(...results);
-    
-    console.log(`[Enrichment] Processed ${Math.min(i + batchSize, events.length)}/${events.length}`);
+
+  const enrichedEvents = events.map(enrichEvent);
+
+  const kidFriendlyCount = enrichedEvents.filter(e => e.is_kid_friendly).length;
+  const tagCounts: Record<string, number> = {};
+  for (const event of enrichedEvents) {
+    for (const tag of event.vibe_tags) {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    }
   }
 
   console.log(`[Enrichment] Complete. ${enrichedEvents.length} events enriched.`);
+  console.log(`[Enrichment] Kid-friendly: ${kidFriendlyCount}/${enrichedEvents.length}`);
+  console.log(`[Enrichment] Top tags:`, Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, v]) => `${k}(${v})`).join(', '));
+
   return enrichedEvents;
 }

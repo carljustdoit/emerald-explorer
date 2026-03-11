@@ -19,16 +19,6 @@ npm run scrape
 
 ## Configuration
 
-### Required API Keys
-
-1. **Firecrawl API** (for scraping)
-   - Sign up at https://firecrawl.dev
-   - Free tier: 500 credits/month
-
-2. **Gemini 2.0 Flash API** (for AI enrichment)
-   - Sign up at https://aistudio.google.com/app/apikey
-   - Free tier: 15 RPM, 1M tokens/month
-
 ### Optional: CDN Configuration
 
 For production, configure AWS S3 or Cloudflare R2:
@@ -41,22 +31,23 @@ CDN_BUCKET=emerald-explorer-cdn
 CDN_PUBLIC_URL=https://cdn.yourdomain.com
 ```
 
-Without these, the pipeline will write `seattle_master_feed.json` to the `OUTPUT_DIR` (defaults to `../frontend/public`).
+Without these, the pipeline writes `seattle_master_feed.json` to the `OUTPUT_DIR` (defaults to `../public`).
 
 ## Data Pipeline
 
 ### Phase 1: Ingestion
 
-- **USGS**: Lake Union temperature, Cedar River flow
-- **WSDOT**: Snoqualmie/Stevens Pass snow depth
-- **Open-Meteo**: Weather conditions, sunset time
-- **Firecrawl**: Scrape Events12, EverOut for events
+- **USGS**: Lake Union temperature, Cedar River flow (free API)
+- **WSDOT**: Snoqualmie/Stevens Pass snow depth (free API)
+- **Open-Meteo**: Weather conditions, sunset time (free API)
+- **Direct HTTP + Cheerio**: Scrapes Events12, EverOut for events
 
 ### Phase 2: Enrichment
 
-- Gemini AI normalizes dates, extracts coordinates
-- Tags `is_kid_friendly` based on venue/description
-- Generates `vibe_tags` (tech, music, outdoor, etc.)
+- **Rule-based date parsing**: Converts various date formats to ISO 8601
+- **Venue lookup**: Maps known Seattle venues to coordinates
+- **Kid-friendliness detection**: Keyword-based classification
+- **Vibe tagging**: Topic classification for activity filtering
 
 ### Phase 3: Deployment
 
@@ -92,12 +83,18 @@ interface EmeraldFeed {
 }
 ```
 
-## Running Locally Without API Keys
+## Running Locally
 
-The pipeline works without API keys using:
-- **Mock events**: Returns sample Seattle events
-- **Local date/location parsing**: Heuristic-based enrichment
-- **Free APIs**: USGS, WSDOT, Open-Meteo don't require auth
+```bash
+cd backend
+npm run scrape
+```
+
+This will:
+1. Fetch real weather/environment data from public APIs
+2. Scrape event websites (or use fallback mock data)
+3. Process and enrich events locally
+4. Write to `../public/seattle_master_feed.json`
 
 ## GitHub Actions (Production)
 
@@ -122,8 +119,6 @@ jobs:
       - run: cd backend && npm install
       - run: cd backend && npm run scrape
         env:
-          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           CDN_BUCKET: ${{ secrets.CDN_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -139,9 +134,9 @@ backend/
 │   ├── ingestion/
 │   │   ├── usgs.ts         # Water data (free API)
 │   │   ├── wsdot.ts        # Pass conditions + weather
-│   │   └── firecrawl_scraper.ts  # Event scraping
+│   │   └── firecrawl_scraper.ts  # Event scraping (cheerio)
 │   ├── enrichment/
-│   │   └── gemini_tagger.ts      # AI processing
+│   │   └── gemini_tagger.ts      # Rule-based processing
 │   ├── deployment/
 │   │   └── upload_to_cdn.ts      # S3/R2 upload
 │   ├── types/
@@ -151,6 +146,14 @@ backend/
 ├── tsconfig.json
 └── .env.example
 ```
+
+## Dependencies
+
+- **cheerio**: HTML parsing for web scraping
+- **zod**: Schema validation
+- **@aws-sdk**: S3/R2 upload (optional)
+
+No external AI APIs required - all processing is rule-based.
 
 ## License
 

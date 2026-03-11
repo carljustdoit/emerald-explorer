@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "last_updated": "2026-03-11T07:02:51.024Z",
+    "last_updated": "2026-03-11T07:08:24.475Z",
     "environment": {
       "snoqualmie_snow_inches": 0,
       "stevens_pass_snow_inches": 0,
@@ -25,8 +25,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.57840160133235,
-        "lon": -122.3227589833784
+        "lat": 47.5741207654818,
+        "lon": -122.33804870738665
       },
       "url": "https://www.seattleopera.org/performances-events/fellow-travelers/"
     },
@@ -45,8 +45,8 @@
       ],
       "location": {
         "name": "Puyallup",
-        "lat": 47.568166807717226,
-        "lon": -122.30164791565002
+        "lat": 47.62642681910888,
+        "lon": -122.30021103544136
       },
       "url": "https://sewexpo.com"
     },
@@ -64,8 +64,8 @@
       ],
       "location": {
         "name": "Eatonville",
-        "lat": 47.636262685275085,
-        "lon": -122.34225473966482
+        "lat": 47.64505533194595,
+        "lon": -122.35587633893057
       },
       "url": "https://www.nwtrek.org/event/kids-n-critters/"
     },
@@ -84,8 +84,8 @@
       ],
       "location": {
         "name": "Tacoma",
-        "lat": 47.57481997262215,
-        "lon": -122.34367527808537
+        "lat": 47.58468510699736,
+        "lon": -122.32352077849355
       },
       "url": "https://www.tacomabeerweek.com/beer-week-events"
     },
@@ -102,8 +102,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.6239596757451,
-        "lon": -122.29687762153031
+        "lat": 47.64587311258057,
+        "lon": -122.34898897920938
       },
       "url": "https://www.stgpresents.org/events/the-notebook/"
     },
@@ -120,8 +120,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.60474036521966,
-        "lon": -122.35210355049513
+        "lat": 47.615137055304686,
+        "lon": -122.3258947533014
       },
       "url": "https://www.emeraldcitycomiccon.com"
     },
@@ -140,8 +140,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.60834665183681,
-        "lon": -122.32540441309855
+        "lat": 47.61696599766296,
+        "lon": -122.31084714889874
       },
       "url": "https://www.stgpresents.org/events/camille-a-brown/"
     },
@@ -160,8 +160,8 @@
       ],
       "location": {
         "name": "Pioneer Square",
-        "lat": 47.57181867722446,
-        "lon": -122.30885616923852
+        "lat": 47.615804749411495,
+        "lon": -122.3144063861531
       },
       "url": "https://www.strangertickets.com/events/177860197/a-black-tie-affair"
     },
@@ -180,8 +180,8 @@
       ],
       "location": {
         "name": "International District",
-        "lat": 47.60331249997278,
-        "lon": -122.31694270050608
+        "lat": 47.58526025032929,
+        "lon": -122.29363378965458
       },
       "url": "https://www.seattlechinatownid.com/experiences/lunar-new-year"
     },
@@ -198,8 +198,8 @@
       ],
       "location": {
         "name": "Bellevue",
-        "lat": 47.57066383267801,
-        "lon": -122.34893255236908
+        "lat": 47.57672291774272,
+        "lon": -122.36648994604039
       },
       "url": "https://www.eventbrite.com/e/the-15th-annual-bellevue-bourbon-bash-tickets-1979921829490?aff=events12com"
     },
@@ -218,8 +218,8 @@
       ],
       "location": {
         "name": "Edmonds",
-        "lat": 47.61182848889865,
-        "lon": -122.36467408321322
+        "lat": 47.62470771469617,
+        "lon": -122.36016530427261
       },
       "url": "https://www.edmondswaterfrontcenter.org/events/international-womens-day/"
     },
@@ -238,8 +238,8 @@
       ],
       "location": {
         "name": "Kent",
-        "lat": 47.63393963321082,
-        "lon": -122.32073716679231
+        "lat": 47.58228172113062,
+        "lon": -122.30029178638753
       },
       "url": "https://www.kentwa.gov/departments/kent-parks/arts/kent-kids-arts-day"
     },
@@ -258,8 +258,8 @@
       ],
       "location": {
         "name": "Snohomish",
-        "lat": 47.62275396254284,
-        "lon": -122.35033624294226
+        "lat": 47.62043225861801,
+        "lon": -122.33218873731055
       },
       "url": "https://snohomishchamber.org/winefestival/"
     },
@@ -278,8 +278,8 @@
       ],
       "location": {
         "name": "Lacey",
-        "lat": 47.60228609684337,
-        "lon": -122.300653334978
+        "lat": 47.63422564664084,
+        "lon": -122.2958217967936
       },
       "url": "https://laceyparks.org/cultural/"
     },
@@ -318,8 +318,8 @@
       ],
       "location": {
         "name": "Tukwila",
-        "lat": 47.63313441636515,
-        "lon": -122.30255555188853
+        "lat": 47.627654276186234,
+        "lon": -122.36549032986798
       },
       "url": "https://www.pnwminiatureshows.com/seattle-miniature-show"
     },
@@ -337,8 +337,8 @@
       ],
       "location": {
         "name": "Tacoma",
-        "lat": 47.60411300244283,
-        "lon": -122.32219138850758
+        "lat": 47.62732204619083,
+        "lon": -122.35097420098593
       },
       "url": "https://www.homeshowcenter.com/overview/tacomahome"
     },
@@ -357,8 +357,8 @@
       ],
       "location": {
         "name": "Coupeville",
-        "lat": 47.604655549400796,
-        "lon": -122.30671988249604
+        "lat": 47.62282958343453,
+        "lon": -122.34105093359175
       },
       "url": "https://www.penncovemusselfest.com/"
     },
@@ -377,8 +377,8 @@
       ],
       "location": {
         "name": "Winthrop",
-        "lat": 47.571221950980885,
-        "lon": -122.33095667552962
+        "lat": 47.60249850992151,
+        "lon": -122.31346324238498
       },
       "url": "https://www.winthropwashington.com/event-details/winthrop-hot-air-balloon-round-up"
     },
@@ -396,8 +396,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.64488972213818,
-        "lon": -122.34616871636909
+        "lat": 47.59992355120005,
+        "lon": -122.34013331650762
       },
       "url": "https://www.facebook.com/events/1670363693948541"
     },
@@ -435,8 +435,8 @@
       ],
       "location": {
         "name": "Fauntleroy",
-        "lat": 47.580742670538285,
-        "lon": -122.2943035835495
+        "lat": 47.61036286948886,
+        "lon": -122.32766146244789
       },
       "url": "https://www.kenyonhall.org/events/magicalstrings"
     },
@@ -455,8 +455,8 @@
       ],
       "location": {
         "name": "Redmond",
-        "lat": 47.59621601898912,
-        "lon": -122.35753731009962
+        "lat": 47.64279947359825,
+        "lon": -122.35977461432688
       },
       "url": "https://www.festivalofcolor.us/"
     },
@@ -473,8 +473,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.58746546899211,
-        "lon": -122.29785156662423
+        "lat": 47.58190145488956,
+        "lon": -122.34453771264369
       },
       "url": "https://climatepledgearena.com/event/wwe-monday-night-raw-26/"
     },
@@ -491,8 +491,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.58219978069421,
-        "lon": -122.33023763278091
+        "lat": 47.56763103057895,
+        "lon": -122.30228532261961
       },
       "url": "https://igniteseattle.com/"
     },
@@ -511,8 +511,8 @@
       ],
       "location": {
         "name": "Bellevue",
-        "lat": 47.56832744414926,
-        "lon": -122.3634549366382
+        "lat": 47.61074907735615,
+        "lon": -122.36116548071259
       },
       "url": "https://www.uwkc.org/event/happy-hour-hellos-creating-third-spaces/"
     },
@@ -530,8 +530,8 @@
       ],
       "location": {
         "name": "Shoreline & Tacoma",
-        "lat": 47.578142007367354,
-        "lon": -122.35183173628457
+        "lat": 47.59253565873685,
+        "lon": -122.35281568209471
       },
       "url": "https://www.events12.com/seattle/"
     },
@@ -549,8 +549,8 @@
       ],
       "location": {
         "name": "Redmond",
-        "lat": 47.574397369457685,
-        "lon": -122.30067300048921
+        "lat": 47.60231081222048,
+        "lon": -122.30805547188871
       },
       "url": "https://www.cirquedusoleil.com/usa/seattle/echo/buy-tickets"
     },
@@ -568,8 +568,8 @@
       ],
       "location": {
         "name": "Everett",
-        "lat": 47.6265822731813,
-        "lon": -122.29614647027536
+        "lat": 47.61260851184686,
+        "lon": -122.32252168830198
       },
       "url": "https://villagetheatre.org/see-a-show/baskerville/"
     },
@@ -588,8 +588,8 @@
       ],
       "location": {
         "name": "Seattle",
-        "lat": 47.6187202045643,
-        "lon": -122.33855764171024
+        "lat": 47.60487186015831,
+        "lon": -122.35808319255695
       },
       "url": "https://www.events12.com/seattle/"
     },
@@ -608,8 +608,8 @@
       ],
       "location": {
         "name": "Central District",
-        "lat": 47.57023682528762,
-        "lon": -122.3357975948667
+        "lat": 47.586104913039556,
+        "lon": -122.30905288797248
       },
       "url": "https://www.facebook.com/events/2099456674186786"
     },
@@ -626,8 +626,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.60067200859189,
-        "lon": -122.32633501461406
+        "lat": 47.607494111696546,
+        "lon": -122.36303803103611
       },
       "url": "https://tickets.thetripledoor.net/eventperformances.asp?evt=1925"
     },
@@ -646,8 +646,8 @@
       ],
       "location": {
         "name": "SoDo",
-        "lat": 47.61999831612492,
-        "lon": -122.3050593571714
+        "lat": 47.63443189029651,
+        "lon": -122.36411746109361
       },
       "url": "https://seattlervshow.com/show-information/"
     },
@@ -666,8 +666,8 @@
       ],
       "location": {
         "name": "multiple locations",
-        "lat": 47.60917700834095,
-        "lon": -122.35018542157971
+        "lat": 47.5927351924005,
+        "lon": -122.34932958543348
       },
       "url": "https://www.seattle.gov/arts/experience/art-walks"
     },
@@ -686,8 +686,8 @@
       ],
       "location": {
         "name": "Seattle & Woodinville",
-        "lat": 47.60080606644701,
-        "lon": -122.30561740959604
+        "lat": 47.63337320940079,
+        "lon": -122.30577255442321
       },
       "url": "https://fever.pxf.io/Kj6j5x"
     },
@@ -704,8 +704,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.57341254993567,
-        "lon": -122.32217264746613
+        "lat": 47.62841789143337,
+        "lon": -122.3109936918721
       },
       "url": "https://www.events12.com/seattle/"
     },
@@ -722,8 +722,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.567014605142795,
-        "lon": -122.30305067733282
+        "lat": 47.641926899756385,
+        "lon": -122.32186576263452
       },
       "url": "https://www.nhl.com/kraken/"
     },
@@ -742,8 +742,8 @@
       ],
       "location": {
         "name": "Issaquah",
-        "lat": 47.62558713432871,
-        "lon": -122.35204826187051
+        "lat": 47.6109497164409,
+        "lon": -122.31963472773612
       },
       "url": "https://k01873.site.kiwanis.org/beats-barrels-and-brews/"
     },
@@ -762,8 +762,8 @@
       ],
       "location": {
         "name": "Monroe",
-        "lat": 47.56982724265906,
-        "lon": -122.33003877791008
+        "lat": 47.63939480668408,
+        "lon": -122.34793222387174
       },
       "url": "https://www.quiltersanonymous.org/quilt-show/"
     },
@@ -782,8 +782,8 @@
       ],
       "location": {
         "name": "Puyallup",
-        "lat": 47.63315819241104,
-        "lon": -122.32045938491342
+        "lat": 47.628346562400914,
+        "lon": -122.3054258021315
       },
       "url": "https://www.seattlegolfshow.com"
     },
@@ -802,8 +802,8 @@
       ],
       "location": {
         "name": "Blaine",
-        "lat": 47.60943465321711,
-        "lon": -122.36991349980838
+        "lat": 47.588068079546794,
+        "lon": -122.31429343035093
       },
       "url": "https://www.wingsoverwaterbirdingfestival.com/"
     },
@@ -821,8 +821,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.612006599788266,
-        "lon": -122.36002656232469
+        "lat": 47.59555080174082,
+        "lon": -122.30855108050488
       },
       "url": "https://www.pnb.org/season/firebird/"
     },
@@ -859,8 +859,8 @@
       ],
       "location": {
         "name": "Seattle waterfront",
-        "lat": 47.63844610637962,
-        "lon": -122.33786920821866
+        "lat": 47.57898569930658,
+        "lon": -122.36674283039478
       },
       "url": "https://irishclub.org/event/st-patricks-day-parade-2/"
     },
@@ -877,8 +877,8 @@
       ],
       "location": {
         "name": "Pioneer Square (multiple locations)",
-        "lat": 47.64197383491217,
-        "lon": -122.30550805728332
+        "lat": 47.57818553202966,
+        "lon": -122.2941459861288
       },
       "url": "https://www.eventbrite.com/e/seattle-leprecon-2026-tickets-1975718960596"
     },
@@ -897,8 +897,8 @@
       ],
       "location": {
         "name": "Montlake",
-        "lat": 47.594478260123395,
-        "lon": -122.35984462072844
+        "lat": 47.63792371129231,
+        "lon": -122.33601826214242
       },
       "url": "https://www.balkannightnw.com"
     },
@@ -917,8 +917,8 @@
       ],
       "location": {
         "name": "Bellevue",
-        "lat": 47.58735871664123,
-        "lon": -122.35630628227167
+        "lat": 47.610990040018045,
+        "lon": -122.37132358518956
       },
       "url": "https://www.facebook.com/events/crossroads-park/crossroads-wali-holi-the-colors-fest-2026/1426343092167453/"
     },
@@ -937,8 +937,8 @@
       ],
       "location": {
         "name": "Lynnwood",
-        "lat": 47.583045505418156,
-        "lon": -122.2995405199526
+        "lat": 47.62406066249235,
+        "lon": -122.36658097545856
       },
       "url": "https://www.facebook.com/events/4244309189217335"
     },
@@ -957,8 +957,8 @@
       ],
       "location": {
         "name": "Edmonds",
-        "lat": 47.57322002330244,
-        "lon": -122.34583459181594
+        "lat": 47.56887181992572,
+        "lon": -122.344672199744
       },
       "url": "https://www.edmondscenterforthearts.org/events/celtic-celebration-2026/"
     },
@@ -977,8 +977,8 @@
       ],
       "location": {
         "name": "Bothell",
-        "lat": 47.57942419554624,
-        "lon": -122.32463200614008
+        "lat": 47.59313116223064,
+        "lon": -122.3042691241526
       },
       "url": "https://bothellkenmorechamber.org/event/the-lucky-pour-wine-beer-spirits-walk/"
     },
@@ -996,8 +996,8 @@
       ],
       "location": {
         "name": "Tacoma",
-        "lat": 47.61017495452498,
-        "lon": -122.34044234721719
+        "lat": 47.58453532056029,
+        "lon": -122.3559553923353
       },
       "url": "https://tcmaevents.com/st-paddys-day-run-tacoma/"
     },
@@ -1016,8 +1016,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.638161727727145,
-        "lon": -122.34788218644637
+        "lat": 47.643317767325144,
+        "lon": -122.33869745516077
       },
       "url": "https://seattlecenter.com/events/featured-events/festal/irish-festival"
     },
@@ -1035,8 +1035,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.63379064150772,
-        "lon": -122.31583392935025
+        "lat": 47.575467869053575,
+        "lon": -122.32702509933334
       },
       "url": "https://www.emeraldcityirishfilmfest.com/"
     },
@@ -1055,8 +1055,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.59781366497846,
-        "lon": -122.29282045160146
+        "lat": 47.60624235318739,
+        "lon": -122.32962245336968
       },
       "url": "https://kellsseattle.com/pages/st-patricks-fest"
     },
@@ -1075,8 +1075,8 @@
       ],
       "location": {
         "name": "Bothell",
-        "lat": 47.599200564016755,
-        "lon": -122.32772573336692
+        "lat": 47.63814128878319,
+        "lon": -122.3425657149557
       },
       "url": "https://www.mcmenamins.com/event.aspx?id=275085"
     },
@@ -1113,8 +1113,8 @@
       ],
       "location": {
         "name": "Chelan",
-        "lat": 47.58692546624452,
-        "lon": -122.29313904534108
+        "lat": 47.578115756411194,
+        "lon": -122.29608759321798
       },
       "url": "https://lakechelanwinevalley.com/taste-chelan/"
     },
@@ -1133,8 +1133,8 @@
       ],
       "location": {
         "name": "Mercer Island & Seattle",
-        "lat": 47.63639047135062,
-        "lon": -122.3122831089203
+        "lat": 47.58332147607785,
+        "lon": -122.36896690509516
       },
       "url": "https://seattlejff.org/"
     },
@@ -1170,8 +1170,8 @@
       ],
       "location": {
         "name": "Seattle",
-        "lat": 47.63663769592701,
-        "lon": -122.30691421893121
+        "lat": 47.63772164310476,
+        "lon": -122.33919689588949
       },
       "url": "https://www.events12.com/seattle/"
     },
@@ -1190,8 +1190,8 @@
       ],
       "location": {
         "name": "Tacoma",
-        "lat": 47.62608549762822,
-        "lon": -122.35313131936731
+        "lat": 47.582320746061626,
+        "lon": -122.32754126673449
       },
       "url": "https://grandcinema.com/awardswatchparty/"
     },
@@ -1210,8 +1210,8 @@
       ],
       "location": {
         "name": "Eastlake",
-        "lat": 47.56720124836513,
-        "lon": -122.36863181833708
+        "lat": 47.60736105313295,
+        "lon": -122.33421950823343
       },
       "url": "https://www.events12.com/seattle/"
     },
@@ -1250,8 +1250,8 @@
       ],
       "location": {
         "name": "Interbay",
-        "lat": 47.62101832173743,
-        "lon": -122.35284718855645
+        "lat": 47.615354810003744,
+        "lon": -122.32850225946916
       },
       "url": "https://www.tastewashington.org/pacific-standard/"
     },
@@ -1287,8 +1287,8 @@
       ],
       "location": {
         "name": "All state parks",
-        "lat": 47.58152983437162,
-        "lon": -122.34563354125683
+        "lat": 47.635801772145996,
+        "lon": -122.3465807241642
       },
       "url": "https://discoverpass.wa.gov/about-pass/free-ways-visit/free-parking-days"
     },
@@ -1326,8 +1326,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.57172978947953,
-        "lon": -122.35261381605322
+        "lat": 47.637313361586024,
+        "lon": -122.34487780632877
       },
       "url": "https://www.tastewashington.org/the-new-vintage/"
     },
@@ -1366,8 +1366,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.634630099079985,
-        "lon": -122.30441184735069
+        "lat": 47.62951549160418,
+        "lon": -122.2988661145386
       },
       "url": "https://www.stgpresents.org/events/alvin-ailey/"
     },
@@ -1386,8 +1386,8 @@
       ],
       "location": {
         "name": "Ocean Shores",
-        "lat": 47.59476252048247,
-        "lon": -122.33235664341377
+        "lat": 47.57197749441287,
+        "lon": -122.34115242341834
       },
       "url": "https://tourismoceanshores.com/razor-clam-and-seafood-festival/"
     },
@@ -1406,8 +1406,8 @@
       ],
       "location": {
         "name": "Rainier Valley",
-        "lat": 47.629524527103804,
-        "lon": -122.29744217493938
+        "lat": 47.600201771127054,
+        "lon": -122.300481014656
       },
       "url": "https://www.plateofnations.com/"
     },
@@ -1426,8 +1426,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.61917810128941,
-        "lon": -122.35731681397479
+        "lat": 47.62981583003576,
+        "lon": -122.3196984331565
       },
       "url": "https://pacificsciencecenter.org/events/brainfest/"
     },
@@ -1445,8 +1445,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.58485748043641,
-        "lon": -122.31725045984778
+        "lat": 47.603939468574495,
+        "lon": -122.3387807806414
       },
       "url": "https://womeninfilmseattle.org/post-alley-film-festival"
     },
@@ -1465,8 +1465,8 @@
       ],
       "location": {
         "name": "Phinney Ridge",
-        "lat": 47.60589203871493,
-        "lon": -122.36394954842265
+        "lat": 47.6334810627927,
+        "lon": -122.35425740662835
       },
       "url": "https://www.phinneycenter.org/events/holi-celebration/"
     },
@@ -1485,8 +1485,8 @@
       ],
       "location": {
         "name": "Georgetown",
-        "lat": 47.58296114383007,
-        "lon": -122.3185687870078
+        "lat": 47.63537001914413,
+        "lon": -122.32008159352652
       },
       "url": "https://georgetownseattle.org/event/georgetown-bites-sites/"
     },
@@ -1505,8 +1505,8 @@
       ],
       "location": {
         "name": "Columbia City",
-        "lat": 47.634971984688384,
-        "lon": -122.36509746151219
+        "lat": 47.62984250840774,
+        "lon": -122.30278654357933
       },
       "url": "https://www.peacepeloton.com/night-market"
     },
@@ -1524,8 +1524,8 @@
       ],
       "location": {
         "name": "Lynnwood",
-        "lat": 47.5995578169632,
-        "lon": -122.36108473382326
+        "lat": 47.61540268576952,
+        "lon": -122.30735919379363
       },
       "url": "https://ratcityrollerderby.com/events/rat-city-roller-derby-home-team-season-20-bout-3/"
     },
@@ -1542,8 +1542,8 @@
       ],
       "location": {
         "name": "SoDo",
-        "lat": 47.63647160321818,
-        "lon": -122.37164138030907
+        "lat": 47.578012843962725,
+        "lon": -122.30469733925246
       },
       "url": "https://www.events12.com/seattle/"
     },
@@ -1562,8 +1562,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.59380225988844,
-        "lon": -122.37103417975672
+        "lat": 47.586693514087486,
+        "lon": -122.29824333650284
       },
       "url": "https://www.pnb.org/season/momotaro/"
     },
@@ -1582,8 +1582,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.57611454379678,
-        "lon": -122.32487003720604
+        "lat": 47.58522865950589,
+        "lon": -122.36074379924173
       },
       "url": "https://seattlecenter.com/events/featured-events/festal/seattles-french-fest"
     },
@@ -1600,8 +1600,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.64490388460364,
-        "lon": -122.3371381468574
+        "lat": 47.63229560769796,
+        "lon": -122.30544796776553
       },
       "url": "https://www.seattlesymphony.org/en/benaroyahall/bh-calendar/2025-2026/25-nat-geo-4"
     },
@@ -1620,8 +1620,8 @@
       ],
       "location": {
         "name": "Issaquah",
-        "lat": 47.60362446794999,
-        "lon": -122.30087955452464
+        "lat": 47.64479251967488,
+        "lon": -122.3244145226156
       },
       "url": "https://villagetheatre.org/see-a-show/grease/"
     },
@@ -1640,8 +1640,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.62696303803661,
-        "lon": -122.30018919163251
+        "lat": 47.566839280151015,
+        "lon": -122.29272158209756
       },
       "url": "https://raincountrydance.org/page-18148"
     },
@@ -1679,8 +1679,8 @@
       ],
       "location": {
         "name": "SoDo",
-        "lat": 47.577484952180136,
-        "lon": -122.29964633762472
+        "lat": 47.62630662303748,
+        "lon": -122.35509247711066
       },
       "url": "https://www.mlb.com/mariners/schedule/2026-02"
     },
@@ -1698,8 +1698,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.598606622337485,
-        "lon": -122.31115378090466
+        "lat": 47.61738498168668,
+        "lon": -122.35174482469418
       },
       "url": "https://www.stgpresents.org/events/starbucks-29th-annual-hot-java-cool-jazz/"
     },
@@ -1718,8 +1718,8 @@
       ],
       "location": {
         "name": "Downtown",
-        "lat": 47.57366901226498,
-        "lon": -122.30701744977851
+        "lat": 47.58676016576052,
+        "lon": -122.33603294857782
       },
       "url": "https://seattleartmuseum.org/whats-on/events/remix-mar-27"
     },
@@ -1738,8 +1738,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.56852308152282,
-        "lon": -122.34018134373058
+        "lat": 47.59199410911222,
+        "lon": -122.3242161010543
       },
       "url": "https://www.eventbrite.com/e/seattle-color-festival-holi-2026-tickets-1981915860691"
     },
@@ -1776,8 +1776,8 @@
       ],
       "location": {
         "name": "Seattle Center",
-        "lat": 47.630539730020146,
-        "lon": -122.30405439865835
+        "lat": 47.56884447941544,
+        "lon": -122.33231301336163
       },
       "url": "https://climatepledgearena.com/event/ufc-26/"
     },
@@ -1836,8 +1836,8 @@
       ],
       "location": {
         "name": "Renton",
-        "lat": 47.57982191437903,
-        "lon": -122.3058422833522
+        "lat": 47.62610707191009,
+        "lon": -122.31971360737492
       },
       "url": "https://www.evergreencityballet.org/edf"
     },
@@ -1856,8 +1856,8 @@
       ],
       "location": {
         "name": "Issaquah",
-        "lat": 47.64593356249575,
-        "lon": -122.3340079845109
+        "lat": 47.63541944400553,
+        "lon": -122.35356174187062
       },
       "url": "https://www.lakesammamishfriends.org/events-old/2025/5/3/get-outdoors-mccpx"
     },
@@ -1876,8 +1876,8 @@
       ],
       "location": {
         "name": "Puyallup",
-        "lat": 47.628336147025294,
-        "lon": -122.3690213894416
+        "lat": 47.62365272938325,
+        "lon": -122.30811032971174
       },
       "url": "https://www.cgpb.org/tartan-ball.html"
     },
@@ -1894,8 +1894,8 @@
       ],
       "location": {
         "name": "Jazz Alley",
-        "lat": 47.63810984878936,
-        "lon": -122.31854850475358
+        "lat": 47.584778732029804,
+        "lon": -122.33554894873895
       },
       "url": "https://www.jazzalley.com/www-home/artist.jsp?shownum=8750"
     },
@@ -1912,8 +1912,8 @@
       ],
       "location": {
         "name": "Jazz Alley",
-        "lat": 47.586867019463675,
-        "lon": -122.35283915642263
+        "lat": 47.58931531091067,
+        "lon": -122.34432817041674
       },
       "url": "https://www.jazzalley.com/www-home/artist.jsp?shownum=8740"
     },
@@ -1930,8 +1930,8 @@
       ],
       "location": {
         "name": "Royal Room",
-        "lat": 47.5732030061122,
-        "lon": -122.3408817642024
+        "lat": 47.57452804722724,
+        "lon": -122.32325544445031
       },
       "url": "https://theroyalroomseattle.com/event/eduardo-mendonca-quartet/"
     },
@@ -1966,8 +1966,8 @@
       ],
       "location": {
         "name": "Tulalip",
-        "lat": 47.60555421021246,
-        "lon": -122.34293392845935
+        "lat": 47.6160077211356,
+        "lon": -122.33605144997311
       },
       "url": "https://stubhub.prf.hn/l/MdPqlA3/"
     },
@@ -2020,8 +2020,8 @@
       ],
       "location": {
         "name": "Tacoma Dome",
-        "lat": 47.608893087165846,
-        "lon": -122.2959661656374
+        "lat": 47.59989928866371,
+        "lon": -122.34197386253024
       },
       "url": "https://stubhub.prf.hn/l/yzVEoAw/"
     },
@@ -2038,8 +2038,8 @@
       ],
       "location": {
         "name": "Showbox SoDo",
-        "lat": 47.629358146781776,
-        "lon": -122.30630371133023
+        "lat": 47.62766310624197,
+        "lon": -122.35697772387718
       },
       "url": "https://stubhub.prf.hn/l/VxGalLj/"
     },
@@ -2056,8 +2056,8 @@
       ],
       "location": {
         "name": "Moore",
-        "lat": 47.63693684673013,
-        "lon": -122.33640679072157
+        "lat": 47.58218873883067,
+        "lon": -122.3585197811401
       },
       "url": "https://stubhub.prf.hn/l/p3MJMmq/"
     },
@@ -2074,8 +2074,8 @@
       ],
       "location": {
         "name": "Moore",
-        "lat": 47.60912670343795,
-        "lon": -122.34413534476128
+        "lat": 47.58463077788703,
+        "lon": -122.33615488600829
       },
       "url": "https://stubhub.prf.hn/l/NdXbG3Z/"
     },
@@ -2092,8 +2092,8 @@
       ],
       "location": {
         "name": "Auburn",
-        "lat": 47.6199744377631,
-        "lon": -122.31442069678688
+        "lat": 47.58210694886088,
+        "lon": -122.36643293030559
       },
       "url": "https://stubhub.prf.hn/l/eOzV8Yd/"
     },
@@ -2110,8 +2110,8 @@
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.64490032248344,
-        "lon": -122.29867405221091
+        "lat": 47.62668531417867,
+        "lon": -122.36507454097006
       },
       "url": "https://stubhub.prf.hn/l/6qROkPE/"
     },
@@ -2128,8 +2128,8 @@
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.58907255615243,
-        "lon": -122.3468824768923
+        "lat": 47.61303440454887,
+        "lon": -122.37187311599587
       },
       "url": "https://stubhub.prf.hn/l/p3ow8q0/"
     },
@@ -2146,8 +2146,8 @@
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.57484355095368,
-        "lon": -122.32176123662666
+        "lat": 47.60660218428451,
+        "lon": -122.3510883159549
       },
       "url": "https://stubhub.prf.hn/l/6qZvYep/"
     },
@@ -2164,8 +2164,8 @@
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.57404066809953,
-        "lon": -122.34050018402372
+        "lat": 47.61128493729638,
+        "lon": -122.3111380281051
       },
       "url": "https://stubhub.prf.hn/l/W42oWgd/"
     },
@@ -2218,8 +2218,8 @@
       ],
       "location": {
         "name": "Wamu",
-        "lat": 47.64024123600342,
-        "lon": -122.29882874874198
+        "lat": 47.59470762917445,
+        "lon": -122.30195751607457
       },
       "url": "https://stubhub.prf.hn/l/6l5PDYY/"
     },
@@ -2236,8 +2236,8 @@
       ],
       "location": {
         "name": "Moore",
-        "lat": 47.64524411295105,
-        "lon": -122.30911420906773
+        "lat": 47.62194552570225,
+        "lon": -122.31983073236154
       },
       "url": "https://stubhub.prf.hn/l/rynVYx4/"
     },
@@ -2272,8 +2272,8 @@
       ],
       "location": {
         "name": "Marymoor",
-        "lat": 47.59542107133969,
-        "lon": -122.32808082449974
+        "lat": 47.571667825098814,
+        "lon": -122.33558860014524
       },
       "url": "https://stubhub.prf.hn/l/aWMgO1g/"
     },
@@ -2326,8 +2326,8 @@
       ],
       "location": {
         "name": "Tacoma Dome",
-        "lat": 47.633056355841404,
-        "lon": -122.34703984188457
+        "lat": 47.60512664049659,
+        "lon": -122.29638984664332
       },
       "url": "https://stubhub.prf.hn/l/y81qQ4A/"
     },

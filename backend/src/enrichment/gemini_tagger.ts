@@ -235,6 +235,7 @@ export function enrichEvent(event: RawScrapedEvent): EnrichedEvent {
     vibe_tags: estimateVibeTags(event),
     location,
     url: event.url || '',
+    image: event.image,
   };
 }
 

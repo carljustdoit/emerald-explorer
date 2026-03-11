@@ -17,6 +17,7 @@ export const EmeraldEventSchema = z.object({
   vibe_tags: z.array(z.string()),
   location: LocationSchema,
   url: z.string().url(),
+  image: z.string().url().optional(),
 });
 
 export const EnvironmentDataSchema = z.object({
@@ -55,6 +56,7 @@ export const RawScrapedEventSchema = z.object({
   location_name: z.string().optional(),
   location_address: z.string().optional(),
   url: z.string().optional(),
+  image: z.string().optional(),
   source: z.string(),
 });
 
@@ -71,6 +73,7 @@ export const EnrichedEventSchema = z.object({
   vibe_tags: z.array(z.string()),
   location: LocationSchema,
   url: z.string(),
+  image: z.string().optional(),
 });
 
 export type EnrichedEvent = z.infer<typeof EnrichedEventSchema>;

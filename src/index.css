@@ -1,0 +1,82 @@
+:root {
+  /* Dynamic Accessible Palette (Mist & Cedar) */
+  --bg-primary: #f8fafc;
+  --text-strong: #0f172a;
+  --text-muted: #64748b;
+  --accent-primary: #166534;
+  --accent-soft: rgba(22, 101, 52, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(15, 23, 42, 0.06);
+
+  /* Solo Mode Overrides */
+  --solo-bg: #020617;
+  --solo-text-strong: #f1f5f9;
+  --solo-text-muted: #94a3b8;
+  --solo-accent: #bef264;
+  --solo-accent-soft: rgba(190, 242, 100, 0.12);
+  --solo-glass-bg: rgba(15, 23, 42, 0.85);
+  --solo-glass-border: rgba(248, 250, 252, 0.08);
+
+  /* Typography */
+  --font-header: "Georgia", serif;
+  --font-body: -apple-system, "SF Pro Display", "Inter", "Segoe UI", sans-serif;
+  --font-mono: "SF Mono", "Menlo", monospace;
+
+  /* Spacing */
+  --radius-xl: 24px;
+  --radius-lg: 16px;
+  --gap-md: 24px;
+
+  /* Transitions */
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-strong);
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+  transition: var(--transition-smooth);
+}
+
+body.solo-mode {
+  background-color: var(--solo-bg);
+  color: var(--solo-text-strong);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-header);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.solo-mode .glass {
+  background: var(--solo-glass-bg);
+  border: 1px solid var(--solo-glass-border);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}

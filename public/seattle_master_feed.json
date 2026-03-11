@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "last_updated": "2026-03-11T06:41:35.678Z",
+    "environment": {
+      "snoqualmie_snow_inches": 0,
+      "stevens_pass_snow_inches": 0,
+      "lake_union_temp_f": 55,
+      "cedar_river_flow_cfs": 1170,
+      "wind_speed_mph": 10,
+      "sunset_time": "2026-03-10T19:07",
+      "conditions": "Overcast"
+    }
+  },
+  "events": [
+    {
+      "id": "57cebd4bd52b",
+      "source": "Events12",
+      "title": "Weekly Trivia Night",
+      "description": "Test your knowledge at Seattle's favorite weekly trivia. Teams of up to 6 compete for prizes.",
+      "start_time": "2026-03-10T03:00:00",
+      "end_time": "2026-03-10T05:00:00",
+      "is_kid_friendly": true,
+      "vibe_tags": [
+        "drinks",
+        "nightlife"
+      ],
+      "location": {
+        "name": "Capitol Hill",
+        "lat": 47.6253,
+        "lon": -122.3222
+      },
+      "url": "https://example.com/events"
+    },
+    {
+      "id": "6f6fdf2a3094",
+      "source": "Events12",
+      "title": "Farmers Market",
+      "description": "Fresh local produce, artisan goods, and live music at Pike Place Market.",
+      "start_time": "2026-03-15T09:00:00",
+      "end_time": "2026-03-15T11:00:00",
+      "is_kid_friendly": true,
+      "vibe_tags": [
+        "music",
+        "market"
+      ],
+      "location": {
+        "name": "Pike Place Market",
+        "lat": 47.6101,
+        "lon": -122.3421
+      },
+      "url": "https://example.com/events"
+    },
+    {
+      "id": "cadb2e41af82",
+      "source": "Events12",
+      "title": "Tech Meetup: AI in Seattle",
+      "description": "Monthly meetup for Seattle tech enthusiasts. This month: Large Language Models workshop.",
+      "start_time": "2026-03-12T03:00:00",
+      "end_time": "2026-03-12T05:00:00",
+      "is_kid_friendly": true,
+      "vibe_tags": [
+        "tech",
+        "education"
+      ],
+      "location": {
+        "name": "South Lake Union",
+        "lat": 47.6185,
+        "lon": -122.3389
+      },
+      "url": "https://example.com/events"
+    },
+    {
+      "id": "fb11c0882a0c",
+      "source": "EverOut",
+      "title": "Weekly Trivia Night",
+      "description": "Test your knowledge at Seattle's favorite weekly trivia. Teams of up to 6 compete for prizes.",
+      "start_time": "2026-03-10T03:00:00",
+      "end_time": "2026-03-10T05:00:00",
+      "is_kid_friendly": true,
+      "vibe_tags": [
+        "drinks",
+        "nightlife"
+      ],
+      "location": {
+        "name": "Capitol Hill",
+        "lat": 47.6253,
+        "lon": -122.3222
+      },
+      "url": "https://example.com/events"
+    },
+    {
+      "id": "839a12c18f8e",
+      "source": "EverOut",
+      "title": "Farmers Market",
+      "description": "Fresh local produce, artisan goods, and live music at Pike Place Market.",
+      "start_time": "2026-03-15T09:00:00",
+      "end_time": "2026-03-15T11:00:00",
+      "is_kid_friendly": true,
+      "vibe_tags": [
+        "music",
+        "market"
+      ],
+      "location": {
+        "name": "Pike Place Market",
+        "lat": 47.6101,
+        "lon": -122.3421
+      },
+      "url": "https://example.com/events"
+    },
+    {
+      "id": "7a5549761dfc",
+      "source": "EverOut",
+      "title": "Tech Meetup: AI in Seattle",
+      "description": "Monthly meetup for Seattle tech enthusiasts. This month: Large Language Models workshop.",
+      "start_time": "2026-03-12T03:00:00",
+      "end_time": "2026-03-12T05:00:00",
+      "is_kid_friendly": true,
+      "vibe_tags": [
+        "tech",
+        "education"
+      ],
+      "location": {
+        "name": "South Lake Union",
+        "lat": 47.6185,
+        "lon": -122.3389
+      },
+      "url": "https://example.com/events"
+    }
+  ]
+}

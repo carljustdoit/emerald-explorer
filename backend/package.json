@@ -1,0 +1,30 @@
+{
+  "name": "emerald-sourcing-engine",
+  "version": "1.0.0",
+  "description": "Backend ETL pipeline for aggregating Seattle events and environmental data",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "tsx src/main.ts",
+    "scrape": "tsx src/main.ts",
+    "deploy": "tsx src/main.ts --deploy"
+  },
+  "keywords": ["events", "scraping", "etl", "seattle"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "firecrawl": "^1.14.1",
+    "@google/generative-ai": "^0.21.0",
+    "@aws-sdk/client-s3": "^3.616.0",
+    "@aws-sdk/lib-storage": "^3.616.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5",
+    "tsx": "^4.15.6"
+  }
+}

@@ -1,9 +1,19 @@
 import React from 'react';
-import { MapPin, Clock } from 'lucide-react';
+import { MapPin, Clock, Plus, Check } from 'lucide-react';
 
-const AdaptiveHeroCard = ({ event, isParentingWeek, score }) => {
+const AdaptiveHeroCard = ({
+  event,
+  isParentingWeek,
+  score,
+  isAdded,
+  isCommitted,
+  onAdd,
+  onRemove,
+  onCommit,
+  onClick
+}) => {
   return (
-    <div className={`hero-card glass ${isParentingWeek ? 'parenting' : 'solo'}`}>
+    <div className={`hero-card glass ${isParentingWeek ? 'parenting' : 'solo'}`} onClick={onClick}>
       <div className="card-image">
         <img src={event.image} alt={event.title} />
         <div className="vibe-tag">{event.vibe}</div>
@@ -35,6 +45,29 @@ const AdaptiveHeroCard = ({ event, isParentingWeek, score }) => {
             <span>{event.time}</span>
           </div>
         </div>
+
+        {/* Inline Actions — only shown when action props are provided */}
+        {onAdd && (
+          <div className="card-actions" onClick={e => e.stopPropagation()}>
+            {isAdded ? (
+              <div className="action-row">
+                <button className="action-btn added-btn" onClick={onRemove}>
+                  <Check size={14} /> Added
+                </button>
+                <button
+                  className={`action-btn commit-btn ${isCommitted ? 'committed' : ''}`}
+                  onClick={onCommit}
+                >
+                  {isCommitted ? 'Committed' : 'Mark committed'}
+                </button>
+              </div>
+            ) : (
+              <button className="action-btn add-btn" onClick={onAdd}>
+                <Plus size={14} /> Add to agenda
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       <style jsx>{`
@@ -81,7 +114,7 @@ const AdaptiveHeroCard = ({ event, isParentingWeek, score }) => {
         }
 
         .card-content {
-          padding: 20px 24px;
+          padding: 20px 24px 24px;
           display: flex;
           flex-direction: column;
           gap: 12px;
@@ -115,6 +148,77 @@ const AdaptiveHeroCard = ({ event, isParentingWeek, score }) => {
         }
         .solo-mode .meta-info { color: var(--solo-text-muted); }
         .meta-item { display: flex; align-items: center; gap: 6px; }
+
+        /* Inline Actions */
+        .card-actions {
+          margin-top: 4px;
+          padding-top: 16px;
+          border-top: 1px solid rgba(0,0,0,0.04);
+        }
+        .solo-mode .card-actions { border-top-color: rgba(255,255,255,0.04); }
+
+        .action-row { display: flex; gap: 10px; }
+
+        .action-btn {
+          padding: 10px 16px;
+          border-radius: 12px;
+          font-size: 13px;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          transition: var(--transition-smooth);
+          cursor: pointer;
+        }
+
+        .add-btn {
+          width: 100%;
+          border: 1.5px solid var(--glass-border);
+          background: transparent;
+          color: var(--text-strong);
+        }
+        .solo-mode .add-btn { color: var(--solo-text-strong); border-color: var(--solo-glass-border); }
+        .add-btn:hover {
+          background: var(--accent-soft);
+          border-color: var(--accent-primary);
+          color: var(--accent-primary);
+        }
+        .solo-mode .add-btn:hover {
+          background: var(--solo-accent-soft);
+          border-color: var(--solo-accent);
+          color: var(--solo-accent);
+        }
+
+        .added-btn {
+          flex: 1;
+          border: 1.5px solid var(--accent-primary);
+          background: var(--accent-soft);
+          color: var(--accent-primary);
+        }
+        .solo-mode .added-btn {
+          border-color: var(--solo-accent);
+          background: var(--solo-accent-soft);
+          color: var(--solo-accent);
+        }
+
+        .commit-btn {
+          flex: 1.5;
+          border: 1.5px solid var(--glass-border);
+          background: transparent;
+          color: var(--text-muted);
+        }
+        .solo-mode .commit-btn { color: var(--solo-text-muted); }
+        .commit-btn.committed {
+          background: var(--accent-primary);
+          color: white;
+          border-color: var(--accent-primary);
+        }
+        .solo-mode .commit-btn.committed {
+          background: var(--solo-accent);
+          color: black;
+          border-color: var(--solo-accent);
+        }
 
         /* Score Gauge */
         .viability-badge { flex-shrink: 0; }

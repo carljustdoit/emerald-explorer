@@ -98,7 +98,11 @@ function parseDate(dateStr: string | undefined): { start_time: string; end_time:
   let endTime = today;
   
   if (monthMatch) {
-    const month = monthNames.indexOf(monthMatch[1]) + 1;
+    let monthIndex = monthNames.indexOf(monthMatch[1]);
+    if (monthIndex === -1) {
+      monthIndex = monthShortNames.indexOf(monthMatch[1]);
+    }
+    const month = monthIndex + 1;
     const day = parseInt(monthMatch[2]);
     startTime = `${now.getFullYear()}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   } else if (dateNumMatch) {

@@ -1,5 +1,45 @@
 import { RawScrapedEvent } from '../types/schema.js';
 import * as cheerio from 'cheerio';
+import { chromium, Browser, Page } from 'playwright';
+
+let browser: Browser | null = null;
+
+async function getBrowser(): Promise<Browser> {
+  if (!browser) {
+    browser = await chromium.launch({ headless: true });
+  }
+  return browser;
+}
+
+async function fetchSessionTimes(url: string): Promise<string[]> {
+  try {
+    const b = await getBrowser();
+    const page = await b.newPage();
+    
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForTimeout(2000);
+    
+    const content = await page.evaluate(() => document.body.innerText);
+    
+    const sessionTimes: string[] = [];
+    const dateRegex = /([A-Za-z]+)\s+(\d{1,2})\s*[•-]\s*(\d{1,2}(?::\d{2})?\s*[AP]M)/gi;
+    let match;
+    while ((match = dateRegex.exec(content)) !== null) {
+      sessionTimes.push(`${match[1]} ${match[2]} ${match[3]}`);
+    }
+    
+    // Also try other formats
+    const altRegex = /([A-Za-z]+)\s+(\d{1,2})\s*[•-]\s*(\d{1,2}:\d{2})/gi;
+    while ((match = altRegex.exec(content)) !== null) {
+      sessionTimes.push(`${match[1]} ${match[2]} ${match[3]}`);
+    }
+    
+    return [...new Set(sessionTimes)];
+  } catch (error) {
+    console.error(`[Playwright] Failed to fetch ${url}:`, error);
+    return [];
+  }
+}
 
 async function fetchHTML(url: string): Promise<string | null> {
   try {
@@ -51,6 +91,7 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
     const $table = $article.find('table.table1, table.table2, table.table3, table.table4').first();
     const $eventLink = $eventPara.find('a').first();
     const teamName = $eventLink.text().trim() || '';
+    const eventTitle = $article.find('h3').text().trim() || teamName;
     
     function expandDateRange(dateStr: string): string[] {
       const rangeMatch = dateStr.match(/^([A-Za-z]+\.?\s*\d+)\s*[-–]\s*(\d+)$/);
@@ -72,38 +113,75 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
     }
     
     if ($table.length > 0) {
+      const headerCells = $table.find('tr').first().find('td');
+      const firstRowCells = $table.find('tr').eq(1).find('td');
+      const isSportsTable = headerCells.eq(0).text().toLowerCase().includes('date') && 
+                           firstRowCells.length >= 3;
+      
       $table.find('tr').each((_, row) => {
         const $row = $(row);
         const $cells = $row.find('td');
         if ($cells.length < 2) return;
 
-        const gameDateStr = $cells.eq(0).text().trim();
-        const gameTimeStr = $cells.eq(1).text().trim();
-        const opponent = ($cells.eq(2).text().trim() + ' ' + $cells.eq(3).text().trim()).trim();
+        const firstCell = $cells.eq(0).text().trim();
+        const secondCell = $cells.eq(1).text().trim();
+        const thirdCell = $cells.eq(2).text().trim();
         
-        if (!gameDateStr || gameDateStr === 'Date') return;
+        if (!firstCell || firstCell.toLowerCase() === 'date') return;
 
-        const dateVariants = expandDateRange(gameDateStr);
-        
-        for (const dateVariant of dateVariants) {
-          const isHomeGame = !opponent.startsWith('@');
-          const displayOpponent = opponent.replace(/^@\s*/, '');
-          const title = teamName && displayOpponent 
-            ? `${teamName} vs ${displayOpponent}` 
-            : (teamName || locationRaw);
+        if (isSportsTable) {
+          const gameDateStr = firstCell;
+          const gameTimeStr = secondCell;
+          const opponent = (thirdCell + ' ' + $cells.eq(3).text().trim()).trim();
           
-          events.push({
-            title,
-            description: `${teamName || 'Home game'} vs ${displayOpponent} at ${locationRaw}`.trim(),
-            date: `${dateVariant} ${gameTimeStr}`,
-            location_name: locationRaw || 'Seattle, WA',
-            source: 'Events12',
-            url: $eventLink.attr('href') || baseUrl,
-            image: photoLink || undefined,
-            map_url: mapLink || undefined,
-            ticket_url: ticketLink || undefined,
-            video_url: videoLink || undefined,
-          });
+          const dateVariants = expandDateRange(gameDateStr);
+          
+          for (const dateVariant of dateVariants) {
+            const isHomeGame = !opponent.startsWith('@');
+            const displayOpponent = opponent.replace(/^@\s*/, '');
+            const title = teamName && displayOpponent 
+              ? `${teamName} vs ${displayOpponent}` 
+              : (teamName || locationRaw);
+            
+            events.push({
+              title,
+              description: `${teamName || 'Home game'} vs ${displayOpponent} at ${locationRaw}`.trim(),
+              date: `${dateVariant} ${gameTimeStr}`,
+              location_name: locationRaw || 'Seattle, WA',
+              source: 'Events12',
+              url: $eventLink.attr('href') || baseUrl,
+              image: photoLink || undefined,
+              map_url: mapLink || undefined,
+              ticket_url: ticketLink || undefined,
+              video_url: videoLink || undefined,
+            });
+          }
+        } else {
+          const eventDate = firstCell;
+          const artist = secondCell;
+          const venue = thirdCell;
+          
+          if (!eventDate || eventDate.toLowerCase() === 'artist') return;
+          
+          const dateVariants = expandDateRange(eventDate);
+          
+          for (const dateVariant of dateVariants) {
+            const title = `${eventTitle} - ${artist}`.trim();
+            const description = `${artist} performing at ${venue || locationRaw}`.trim();
+            
+            events.push({
+              title,
+              description,
+              date: dateVariant,
+              location_name: venue || locationRaw || 'Seattle, WA',
+              source: 'Events12',
+              url: $eventLink.attr('href') || baseUrl,
+              image: photoLink || undefined,
+              map_url: mapLink || undefined,
+              ticket_url: ticketLink || undefined,
+              video_url: videoLink || undefined,
+            });
+          }
         }
       });
     } else {
@@ -297,7 +375,56 @@ export async function scrapeEventSources(): Promise<RawScrapedEvent[]> {
   console.log(`[Events] Events with ticket links: ${withTickets}`);
   console.log(`[Events] Events with map links: ${withMaps}`);
   
-  return allEvents;
+  // Enhance events with session times from ticket pages
+  console.log('[Events] Fetching session times from ticket pages...');
+  const eventsNeedingSessions = allEvents.filter(e => e.ticket_url && !e.date?.includes(','));
+  console.log(`[Events] Events to check for sessions: ${eventsNeedingSessions.length}`);
+  
+  const urlToSessions = new Map<string, string[]>();
+  
+  for (const event of eventsNeedingSessions) {
+    if (event.ticket_url && !urlToSessions.has(event.ticket_url)) {
+      console.log(`[Events] Fetching sessions from: ${event.ticket_url?.slice(0, 50)}...`);
+      const sessions = await fetchSessionTimes(event.ticket_url!);
+      console.log(`[Events] Found ${sessions.length} sessions for ${event.title?.slice(0, 30)}`);
+      if (sessions.length > 0) {
+        urlToSessions.set(event.ticket_url!, sessions);
+      }
+    }
+  }
+  
+  // Expand events with multiple sessions
+  const expandedEvents: RawScrapedEvent[] = [];
+  for (const event of allEvents) {
+    if (event.ticket_url && urlToSessions.has(event.ticket_url)) {
+      const sessions = urlToSessions.get(event.ticket_url)!;
+      if (sessions.length > 1) {
+        for (const session of sessions) {
+          expandedEvents.push({
+            ...event,
+            date: session,
+          });
+        }
+      } else {
+        expandedEvents.push({
+          ...event,
+          date: sessions[0] || event.date,
+        });
+      }
+    } else {
+      expandedEvents.push(event);
+    }
+  }
+  
+  console.log(`[Events] Expanded events: ${expandedEvents.length}`);
+  
+  // Close browser
+  if (browser) {
+    await browser.close();
+    browser = null;
+  }
+  
+  return expandedEvents;
 }
 
 export async function scrapeAllEventSources(): Promise<RawScrapedEvent[]> {

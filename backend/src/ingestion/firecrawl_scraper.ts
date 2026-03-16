@@ -380,8 +380,13 @@ export async function scrapeEventSources(): Promise<RawScrapedEvent[]> {
   console.log(`[Events] Events with map links: ${withMaps}`);
   
   // Enhance events with session times from ticket pages
+  // Skip sports events (Hockey, Baseball) since we already have home games from table parsing
   console.log('[Events] Fetching session times from ticket pages...');
-  const eventsNeedingSessions = allEvents.filter(e => e.ticket_url && !e.date?.includes(','));
+  const eventsNeedingSessions = allEvents.filter(e => 
+    e.ticket_url && 
+    !e.date?.includes(',') &&
+    !e.title?.includes('vs ') // Skip sports events - they have home game data from table
+  );
   console.log(`[Events] Events to check for sessions: ${eventsNeedingSessions.length}`);
   
   const urlToSessions = new Map<string, string[]>();

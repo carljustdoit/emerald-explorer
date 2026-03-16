@@ -31,45 +31,105 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
     const $article = $(article);
     const $eventPara = $article.find('p.event');
 
-    $eventPara.each((_, el) => {
-      const $p = $(el);
-      const text = $p.text().trim();
-      const $link = $p.find('a').first();
-      const title = $link.text().trim() || text.slice(0, 50);
-      const url = $link.attr('href') || baseUrl;
+    const $datePara = $article.find('p.date').first();
+    let dateStr = $datePara.text().trim();
+    const $timeSpan = $datePara.find('span.nobreak').first();
+    const timeStr = $timeSpan.text().trim();
+    
+    if (timeStr && !dateStr.includes(timeStr)) {
+      dateStr = `${dateStr} ${timeStr}`;
+    }
 
-      if (title.length < 3) return;
+    const $milesPara = $article.find('p.miles').first();
+    const locationRaw = $milesPara.text().replace(/\(\d+.*?\)/, '').trim();
 
-      const $datePara = $article.find('p.date').first();
-      let dateStr = $datePara.text().trim();
-      const $timeSpan = $datePara.find('span.nobreak').first();
-      const timeStr = $timeSpan.text().trim();
-      
-      if (timeStr && !dateStr.includes(timeStr)) {
-        dateStr = `${dateStr} ${timeStr}`;
+    const mapLink = $article.find('a.b1').first().attr('href') || '';
+    const ticketLink = $article.find('a.b2').first().attr('href') || '';
+    const photoLink = $article.find('a.b3').first().attr('href') || '';
+    const videoLink = $article.find('a.b5').first().attr('href') || '';
+
+    const $table = $article.find('table.table1, table.table2, table.table3, table.table4').first();
+    const $eventLink = $eventPara.find('a').first();
+    const teamName = $eventLink.text().trim() || '';
+    
+    function expandDateRange(dateStr: string): string[] {
+      const rangeMatch = dateStr.match(/^([A-Za-z]+\.?\s*\d+)\s*[-–]\s*(\d+)$/);
+      if (rangeMatch) {
+        const startPart = rangeMatch[1];
+        const endDay = parseInt(rangeMatch[2]);
+        const startMatch = startPart.match(/([A-Za-z]+)\.?(\d+)/);
+        if (startMatch) {
+          const month = startMatch[1];
+          const startDay = parseInt(startMatch[2]);
+          const days: string[] = [];
+          for (let d = startDay; d <= endDay; d++) {
+            days.push(`${month}. ${d}`);
+          }
+          return days;
+        }
       }
+      return [dateStr];
+    }
+    
+    if ($table.length > 0) {
+      $table.find('tr').each((_, row) => {
+        const $row = $(row);
+        const $cells = $row.find('td');
+        if ($cells.length < 2) return;
 
-      const $milesPara = $article.find('p.miles').first();
-      const locationRaw = $milesPara.text().replace(/\(\d+.*?\)/, '').trim();
+        const gameDateStr = $cells.eq(0).text().trim();
+        const gameTimeStr = $cells.eq(1).text().trim();
+        const opponent = ($cells.eq(2).text().trim() + ' ' + $cells.eq(3).text().trim()).trim();
+        
+        if (!gameDateStr || gameDateStr === 'Date') return;
 
-      const mapLink = $article.find('a.b1').first().attr('href') || '';
-      const ticketLink = $article.find('a.b2').first().attr('href') || '';
-      const photoLink = $article.find('a.b3').first().attr('href') || '';
-      const videoLink = $article.find('a.b5').first().attr('href') || '';
-
-      events.push({
-        title,
-        description: text.slice(0, 500),
-        date: dateStr,
-        location_name: locationRaw || 'Seattle, WA',
-        source: 'Events12',
-        url: url?.startsWith('http') ? url : url ? new URL(url, baseUrl).href : baseUrl,
-        image: photoLink || undefined,
-        map_url: mapLink || undefined,
-        ticket_url: ticketLink || undefined,
-        video_url: videoLink || undefined,
+        const dateVariants = expandDateRange(gameDateStr);
+        
+        for (const dateVariant of dateVariants) {
+          const isHomeGame = !opponent.startsWith('@');
+          const displayOpponent = opponent.replace(/^@\s*/, '');
+          const title = teamName && displayOpponent 
+            ? `${teamName} vs ${displayOpponent}` 
+            : (teamName || locationRaw);
+          
+          events.push({
+            title,
+            description: `${teamName || 'Home game'} vs ${displayOpponent} at ${locationRaw}`.trim(),
+            date: `${dateVariant} ${gameTimeStr}`,
+            location_name: locationRaw || 'Seattle, WA',
+            source: 'Events12',
+            url: $eventLink.attr('href') || baseUrl,
+            image: photoLink || undefined,
+            map_url: mapLink || undefined,
+            ticket_url: ticketLink || undefined,
+            video_url: videoLink || undefined,
+          });
+        }
       });
-    });
+    } else {
+      $eventPara.each((_, el) => {
+        const $p = $(el);
+        const text = $p.text().trim();
+        const $link = $p.find('a').first();
+        const title = $link.text().trim() || text.slice(0, 50);
+        const url = $link.attr('href') || baseUrl;
+
+        if (title.length < 3) return;
+
+        events.push({
+          title,
+          description: text.slice(0, 500),
+          date: dateStr,
+          location_name: locationRaw || 'Seattle, WA',
+          source: 'Events12',
+          url: url?.startsWith('http') ? url : url ? new URL(url, baseUrl).href : baseUrl,
+          image: photoLink || undefined,
+          map_url: mapLink || undefined,
+          ticket_url: ticketLink || undefined,
+          video_url: videoLink || undefined,
+        });
+      });
+    }
   });
 
   $('table.concerts tbody tr').each((_, row) => {

@@ -88,8 +88,10 @@ function parseDate(dateStr: string | undefined): { start_time: string; end_time:
 
   const cleanDateStr = dateStr.replace(/\(.*?\)/g, '').replace(/\d{1,2}(:\d{2})?\s*(am|pm)/gi, '').trim();
   
-  const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-  const monthMatch = cleanDateStr.toLowerCase().match(new RegExp(`(${monthNames.join('|')})\\s+(\\d{1,2})`));
+  const monthNames = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+  const monthShortNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sept', 'sep', 'oct', 'nov', 'dec'];
+  const monthPattern = `(${monthNames.join('|')}|${monthShortNames.join('|')})\\.?`;
+  const monthMatch = cleanDateStr.toLowerCase().match(new RegExp(`${monthPattern}\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`));
   const dateNumMatch = cleanDateStr.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
   
   let startTime = today;

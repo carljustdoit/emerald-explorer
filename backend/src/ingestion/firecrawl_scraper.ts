@@ -134,10 +134,14 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
           const gameTimeStr = secondCell;
           const opponent = (thirdCell + ' ' + $cells.eq(3).text().trim()).trim();
           
+          // Skip away games (marked with @)
+          if (opponent.startsWith('@')) {
+            return;
+          }
+          
           const dateVariants = expandDateRange(gameDateStr);
           
           for (const dateVariant of dateVariants) {
-            const isHomeGame = !opponent.startsWith('@');
             const displayOpponent = opponent.replace(/^@\s*/, '');
             const title = teamName && displayOpponent 
               ? `${teamName} vs ${displayOpponent}` 

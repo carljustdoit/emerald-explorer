@@ -1,8 +1,8 @@
 import 'dotenv/config';
-import { EmeraldFeed, EnvironmentData } from './types/schema.js';
+import { EmeraldFeed, EnvironmentData, EmeraldEventSchema, EmeraldEvent } from './types/schema.js';
 import { fetchAllEnvironmentData } from './ingestion/wsdot.js';
 import { fetchEnvironmentData as fetchWaterData } from './ingestion/usgs.js';
-import { scrapeAllEventSources } from './ingestion/firecrawl_scraper.js';
+import { scrapeAllEventSources, validateAndDeduplicate } from './ingestion/orchestrator.js';
 import { enrichAllEvents } from './enrichment/gemini_tagger.js';
 import { uploadToCDN, generateFeedJSON } from './deployment/upload_to_cdn.js';
 
@@ -26,7 +26,15 @@ async function runPipeline() {
   const startTime = Date.now();
 
   try {
-    console.log('[Phase 1] Ingestion - Fetching data from sources...');
+    // Parse CLI args for a specific connector
+    const args = process.argv.slice(2);
+    let targetConnector: string | undefined;
+    const connectorArg = args.find(a => a.startsWith('--connector='));
+    if (connectorArg) {
+      targetConnector = connectorArg.split('=')[1];
+    }
+
+    console.log('[Stage 1] Ingestion - Parallel Scraping from sources...');
     console.log('-'.repeat(50));
 
     console.log('[Ingestion] Fetching environmental data...');
@@ -42,24 +50,45 @@ async function runPipeline() {
     };
 
     console.log('[Ingestion] Fetching events...');
-    const rawEvents = await scrapeAllEventSources();
+    const rawEvents = await scrapeAllEventSources(targetConnector);
 
     console.log('');
-    console.log('[Phase 2] Enrichment - AI processing...');
+    console.log('[Stage 2] Validation & Deduplication...');
     console.log('-'.repeat(50));
-
-    const enrichedEvents = await enrichAllEvents(rawEvents);
+    
+    const validRawEvents = validateAndDeduplicate(rawEvents);
 
     console.log('');
-    console.log('[Phase 3] Deployment - Building feed...');
+    console.log('[Stage 3] Enrichment - AI processing...');
     console.log('-'.repeat(50));
+
+    const enrichedEvents = await enrichAllEvents(validRawEvents);
+
+    console.log('');
+    console.log('[Stage 4] Greenlight Validation & Deployment...');
+    console.log('-'.repeat(50));
+
+    const greenlightedEvents: EmeraldEvent[] = [];
+    let greenlightFailures = 0;
+
+    for (const event of enrichedEvents) {
+      const result = EmeraldEventSchema.safeParse(event);
+      if (result.success) {
+        greenlightedEvents.push(result.data);
+      } else {
+        greenlightFailures++;
+        console.warn(`[Stage 4] Validation failed for enriched event: ${event.title}`);
+      }
+    }
+
+    console.log(`[Stage 4] Greenlighted ${greenlightedEvents.length} events. ${greenlightFailures} failed validation.`);
 
     const feed: EmeraldFeed = {
       metadata: {
         last_updated: new Date().toISOString(),
         environment: environmentData,
       },
-      events: enrichedEvents,
+      events: greenlightedEvents,
     };
 
     const feedUrl = await uploadToCDN(feed);

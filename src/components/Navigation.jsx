@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Compass, Settings } from 'lucide-react';
+import { Home, Compass, Settings, Shield } from 'lucide-react';
 
 const Navigation = () => {
   return (
@@ -16,6 +16,10 @@ const Navigation = () => {
       <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
         <Settings size={20} />
         <span>Settings</span>
+      </NavLink>
+      <NavLink to="/admin" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+        <Shield size={20} />
+        <span>Admin</span>
       </NavLink>
 
       <style jsx>{`

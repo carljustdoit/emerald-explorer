@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Discovery from './pages/Discovery';
 import Settings from './pages/Settings';
+import Admin from './pages/Admin';
 
 const AppLayout = () => {
   const { rotation } = useApp();
@@ -25,13 +26,14 @@ const AppLayout = () => {
             <Route path="/" element={<Home />} />
             <Route path="/discovery" element={<Discovery />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </div>
       </main>
 
       <Navigation />
 
-      <style jsx>{`
+      <style>{`
         .app-container {
           min-height: 100vh;
           padding-bottom: 80px;

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRotationEngine } from '../hooks/useRotationEngine';
 import { useViabilityEngine } from '../hooks/useViabilityEngine';
 import { mockResources } from '../data';
@@ -9,7 +9,14 @@ export const AppProvider = ({ children }) => {
     const rotation = useRotationEngine();
     const viability = useViabilityEngine();
 
-    const [agenda, setAgenda] = useState([]);
+    const [agenda, setAgenda] = useState(() => {
+        const saved = localStorage.getItem('emerald_agenda');
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem('emerald_agenda', JSON.stringify(agenda));
+    }, [agenda]);
 
     const [preferences, setPreferences] = useState({
         breakEveryOtherDay: false,

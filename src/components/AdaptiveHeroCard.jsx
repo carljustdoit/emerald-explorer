@@ -12,29 +12,39 @@ const AdaptiveHeroCard = ({
   onCommit,
   onClick
 }) => {
+  const getDynamicDateLabel = () => {
+    if (!event.startDate) return event.dateLabel || '';
+    
+    const startDate = new Date(event.startDate);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    
+    const eventDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    
+    if (eventDay.getTime() === today.getTime()) return "Today";
+    if (eventDay.getTime() === tomorrow.getTime()) return "Tomorrow";
+    
+    return startDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
+  };
+
+  const displayDateLabel = getDynamicDateLabel();
   return (
     <div className={`hero-card glass ${isParentingWeek ? 'parenting' : 'solo'}`} onClick={onClick}>
       <div className="card-image">
         <img
-          src={event.image}
+          src={event.image || '/placeholder.png'}
           alt={event.title}
           onError={(e) => { e.target.src = '/placeholder.png'; }}
         />
         <div className="vibe-tag">{event.vibe}</div>
+        {event.source && <div className="source-tag">{event.source}</div>}
       </div>
 
       <div className="card-content">
         <div className="top-row">
           <h3>{event.title}</h3>
-          <div className="viability-badge" title="Viability Score">
-            <div className="score-ring">
-              <svg viewBox="0 0 36 36">
-                <path className="bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <path className="meter" style={{ strokeDasharray: `${score}, 100` }} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              </svg>
-              <span>{score}</span>
-            </div>
-          </div>
         </div>
 
         <p className="description">{event.description.substring(0, 100)}...</p>
@@ -46,7 +56,10 @@ const AdaptiveHeroCard = ({
           </div>
           <div className="meta-item">
             <Clock size={13} />
-            <span>{event.time}</span>
+            <span>
+              {displayDateLabel} • {event.time}
+              {event.sessions && event.sessions.length > 1 && ` (+${event.sessions.length - 1} more)`}
+            </span>
           </div>
         </div>
 
@@ -74,7 +87,7 @@ const AdaptiveHeroCard = ({
         )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         .hero-card {
           display: flex;
           flex-direction: column;
@@ -115,6 +128,23 @@ const AdaptiveHeroCard = ({
           font-weight: 500;
           letter-spacing: 0.5px;
           backdrop-filter: blur(8px);
+        }
+        .source-tag {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          background: rgba(255, 255, 255, 0.9);
+          color: var(--text-strong);
+          padding: 6px 14px;
+          border-radius: 10px;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          backdrop-filter: blur(8px);
+        }
+        .solo-mode .source-tag {
+          background: rgba(0, 0, 0, 0.85);
+          color: white;
         }
 
         .card-content {
@@ -224,27 +254,6 @@ const AdaptiveHeroCard = ({
           border-color: var(--solo-accent);
         }
 
-        /* Score Gauge */
-        .viability-badge { flex-shrink: 0; }
-        .score-ring {
-          position: relative;
-          width: 44px;
-          height: 44px;
-        }
-        .score-ring svg { transform: rotate(-90deg); }
-        .score-ring .bg { fill: none; stroke: rgba(0,0,0,0.04); stroke-width: 3; }
-        .solo-mode .score-ring .bg { stroke: rgba(255,255,255,0.06); }
-        .score-ring .meter { 
-          fill: none; stroke: var(--accent-primary); stroke-width: 3; stroke-linecap: round;
-          transition: stroke-dasharray 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .solo-mode .score-ring .meter { stroke: var(--solo-accent); }
-        .score-ring span {
-          position: absolute; inset: 0;
-          display: flex; align-items: center; justify-content: center;
-          font-size: 12px; font-weight: 600; color: var(--text-strong);
-        }
-        .solo-mode .score-ring span { color: var(--solo-text-strong); }
       `}</style>
     </div>
   );

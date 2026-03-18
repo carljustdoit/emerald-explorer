@@ -1,6 +1,13 @@
 import { RawScrapedEvent } from '../types/schema.js';
 import * as cheerio from 'cheerio';
 import { chromium, Browser, Page } from 'playwright';
+import { 
+  ScraperSource, fetchHTML, isValidImageUrl,
+  parseSeattleSymphony, parseUWArts, parseSeattleOpera,
+  parseJazzAlley, parseStubHub, parseFever, 
+  parseHuskies, parse19hz, parseEvents12Filtered
+} from './scrapers/modular_scraper.js';
+import { scraperEmitter } from './scraper_events.js';
 
 let browser: Browser | null = null;
 
@@ -9,6 +16,47 @@ async function getBrowser(): Promise<Browser> {
     browser = await chromium.launch({ headless: true });
   }
   return browser;
+}
+
+// Fetch rendered HTML using Playwright (for JS-heavy sites)
+export async function fetchRenderedHTML(url: string, waitTime: number = 3000, waitStrategy: 'timeout' | 'networkidle' = 'timeout'): Promise<string | null> {
+  try {
+    const b = await getBrowser();
+    
+    // Create context with realistic user agent for sites that block bots
+    const context = await b.newContext({
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    });
+    const page = await context.newPage();
+    
+    const response = await page.goto(url, { 
+      waitUntil: 'domcontentloaded', 
+      timeout: 90000 
+    });
+    
+    if (!response || response.status() !== 200) {
+      console.log(`[Playwright] HTTP error ${response?.status()} for ${url}`);
+      await page.close();
+      await context.close();
+      return null;
+    }
+    
+    // Wait for content to load based on strategy
+    if (waitStrategy === 'networkidle') {
+      await page.waitForLoadState('networkidle', { timeout: 30000 });
+    } else {
+      await page.waitForTimeout(waitTime);
+    }
+    
+    const html = await page.content();
+    await page.close();
+    await context.close();
+    
+    return html;
+  } catch (error) {
+    console.error(`[Playwright] Failed to fetch ${url}:`, error);
+    return null;
+  }
 }
 
 async function fetchSessionTimes(url: string): Promise<string[]> {
@@ -34,31 +82,196 @@ async function fetchSessionTimes(url: string): Promise<string[]> {
       sessionTimes.push(`${match[1]} ${match[2]} ${match[3]}`);
     }
     
-    return [...new Set(sessionTimes)];
+    return Array.from(new Set(sessionTimes));
   } catch (error) {
     console.error(`[Playwright] Failed to fetch ${url}:`, error);
     return [];
   }
 }
 
-async function fetchHTML(url: string): Promise<string | null> {
+async function fetchStubHubVenue(url: string): Promise<{ venue: string; address: string } | null> {
   try {
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-      },
-    });
-
-    if (!response.ok) {
-      console.error(`[Scraper] HTTP error ${response.status} for ${url}`);
-      return null;
+    const b = await getBrowser();
+    const page = await b.newPage();
+    
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForTimeout(2000);
+    
+    const content = await page.evaluate(() => document.body.innerText);
+    const html = await page.content();
+    const $ = cheerio.load(html);
+    
+    let venue = '';
+    let address = '';
+    
+    // Try to find venue from the page - look for common patterns
+    // StubHub typically shows venue name in the event header or near the date
+    const venuePatterns = [
+      /Venue:\s*([^,\n]+)/i,
+      /at\s+([^,\n]+(?:Park|Theatre|Theater|Arena|Hall|Club|Lounge))/i,
+      /([^,\n]+(?:Park|Theatre|Theater|Arena|Hall|Club|Lounge))\s*$/im,
+    ];
+    
+    for (const pattern of venuePatterns) {
+      const match = content.match(pattern);
+      if (match) {
+        venue = match[1].trim();
+        break;
+      }
     }
-
-    return await response.text();
+    
+    // Try to find address - look for street address patterns
+    const addressPatterns = [
+      /\b(\d{3,5}\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s+(?:Avenue|Ave|St|Street|Road|Rd|Boulevard|Blvd|Drive|Dr|Way|Lane|Ln|Plaza|Pl|Court|Ct)\b[^,]*)/gi,
+      /(\d{1,5}\s+\w+\s+\w+,\s*\w+\s+\d{5})/,
+    ];
+    
+    for (const pattern of addressPatterns) {
+      const matches = content.match(pattern);
+      if (matches && matches.length > 0) {
+        address = matches[0].trim();
+        break;
+      }
+    }
+    
+    // If we found a venue or address, return it
+    if (venue || address) {
+      return { venue, address };
+    }
+    
+    return null;
   } catch (error) {
-    console.error(`[Scraper] Failed to fetch ${url}:`, error);
+    console.error(`[Playwright] Failed to fetch venue from ${url}:`, error);
+    return null;
+  }
+}
+
+interface EventPageInfo {
+  title?: string;
+  description?: string;
+  venue?: string;
+  address?: string;
+  date?: string;
+  time?: string;
+  dates?: string[]; // Multiple dates for events like Fever
+}
+
+async function fetchEventPageInfo(url: string): Promise<EventPageInfo | null> {
+  if (!url) return null;
+  
+  try {
+    const b = await getBrowser();
+    const page = await b.newPage();
+    
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForTimeout(2000);
+    
+    const content = await page.evaluate(() => document.body.innerText);
+    const html = await page.content();
+    const $ = cheerio.load(html);
+    
+    const result: EventPageInfo = {};
+    
+    // Extract event title - from h1, og:title, or title tag
+    const titleFromHtml = $('h1').first().text().trim();
+    const ogTitle = $('meta[property="og:title"]').attr('content');
+    const pageTitle = $('title').text().trim();
+    
+    // Prefer h1, then og:title, then page title
+    if (titleFromHtml && titleFromHtml.length > 5) {
+      result.title = titleFromHtml;
+    } else if (ogTitle && ogTitle.length > 5) {
+      result.title = ogTitle;
+    } else if (pageTitle && pageTitle.length > 5) {
+      // Clean up page title (usually "Event Name | Venue | Ticket Seller")
+      result.title = pageTitle.split('|')[0].split('-')[0].trim();
+    }
+    
+    // Extract description - from meta description or og:description
+    const metaDesc = $('meta[name="description"]').attr('content');
+    const ogDesc = $('meta[property="og:description"]').attr('content');
+    const bodyText = content.slice(0, 1000); // First 1000 chars of body
+    
+    if (ogDesc && ogDesc.length > 20) {
+      result.description = ogDesc.slice(0, 300);
+    } else if (metaDesc && metaDesc.length > 20) {
+      result.description = metaDesc.slice(0, 300);
+    } else if (bodyText.length > 20) {
+      // Use first meaningful text as description
+      result.description = bodyText.split('\n')[0].slice(0, 300);
+    }
+    
+    // Extract venue name
+    const venuePatterns = [
+      /Venue:\s*([^,\n]+)/i,
+      /at\s+([^,\n]+(?:Park|Theatre|Theater|Arena|Hall|Club|Lounge))/i,
+      /Location:\s*([^,\n]+)/i,
+      /<h1[^>]*>([^<]+)<\/h1>/i,
+    ];
+    
+    for (const pattern of venuePatterns) {
+      const match = content.match(pattern);
+      if (match) {
+        result.venue = match[1].trim();
+        break;
+      }
+    }
+    
+    // Extract address
+    const addressPatterns = [
+      /\b(\d{3,5}\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s+(?:Avenue|Ave|St|Street|Road|Rd|Boulevard|Blvd|Drive|Dr|Way|Lane|Ln|Plaza|Pl|Court|Ct)\b[^,]*)/gi,
+      /(\d{1,5}\s+\w+\s+\w+,\s*\w+\s+\d{5})/,
+    ];
+    
+    for (const pattern of addressPatterns) {
+      const matches = content.match(pattern);
+      if (matches && matches.length > 0) {
+        result.address = matches[0].trim();
+        break;
+      }
+    }
+    
+    // Extract date - look for ALL patterns like "March 15, 2026" or "Sat, Mar 15" - Fever can have multiple dates
+    const datePatterns = [
+      /([A-Z][a-z]+(?:ary|ruary|ch|il|ay|une|uly|ust|ember|ober|cember)\s+\d{1,2},?\s+\d{4})/gi,
+      /([A-Z][a-z]{2})\s+(\d{1,2})(?:st|nd|rd|th)?,?\s*(\d{4})?/gi,
+      /(Sun|Mon|Tue|Wed|Thu|Fri|Sat),?\s*([A-Z][a-z]{2})\s+(\d{1,2})/gi,
+    ];
+    
+    // Collect all dates found
+    const allDates: string[] = [];
+    for (const pattern of datePatterns) {
+      const matches = content.match(pattern);
+      if (matches) {
+        allDates.push(...matches);
+      }
+    }
+    
+    // Remove duplicates and limit to first 10 dates
+    const uniqueDates = [...new Set(allDates)].slice(0, 10);
+    
+    if (uniqueDates.length > 0) {
+      result.date = uniqueDates[0];
+      result.dates = uniqueDates; // Store all dates for multi-date events
+    }
+    
+    // Extract time - look for patterns like "7:30 PM" or "7pm"
+    const timePatterns = [
+      /(\d{1,2}:\d{2}\s*[AP]M)/i,
+      /(\d{1,2}\s*[AP]M)/i,
+    ];
+    
+    for (const pattern of timePatterns) {
+      const match = content.match(pattern);
+      if (match) {
+        result.time = match[1].trim();
+        break;
+      }
+    }
+    
+    return result;
+  } catch (error) {
+    console.error(`[Playwright] Failed to fetch event page ${url}:`, error);
     return null;
   }
 }
@@ -85,8 +298,13 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
 
     const mapLink = $article.find('a.b1').first().attr('href') || '';
     const ticketLink = $article.find('a.b2').first().attr('href') || '';
-    const photoLink = $article.find('a.b3').first().attr('href') || '';
+    let photoLink = $article.find('a.b3').first().attr('href') || '';
     const videoLink = $article.find('a.b5').first().attr('href') || '';
+
+    // Filter invalid images
+    if (photoLink && !isValidImageUrl(photoLink)) {
+      photoLink = '';
+    }
 
     const $table = $article.find('table.table1, table.table2, table.table3, table.table4').first();
     const $eventLink = $eventPara.find('a').first();
@@ -154,7 +372,7 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
               location_name: locationRaw || 'Seattle, WA',
               source: 'Events12',
               url: $eventLink.attr('href') || baseUrl,
-              image: photoLink || undefined,
+              image: isValidImageUrl(photoLink) ? photoLink : undefined,
               map_url: mapLink || undefined,
               ticket_url: ticketLink || undefined,
               video_url: videoLink || undefined,
@@ -180,7 +398,7 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
               location_name: venue || locationRaw || 'Seattle, WA',
               source: 'Events12',
               url: $eventLink.attr('href') || baseUrl,
-              image: photoLink || undefined,
+              image: isValidImageUrl(photoLink) ? photoLink : undefined,
               map_url: mapLink || undefined,
               ticket_url: ticketLink || undefined,
               video_url: videoLink || undefined,
@@ -205,7 +423,7 @@ function parseEvents12(html: string, baseUrl: string): RawScrapedEvent[] {
           location_name: locationRaw || 'Seattle, WA',
           source: 'Events12',
           url: url?.startsWith('http') ? url : url ? new URL(url, baseUrl).href : baseUrl,
-          image: photoLink || undefined,
+          image: isValidImageUrl(photoLink) ? photoLink : undefined,
           map_url: mapLink || undefined,
           ticket_url: ticketLink || undefined,
           video_url: videoLink || undefined,
@@ -344,14 +562,65 @@ function getMockEvents(sourceName: string): RawScrapedEvent[] {
 export async function scrapeEventSources(): Promise<RawScrapedEvent[]> {
   console.log('[Events] Starting event scraping...');
 
-  const sources = [
-    { url: 'https://www.events12.com/seattle/', name: 'Events12', parser: parseEvents12 },
-    { url: 'https://everout.com/seattle/', name: 'EverOut', parser: parseEverOut },
+  // Define sources - some need Playwright for JS rendering
+  const httpSources: ScraperSource[] = [
+    { name: 'Events12', url: 'https://www.events12.com/seattle/', category: 'general', parser: parseEvents12Filtered },
+    { name: '19hz', url: 'https://19hz.info/eventlisting_Seattle.php', category: 'music', parser: parse19hz },
   ];
-
+  
+  // Sources that need Playwright (JS-rendered)
+  const playwrightSources: ScraperSource[] = [
+    { name: 'Seattle Symphony', url: 'https://www.seattlesymphony.org/concerttickets/calendar', category: 'music', parser: parseSeattleSymphony },
+    { name: 'Seattle Opera', url: 'https://www.seattleopera.org/calendar/', category: 'art', parser: parseSeattleOpera },
+    { name: 'Jazz Alley', url: 'https://www.jazzalley.com/www-home/calendar.jsp', category: 'music', parser: parseJazzAlley },
+    { name: 'StubHub', url: 'https://www.stubhub.com/', category: 'music', parser: parseStubHub },
+  ];
+   
+  // Fetch Fever separately with networkidle wait (needed for client-side rendering)
+  // We'll do this after allEvents is declared
+  
   const allEvents: RawScrapedEvent[] = [];
+  
+  // Fetch Fever separately with networkidle wait (needed for client-side rendering)
+  console.log('[Events] Fetching Fever (Candlelight)...');
+  const feverUrl = 'https://feverup.com/en/seattle/candlelight';
+  const feverHtml2 = await fetchRenderedHTML(feverUrl, 5000, 'networkidle');
+  if (feverHtml2) {
+    console.log(`[Events] Fever HTML length: ${feverHtml2.length}`);
+    const feverEvents = await parseFever(feverHtml2, feverUrl);
+    console.log(`[Events] Found ${feverEvents.length} events from Fever`);
+    if (feverEvents.length > 0) {
+      allEvents.push(...feverEvents);
+      // Emit events as they're scraped
+      for (const event of feverEvents) {
+        scraperEmitter.emitEvent({ ...event, source: 'Fever' });
+      }
+      scraperEmitter.emitProgress('Fever', feverEvents.length, allEvents.length);
+    }
+  }
 
-  for (const { url, name, parser } of sources) {
+  // Special handling for UW Huskies - fetch a limited range for now
+  console.log('[Events] Fetching UW Huskies...');
+  const uwUrl = 'https://gohuskies.com/calendar/print/month/0/3-1-2026/3-31-2026/null';
+  const uwHtml = await fetchRenderedHTML(uwUrl);
+  console.log('[Events] UW HTML length:', uwHtml?.length || 0);
+  if (uwHtml) {
+    const uwEvents = parseHuskies(uwHtml, uwUrl);
+    console.log('[Events] Found UW events:', uwEvents.length);
+    if (uwEvents.length > 0) {
+      console.log('[Events] Sample UW event:', uwEvents[0]);
+      allEvents.push(...uwEvents);
+      for (const event of uwEvents) {
+        scraperEmitter.emitEvent({ ...event, source: 'UW Huskies' });
+      }
+      scraperEmitter.emitProgress('UW Huskies', uwEvents.length, allEvents.length);
+    }
+  } else {
+    console.log('[Events] Failed to fetch UW');
+  }
+
+  // Fetch HTTP sources
+  for (const { url, name, parser } of httpSources) {
     console.log(`[Events] Fetching ${name}...`);
     const html = await fetchHTML(url);
 
@@ -361,7 +630,8 @@ export async function scrapeEventSources(): Promise<RawScrapedEvent[]> {
       continue;
     }
 
-    const events = parser(html, url);
+    // Events12 parser is async because it fetches individual event pages
+    const events = await (parser as any)(html, url);
     console.log(`[Events] Found ${events.length} events from ${name}`);
 
     if (events.length === 0) {
@@ -369,20 +639,78 @@ export async function scrapeEventSources(): Promise<RawScrapedEvent[]> {
       allEvents.push(...getMockEvents(name));
     } else {
       allEvents.push(...events);
+      // Emit events as they're scraped
+      for (const event of events) {
+        scraperEmitter.emitEvent({ ...event, source: name });
+      }
+      scraperEmitter.emitProgress(name, events.length, allEvents.length);
+    }
+  }
+
+  // Fetch Playwright sources (JS-rendered)
+  for (const { url, name, parser } of playwrightSources) {
+    console.log(`[Events] Fetching ${name} (Playwright)...`);
+    const html = await fetchRenderedHTML(url);
+
+    if (!html) {
+      console.log(`[Events] Failed to fetch ${name}`);
+      continue;
+    }
+
+    console.log(`[Events] HTML length for ${name}: ${html.length}`);
+    
+    const events = await (parser as any)(html, url);
+    console.log(`[Events] Found ${events.length} events from ${name}`);
+    
+    if (events.length === 0) {
+      console.log(`[Events] No events parsed from ${name}, skipping`);
+    } else {
+      allEvents.push(...events);
+      // Emit events as they're scraped
+      for (const event of events) {
+        scraperEmitter.emitEvent({ ...event, source: name });
+      }
+      scraperEmitter.emitProgress(name, events.length, allEvents.length);
     }
   }
 
   console.log(`[Events] Total events scraped: ${allEvents.length}`);
   
-  const withTickets = allEvents.filter(e => e.ticket_url).length;
-  const withMaps = allEvents.filter(e => e.map_url).length;
+  // Deduplicate events based on URL + date + title combination
+  const seenEventKeys = new Set<string>();
+  const uniqueEvents: RawScrapedEvent[] = [];
+  let duplicatesRemoved = 0;
+  
+  for (const event of allEvents) {
+    // Normalize the key: use source + title + normalized date to identify true duplicates
+    const normalizedDate = event.date ? event.date.trim().toLowerCase().split(' ')[0] : ''; // Just the date part
+    const eventUrl = event.url || event.ticket_url || '';
+    const title = event.title ? event.title.toLowerCase().trim() : '';
+    const key = `${event.source}-${title}-${normalizedDate}`;
+    
+    if (seenEventKeys.has(key)) {
+      duplicatesRemoved++;
+      continue;
+    }
+    seenEventKeys.add(key);
+    uniqueEvents.push(event);
+  }
+  
+  if (duplicatesRemoved > 0) {
+    console.log(`[Events] Removed ${duplicatesRemoved} duplicate events`);
+  }
+  
+  const deduplicatedEvents = uniqueEvents;
+  
+  const withTickets = deduplicatedEvents.filter(e => e.ticket_url).length;
+  const withMaps = deduplicatedEvents.filter(e => e.map_url).length;
   console.log(`[Events] Events with ticket links: ${withTickets}`);
   console.log(`[Events] Events with map links: ${withMaps}`);
   
   // Enhance events with session times from ticket pages
   // Skip sports events (Hockey, Baseball) since we already have home games from table parsing
   console.log('[Events] Fetching session times from ticket pages...');
-  const eventsNeedingSessions = allEvents.filter(e => 
+  const eventsNeedingSessions = deduplicatedEvents.filter(e => 
     e.ticket_url && 
     !e.date?.includes(',') &&
     !e.title?.includes('vs ') // Skip sports events - they have home game data from table
@@ -402,30 +730,112 @@ export async function scrapeEventSources(): Promise<RawScrapedEvent[]> {
     }
   }
   
+  // Fetch event page info (venue, address, date, time) - for sources that need validation
+  // Events12 has garbled venue data, StubHub has generic "Seattle, WA" without real address
+  // Fever uses client-side rendering - need to fetch each event page for details
+  console.log('[Events] Fetching event page details for validation...');
+  
+  // Only validate Events12, StubHub, and Fever - they have incomplete venue/date data
+  const eventsNeedingValidation = deduplicatedEvents.filter(e => 
+    (e.source === 'Events12' || e.source === 'StubHub' || e.source === 'Fever') && e.url
+  );
+  
+  console.log(`[Events] Events to validate: ${eventsNeedingValidation.length} (Events12 + StubHub + Fever)`);
+  
+  const urlToEventInfo = new Map<string, EventPageInfo>();
+  
+  // Process in batches of 5 concurrent requests
+  const batchSize = 5;
+  for (let i = 0; i < eventsNeedingValidation.length; i += batchSize) {
+    const batch = eventsNeedingValidation.slice(i, i + batchSize);
+    
+    await Promise.all(batch.map(async (event) => {
+      const targetUrl = event.ticket_url || event.url;
+      if (!targetUrl || urlToEventInfo.has(targetUrl)) return;
+      
+      console.log(`[Events] Fetching event page: ${targetUrl?.slice(0, 50)}...`);
+      const eventInfo = await fetchEventPageInfo(targetUrl!);
+      if (eventInfo) {
+        console.log(`[Events] Found - title: ${eventInfo.title?.slice(0, 30) || 'n/a'}, venue: ${eventInfo.venue || 'n/a'}, address: ${eventInfo.address || 'n/a'}`);
+        urlToEventInfo.set(targetUrl!, eventInfo);
+      }
+    }));
+    
+    // Small delay between batches to be nice to servers
+    await new Promise(r => setTimeout(r, 300));
+  }
+  
   // Expand events with multiple sessions
   const expandedEvents: RawScrapedEvent[] = [];
-  for (const event of allEvents) {
-    if (event.ticket_url && urlToSessions.has(event.ticket_url)) {
-      const sessions = urlToSessions.get(event.ticket_url)!;
+  for (const event of deduplicatedEvents) {
+    // Apply event page info if available (title, description, venue, address, date, time)
+    let updatedEvent = { ...event };
+    const targetUrl = event.ticket_url || event.url;
+    
+    if (targetUrl && urlToEventInfo.has(targetUrl)) {
+      const eventInfo = urlToEventInfo.get(targetUrl)!;
+      
+      // Update title if found (only for Events12 which has garbled titles)
+      if (eventInfo.title && event.source === 'Events12') {
+        updatedEvent.title = eventInfo.title;
+      }
+      
+      // Update description if found
+      if (eventInfo.description && event.source === 'Events12') {
+        updatedEvent.description = eventInfo.description;
+      }
+      
+      // Update venue name if found
+      if (eventInfo.venue) {
+        updatedEvent.location_name = eventInfo.venue;
+      }
+      
+      // Update address if found
+      if (eventInfo.address) {
+        updatedEvent.location_address = eventInfo.address;
+      }
+      
+      // NOTE: Fever dates are already parsed from the main listing page in parseFever
+      // Don't re-expand here as it creates duplicates (all events share same URL)
+      // Skip Fever expansion
+      
+      // Update date if found and looks valid
+      if (eventInfo.date && eventInfo.date.length > 5) {
+        updatedEvent.date = eventInfo.date + (eventInfo.time ? ` ${eventInfo.time}` : '');
+      } else if (eventInfo.time) {
+        // Just update time if date is already valid
+        const timeMatch = eventInfo.time.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
+        if (timeMatch && updatedEvent.date) {
+          // Append time to existing date
+          updatedEvent.date = updatedEvent.date.replace(/\d{1,2}:\d{2}\s*[AP]M/i, timeMatch[1]);
+        }
+      }
+    }
+    
+    if (updatedEvent.ticket_url && urlToSessions.has(updatedEvent.ticket_url)) {
+      const sessions = urlToSessions.get(updatedEvent.ticket_url)!;
       if (sessions.length > 1) {
         for (const session of sessions) {
           expandedEvents.push({
-            ...event,
+            ...updatedEvent,
             date: session,
           });
         }
       } else {
         expandedEvents.push({
-          ...event,
-          date: sessions[0] || event.date,
+          ...updatedEvent,
+          date: sessions[0] || updatedEvent.date,
         });
       }
     } else {
-      expandedEvents.push(event);
+      expandedEvents.push(updatedEvent);
     }
   }
   
   console.log(`[Events] Expanded events: ${expandedEvents.length}`);
+  
+  // Emit completion
+  scraperEmitter.emitComplete(expandedEvents.length);
   
   // Close browser
   if (browser) {

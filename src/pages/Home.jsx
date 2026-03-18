@@ -10,16 +10,30 @@ const Home = () => {
   const { agenda, rotation, viability, preferences, mockResources, addToAgenda, removeFromAgenda } = useApp();
   const [viewingEvent, setViewingEvent] = useState(null);
 
+  const now = new Date();
+  const todayStr = now.toDateString();
+
   const todayAgenda = agenda.filter(event => {
     const eventDate = new Date(event.startDate).toDateString();
-    const today = new Date().toDateString();
-    return eventDate === today;
+    return eventDate === todayStr;
   });
 
   const weekAgenda = agenda.filter(event => {
-    const eventDate = new Date(event.startDate).getTime();
-    const now = new Date().getTime();
-    return eventDate > now && eventDate < now + (7 * 24 * 60 * 60 * 1000);
+    const eventDate = new Date(event.startDate);
+    const eventTime = eventDate.getTime();
+    const nextWeek = now.getTime() + (7 * 24 * 60 * 60 * 1000);
+    return eventDate.toDateString() !== todayStr && eventTime > now.getTime() && eventTime < nextWeek;
+  });
+
+  const laterAgenda = agenda.filter(event => {
+    const eventDate = new Date(event.startDate);
+    const nextWeek = now.getTime() + (7 * 24 * 60 * 60 * 1000);
+    return eventDate.getTime() >= nextWeek;
+  });
+
+  const pastAgenda = agenda.filter(event => {
+    const eventDate = new Date(event.startDate);
+    return eventDate.toDateString() !== todayStr && eventDate.getTime() < now.getTime();
   });
 
   return (
@@ -56,66 +70,130 @@ const Home = () => {
 
       <section className="agenda-section">
         <h2>Upcoming</h2>
-        {!agenda.length && (
+        {agenda.length === 0 ? (
           <div className="empty-state glass">
             <p>Your agenda is empty. Head to Discovery to add events.</p>
           </div>
-        )}
+        ) : (
+          <>
+            {todayAgenda.length === 0 && weekAgenda.length === 0 && laterAgenda.length === 0 && pastAgenda.length === 0 && (
+               <div className="empty-state glass">
+                <p>All your events are in the past. Head to Discovery to add new ones.</p>
+              </div>
+            )}
 
-        {todayAgenda.length > 0 && (
-          <div className="day-group">
-            <h3>Today</h3>
-            <div className="event-list">
-              {todayAgenda.map(event => {
-                const agendaItem = agenda.find(item => item.id === event.id);
-                const isAdded = !!agendaItem;
-                const isCommitted = agendaItem?.status === 'committed';
+            {todayAgenda.length > 0 && (
+              <div className="day-group">
+                <h3>Today</h3>
+                <div className="event-list">
+                  {todayAgenda.map(event => {
+                    const agendaItem = agenda.find(item => item.id === event.id);
+                    const isAdded = !!agendaItem;
+                    const isCommitted = agendaItem?.status === 'committed';
 
-                return (
-                  <AdaptiveHeroCard
-                    key={event.id}
-                    event={event}
-                    isParentingWeek={rotation.isParentingWeek}
-                    score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
-                    isAdded={isAdded}
-                    isCommitted={isCommitted}
-                    onAdd={() => addToAgenda(event)}
-                    onRemove={() => removeFromAgenda(event.id)}
-                    onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
-                    onClick={() => setViewingEvent(event)}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
+                    return (
+                      <AdaptiveHeroCard
+                        key={event.id}
+                        event={event}
+                        isParentingWeek={rotation.isParentingWeek}
+                        score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
+                        isAdded={isAdded}
+                        isCommitted={isCommitted}
+                        onAdd={() => addToAgenda(event)}
+                        onRemove={() => removeFromAgenda(event.id)}
+                        onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
+                        onClick={() => setViewingEvent(event)}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
-        {weekAgenda.length > 0 && (
-          <div className="day-group">
-            <h3>This Week</h3>
-            <div className="event-list">
-              {weekAgenda.map(event => {
-                const agendaItem = agenda.find(item => item.id === event.id);
-                const isAdded = !!agendaItem;
-                const isCommitted = agendaItem?.status === 'committed';
+            {weekAgenda.length > 0 && (
+              <div className="day-group">
+                <h3>This Week</h3>
+                <div className="event-list">
+                  {weekAgenda.map(event => {
+                    const agendaItem = agenda.find(item => item.id === event.id);
+                    const isAdded = !!agendaItem;
+                    const isCommitted = agendaItem?.status === 'committed';
 
-                return (
-                  <AdaptiveHeroCard
-                    key={event.id}
-                    event={event}
-                    isParentingWeek={rotation.isParentingWeek}
-                    score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
-                    isAdded={isAdded}
-                    isCommitted={isCommitted}
-                    onAdd={() => addToAgenda(event)}
-                    onRemove={() => removeFromAgenda(event.id)}
-                    onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
-                    onClick={() => setViewingEvent(event)}
-                  />
-                );
-              })}
-            </div>
-          </div>
+                    return (
+                      <AdaptiveHeroCard
+                        key={event.id}
+                        event={event}
+                        isParentingWeek={rotation.isParentingWeek}
+                        score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
+                        isAdded={isAdded}
+                        isCommitted={isCommitted}
+                        onAdd={() => addToAgenda(event)}
+                        onRemove={() => removeFromAgenda(event.id)}
+                        onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
+                        onClick={() => setViewingEvent(event)}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {laterAgenda.length > 0 && (
+              <div className="day-group">
+                <h3>Later</h3>
+                <div className="event-list">
+                  {laterAgenda.map(event => {
+                    const agendaItem = agenda.find(item => item.id === event.id);
+                    const isAdded = !!agendaItem;
+                    const isCommitted = agendaItem?.status === 'committed';
+
+                    return (
+                      <AdaptiveHeroCard
+                        key={event.id}
+                        event={event}
+                        isParentingWeek={rotation.isParentingWeek}
+                        score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
+                        isAdded={isAdded}
+                        isCommitted={isCommitted}
+                        onAdd={() => addToAgenda(event)}
+                        onRemove={() => removeFromAgenda(event.id)}
+                        onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
+                        onClick={() => setViewingEvent(event)}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {pastAgenda.length > 0 && (
+              <div className="day-group">
+                <h3>Past Events</h3>
+                <div className="event-list">
+                  {pastAgenda.map(event => {
+                    const agendaItem = agenda.find(item => item.id === event.id);
+                    const isAdded = !!agendaItem;
+                    const isCommitted = agendaItem?.status === 'committed';
+
+                    return (
+                      <AdaptiveHeroCard
+                        key={event.id}
+                        event={event}
+                        isParentingWeek={rotation.isParentingWeek}
+                        score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
+                        isAdded={isAdded}
+                        isCommitted={isCommitted}
+                        onAdd={() => addToAgenda(event)}
+                        onRemove={() => removeFromAgenda(event.id)}
+                        onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
+                        onClick={() => setViewingEvent(event)}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </section>
 
@@ -127,7 +205,7 @@ const Home = () => {
         />
       )}
 
-      <style jsx>{`
+      <style>{`
         .home-page {
           display: flex;
           flex-direction: column;

@@ -166,7 +166,7 @@ const Settings = () => {
                 </button>
             </section>
 
-            <style jsx>{`
+            <style>{`
         .settings-page { display: flex; flex-direction: column; gap: 24px; padding-bottom: 120px; }
         .page-title { font-size: 28px; margin-bottom: 8px; }
         

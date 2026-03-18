@@ -11,7 +11,7 @@ const PulseWeatherRibbon = ({ isParentingWeek, envData, isGoldenHour }) => {
         </div>
         <div className="metric pulse">
           <Snowflake size={16} />
-          <span className="label">SNO: {envData.snowDepth.toFixed(0)}" fresh</span>
+          <span className="label">Snow: {envData.snowDepth.toFixed(0)}" fresh</span>
         </div>
       </div>
 

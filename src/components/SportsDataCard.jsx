@@ -112,11 +112,10 @@ const SportsDataCard = ({ data, loading }) => {
           gap: 10px;
         }
         .card-header h3 {
-          font-size: 14px;
+          font-size: 15px;
           color: var(--text-strong);
           font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 1px;
+          letter-spacing: -0.01em;
         }
         .icon { padding: 8px; border-radius: 12px; }
         .snow-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }

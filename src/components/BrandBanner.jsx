@@ -41,8 +41,7 @@ const BrandBanner = ({ isParentingWeek }) => {
         }
         .eyebrow {
           font-size: 11px;
-          letter-spacing: 2px;
-          text-transform: uppercase;
+          letter-spacing: 0.5px;
           opacity: 0.7;
           display: block;
           margin-bottom: 8px;

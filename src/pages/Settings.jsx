@@ -182,7 +182,7 @@ const Settings = () => {
         .settings-card { padding: 24px; border-radius: var(--radius-xl); }
         .section-header { display: flex; align-items: center; gap: 10px; color: var(--accent-primary); margin-bottom: 24px; }
         .solo-mode .section-header { color: var(--solo-accent); }
-        .section-header h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; font-family: var(--font-body); }
+        .section-header h3 { font-size: 15px; letter-spacing: -0.01em; font-weight: 700; font-family: var(--font-body); }
         
         .rotation-control { margin-bottom: 28px; }
         .rotation-control label { font-size: 13px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 8px; }

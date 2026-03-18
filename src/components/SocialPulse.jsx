@@ -6,7 +6,7 @@ const SocialPulse = ({ isParentingWeek }) => {
     <div className={`social-pulse glass ${isParentingWeek ? 'parenting' : 'solo'}`}>
       <div className="pulse-header">
         <Users size={16} />
-        <span className="label">COMMUNITY PULSE</span>
+        <span className="label">Community Pulse</span>
       </div>
 
       <div className="pulse-item highlight">
@@ -35,15 +35,13 @@ const SocialPulse = ({ isParentingWeek }) => {
           align-items: center;
           gap: 10px;
           color: var(--text-muted);
-          margin-bottom: 4px;
         }
         .solo-mode .pulse-header { color: var(--solo-text-muted); }
         .pulse-header .label {
-          font-size: 11px;
+          font-size: 13px;
           font-family: var(--font-body);
-          font-weight: 800;
-          letter-spacing: 2px;
-          text-transform: uppercase;
+          font-weight: 700;
+          letter-spacing: -0.01em;
         }
 
         .pulse-item {

@@ -195,12 +195,12 @@ const EventDetailModal = ({ event, onClose }) => {
         .modal-tags { position: absolute; bottom: 24px; left: 24px; }
         .modal-cat {
           padding: 8px 16px; border-radius: 10px; font-size: 11px; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 1.2px;
+          letter-spacing: 0.5px;
           background: var(--accent-primary); color: white;
         }
         .modal-source {
           padding: 8px 16px; border-radius: 10px; font-size: 11px; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 1.2px;
+          letter-spacing: 0.5px;
           background: rgba(255,255,255,0.9); color: black;
         }
 

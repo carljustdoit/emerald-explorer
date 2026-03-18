@@ -222,7 +222,7 @@ const Home = () => {
         .home-header { margin-bottom: -8px; }
         .map-section { padding: 24px; border-radius: var(--radius-xl); display: flex; flex-direction: column; gap: 16px; }
         .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); }
-        .section-header h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
+        .section-header h3 { font-size: 15px; letter-spacing: -0.01em; font-weight: 700; }
         .home-map-container { display: flex; flex-direction: column; gap: 12px; }
         .map-popup { display: flex; flex-direction: column; gap: 2px; }
         .map-popup strong { font-size: 13px; }
@@ -230,7 +230,7 @@ const Home = () => {
         .map-caption { font-size: 12px; color: var(--text-muted); text-align: center; }
         .agenda-section h2 { font-size: 28px; margin-bottom: 24px; }
         .day-group { margin-bottom: 32px; }
-        .day-group h3 { font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 2px; font-weight: 800; }
+        .day-group h3 { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; letter-spacing: -0.01em; font-weight: 700; }
         .event-list { display: flex; flex-direction: column; gap: 24px; }
         .empty-state { padding: 60px 40px; text-align: center; border-radius: var(--radius-lg); color: var(--text-muted); }
       `}</style>

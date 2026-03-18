@@ -316,7 +316,7 @@ const Discovery = () => {
 
         /* Trending */
         .trending-section { padding: 20px 24px; border-radius: var(--radius-xl); }
-        .trending-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .trending-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 16px; }
         .solo-mode .trending-header { color: var(--solo-accent); }
         .trending-items { display: flex; flex-direction: column; gap: 12px; }
         .trending-pill { display: flex; align-items: center; gap: 14px; }
@@ -344,7 +344,7 @@ const Discovery = () => {
         .filter-container.expanded .filter-content { max-height: 500px; padding-bottom: 24px; border-top-color: var(--glass-border); }
         
         .filter-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        .filter-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--text-muted); }
+        .filter-group label { font-size: 13px; letter-spacing: -0.01em; font-weight: 700; color: var(--text-muted); }
         .solo-mode .filter-group label { color: var(--solo-text-muted); }
 
         .category-bar, .timeframe-bar { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0; scrollbar-width: none; }
@@ -381,7 +381,7 @@ const Discovery = () => {
 
         /* Activities Section */
         .activities-section { padding: 20px 24px; border-radius: var(--radius-xl); margin-top: 12px; }
-        .activities-section .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .activities-section .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 16px; }
         .solo-mode .activities-section .section-header { color: var(--solo-accent); }
         .activity-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
         @media (max-width: 600px) { .activity-grid { grid-template-columns: 1fr; } }

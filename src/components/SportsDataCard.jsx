@@ -37,11 +37,9 @@ const SportsDataCard = ({ data, loading }) => {
     <div className="sports-data-container">
       <div className="sports-grid">
         {/* Snow Card */}
-        <div className="section-card glass snow">
-          <div className="section-header">
-            <div className="icon-box">
-              <Mountain size={20} />
-            </div>
+        <div className="sports-card glass snow">
+          <div className="card-header">
+            <Mountain className="icon snow-icon" size={20} />
             <h3>Mountain Report</h3>
           </div>
           <div className="stats-grid">
@@ -58,18 +56,16 @@ const SportsDataCard = ({ data, loading }) => {
               <span className="value">{data.crystal_mountain_snow_inches}"</span>
             </div>
           </div>
-          <div className="section-insight">
+          <div className="insight">
             <Zap size={14} />
             <p>{getSnowInsight()}</p>
           </div>
         </div>
 
         {/* Water Card */}
-        <div className="section-card glass water">
-          <div className="section-header">
-            <div className="icon-box">
-              <Waves size={20} />
-            </div>
+        <div className="sports-card glass water">
+          <div className="card-header">
+            <Waves className="icon water-icon" size={20} />
             <h3>Water & Wind</h3>
           </div>
           <div className="stats-grid">
@@ -86,7 +82,7 @@ const SportsDataCard = ({ data, loading }) => {
               <span className="value">{data.wind_speed_mph} mph</span>
             </div>
           </div>
-          <div className="section-insight">
+          <div className="insight">
             <Sun size={14} />
             <p>{getWaterInsight()}</p>
           </div>
@@ -103,33 +99,58 @@ const SportsDataCard = ({ data, loading }) => {
         @media (max-width: 600px) {
           .sports-grid { grid-template-columns: 1fr; }
         }
+        .sports-card {
+          padding: 20px;
+          border-radius: var(--radius-xl);
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .card-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .card-header h3 {
+          font-size: 14px;
+          color: var(--text-strong);
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+        .icon { padding: 8px; border-radius: 12px; }
+        .snow-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .water-icon { background: rgba(16, 185, 129, 0.1); color: #10b981; }
         
         .stats-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 12px;
-          padding: 8px 0;
         }
         .stat { display: flex; flex-direction: column; gap: 4px; }
-        .stat .label { font-size: 10px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-        .solo-mode .stat .label { color: var(--solo-text-muted); }
-        .stat .value { font-size: 20px; color: var(--text-strong); font-weight: 700; font-family: var(--font-header); }
-        .solo-mode .stat .value { color: var(--solo-text-strong); }
+        .stat .label { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+        .stat .value { font-size: 18px; color: var(--text-strong); font-weight: 700; }
         
-        .loading-state {
-          height: 180px;
+        .insight {
           display: flex;
-          align-items: center;
-          justify-content: center;
+          align-items: flex-start;
+          gap: 8px;
+          padding: 12px;
+          background: rgba(0,0,0,0.03);
+          border-radius: 12px;
+          color: var(--text-muted);
         }
+        .solo-mode .insight { background: rgba(255,255,255,0.04); }
+        .insight p { font-size: 12px; line-height: 1.4; font-weight: 500; }
+        .insight svg { flex-shrink: 0; margin-top: 1px; color: var(--accent-primary); }
+        .solo-mode .insight svg { color: var(--solo-accent); }
+
         .loading-state .skeleton-line {
           height: 12px;
           background: rgba(0,0,0,0.05);
           border-radius: 4px;
           width: 80%;
-          margin-bottom: 8px;
         }
-        .solo-mode .loading-state .skeleton-line { background: rgba(255,255,255,0.05); }
       `}</style>
     </div>
   );

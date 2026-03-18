@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sun, Cloud, Snowflake, Waves, Coffee, Bike, Map, Droplets, Wind } from 'lucide-react';
+import { Sun, Cloud, Snowflake, Waves, Coffee, Bike, Map, Droplets, Wind, Zap } from 'lucide-react';
 
 const WeatherInsight = ({ forecast, envData, isParentingWeek }) => {
   const [activeTab, setActiveTab] = useState('today');
@@ -25,7 +25,14 @@ const WeatherInsight = ({ forecast, envData, isParentingWeek }) => {
   const currentData = forecast[activeTab];
 
   return (
-    <div className={`weather-insight glass ${isParentingWeek ? 'parenting' : 'solo'}`}>
+    <div className={`section-card glass weather-insight ${isParentingWeek ? 'parenting' : 'solo'}`}>
+      <div className="section-header">
+        <div className="icon-box">
+          <Cloud size={20} />
+        </div>
+        <h3>Daily Outlook</h3>
+      </div>
+
       <div className="forecast-tabs">
         {['today', 'weekend', 'week'].map(tab => (
           <button
@@ -50,127 +57,118 @@ const WeatherInsight = ({ forecast, envData, isParentingWeek }) => {
           </div>
         </div>
 
-        <p className="insight-text">{currentData.insight}</p>
+        <div className="section-insight">
+          <Zap size={14} />
+          <p>{currentData.insight}</p>
+        </div>
 
         <div className="raw-metrics">
           <div className="metric">
-            <div className="metric-label-row">
-              <Droplets size={11} />
-              <span className="label">Tide</span>
-            </div>
+            <span className="label">Tide Height</span>
             <span className="value">{envData.tideHeight.toFixed(1)} ft</span>
           </div>
           <div className="metric">
-            <div className="metric-label-row">
-              <Wind size={11} />
-              <span className="label">Snow</span>
-            </div>
-            <span className="value">{envData.snowDepth.toFixed(0)}" fresh</span>
+            <span className="label">Fresh Snow</span>
+            <span className="value">{envData.snowDepth.toFixed(0)}"</span>
+          </div>
+          <div className="metric">
+            <span className="label">Conditions</span>
+            <span className="value">{currentData.condition || 'Clear'}</span>
           </div>
         </div>
       </div>
 
       <style>{`
         .weather-insight {
-          padding: 24px;
-          border-radius: var(--radius-xl);
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-          box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+          gap: 16px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
         .forecast-tabs {
           display: flex;
-          gap: 16px;
+          gap: 20px;
           border-bottom: 1px solid rgba(0,0,0,0.04);
-          padding-bottom: 12px;
+          padding-bottom: 8px;
         }
-        .solo-mode .forecast-tabs { border-bottom-color: rgba(255,255,255,0.04); }
+        .solo-mode .forecast-tabs { border-bottom-color: rgba(255,255,255,0.06); }
         
         .forecast-tabs button {
           color: var(--text-muted);
           font-size: 13px;
-          font-weight: 500;
+          font-weight: 600;
           padding: 4px 0;
           transition: all 0.3s;
           position: relative;
+          text-transform: uppercase;
+          letter-spacing: 1px;
         }
         .solo-mode .forecast-tabs button { color: var(--solo-text-muted); }
         .forecast-tabs button.active { color: var(--text-strong); }
         .forecast-tabs button.active::after {
           content: '';
           position: absolute;
-          bottom: -13px;
+          bottom: -9px;
           left: 0; right: 0;
-          height: 1.5px;
+          height: 2px;
           background: var(--accent-primary);
+          border-radius: 2px;
         }
         .solo-mode .forecast-tabs button.active { color: var(--solo-text-strong); }
         .solo-mode .forecast-tabs button.active::after { background: var(--solo-accent); }
 
-        .insight-content { display: flex; flex-direction: column; gap: 16px; }
+        .insight-content { display: flex; flex-direction: column; gap: 20px; }
 
         .summary-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          flex-wrap: wrap;
           gap: 12px;
         }
-        .condition { display: flex; align-items: center; gap: 10px; }
+        .condition { display: flex; align-items: center; gap: 12px; }
         .temp {
-          font-size: 26px;
+          font-size: 32px;
           font-family: var(--font-header);
           font-weight: 500;
+          color: var(--text-strong);
         }
+        .solo-mode .temp { color: var(--solo-text-strong); }
 
         .vibe-badge {
           background: var(--accent-soft);
           color: var(--accent-primary);
-          padding: 8px 14px;
-          border-radius: 10px;
+          padding: 10px 16px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           gap: 8px;
           font-size: 12px;
-          font-weight: 600;
+          font-weight: 700;
+          box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
         }
         .solo-mode .vibe-badge {
           background: var(--solo-accent-soft);
           color: var(--solo-accent);
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
         }
-
-        .insight-text {
-          font-size: 15px;
-          color: var(--text-muted);
-          line-height: 1.6;
-        }
-        .solo-mode .insight-text { color: var(--solo-text-muted); }
 
         .raw-metrics {
-          display: flex;
-          gap: 32px;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
           padding-top: 16px;
           border-top: 1px solid rgba(0,0,0,0.04);
         }
-        .solo-mode .raw-metrics { border-top-color: rgba(255,255,255,0.04); }
+        .solo-mode .raw-metrics { border-top-color: rgba(255,255,255,0.06); }
 
         .metric { display: flex; flex-direction: column; gap: 4px; }
-        .metric-label-row {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          color: var(--text-muted);
-          font-size: 12px;
-        }
-        .solo-mode .metric-label-row { color: var(--solo-text-muted); }
-        .label { font-weight: 500; }
-        .value {
-          font-size: 14px;
-          font-weight: 600;
+        .metric .label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .solo-mode .metric .label { color: var(--solo-text-muted); }
+        .metric .value {
+          font-size: 18px;
+          font-weight: 700;
           color: var(--text-strong);
+          font-family: var(--font-header);
         }
-        .solo-mode .value { color: var(--solo-text-strong); }
+        .solo-mode .metric .value { color: var(--solo-text-strong); }
       `}</style>
     </div>
   );

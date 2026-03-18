@@ -9,7 +9,7 @@ import SportsDataCard from '../components/SportsDataCard';
 import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
 import EventDetailModal from '../components/EventDetailModal';
 import BrandBanner from '../components/BrandBanner';
-import { Navigation } from 'lucide-react';
+import { Navigation, Zap } from 'lucide-react';
 
 // Fix Leaflet marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -90,10 +90,12 @@ const Home = () => {
         />
       )}
 
-      <section className="map-section glass">
+      <section className="section-card glass map-section">
         <div className="section-header">
-          <Navigation size={18} />
-          <h3>Interactive Route</h3>
+          <div className="icon-box">
+            <Navigation size={18} />
+          </div>
+          <h3>Daily Route</h3>
         </div>
         <div className="home-map-container">
           <MapContainer 
@@ -125,11 +127,14 @@ const Home = () => {
                 />
             )}
           </MapContainer>
-          <p className="map-caption">
-            {todayAgenda.length > 0 
-                ? `Route for ${todayAgenda.length} events today`
-                : "Add events from Discovery to see your daily route"}
-          </p>
+          <div className="section-insight map-caption">
+            <Zap size={14} />
+            <p>
+              {todayAgenda.length > 0 
+                  ? `Optimized route for ${todayAgenda.length} events today.`
+                  : "Add events from Discovery to see your daily route map."}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -223,16 +228,43 @@ const Home = () => {
         .map-section { padding: 24px; border-radius: var(--radius-xl); display: flex; flex-direction: column; gap: 16px; }
         .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); }
         .section-header h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
-        .home-map-container { display: flex; flex-direction: column; gap: 12px; }
+        .home-map-container { display: flex; flex-direction: column; gap: 16px; }
         .map-popup { display: flex; flex-direction: column; gap: 2px; }
         .map-popup strong { font-size: 13px; }
         .map-popup span { font-size: 11px; color: var(--text-muted); }
-        .map-caption { font-size: 12px; color: var(--text-muted); text-align: center; }
-        .agenda-section h2 { font-size: 28px; margin-bottom: 24px; }
-        .day-group { margin-bottom: 32px; }
-        .day-group h3 { font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 2px; font-weight: 800; }
+        .map-caption { margin-top: 8px; }
+        .agenda-section { padding-top: 8px; }
+        .agenda-section h2 { 
+          font-size: 32px; 
+          margin-bottom: 24px; 
+          font-family: var(--font-header);
+          font-weight: 500;
+          color: var(--text-strong);
+        }
+        .solo-mode .agenda-section h2 { color: var(--solo-text-strong); }
+        .day-group { margin-bottom: 40px; }
+        .day-group h3 { 
+          font-size: 12px; 
+          text-transform: uppercase; 
+          color: var(--accent-primary); 
+          margin-bottom: 16px; 
+          letter-spacing: 2px; 
+          font-weight: 800; 
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .day-group h3::after {
+          content: '';
+          height: 1px;
+          flex-grow: 1;
+          background: var(--accent-soft);
+        }
+        .solo-mode .day-group h3 { color: var(--solo-accent); }
+        .solo-mode .day-group h3::after { background: var(--solo-accent-soft); }
+        
         .event-list { display: flex; flex-direction: column; gap: 24px; }
-        .empty-state { padding: 60px 40px; text-align: center; border-radius: var(--radius-lg); color: var(--text-muted); }
+        .empty-state { padding: 80px 40px; text-align: center; border-radius: var(--radius-xl); color: var(--text-muted); }
       `}</style>
     </div>
   );

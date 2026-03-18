@@ -41,13 +41,14 @@ export async function fetchSources() {
   return response.json();
 }
 
-export async function triggerScrape(apiKey) {
+export async function triggerScrape(token, sources, mode) {
   const response = await fetch(`${API_BASE}/admin/scrape`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
+      'Authorization': `Bearer ${token}`,
     },
+    body: JSON.stringify({ sources, mode })
   });
   if (!response.ok) throw new Error('Failed to trigger scrape');
   return response.json();

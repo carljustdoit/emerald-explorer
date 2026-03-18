@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { Calendar, Clock, Coffee, ChevronLeft, ChevronRight, FileDown, Sun } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { Calendar, Clock, Coffee, ChevronLeft, ChevronRight, FileDown, Sun, LogOut } from 'lucide-react';
 
 const Settings = () => {
     const {
@@ -10,6 +12,8 @@ const Settings = () => {
         viability,
         toggleSummerMode
     } = useApp();
+    const { logout } = useAuth();
+    const navigate = useNavigate();
 
     const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -164,6 +168,11 @@ const Settings = () => {
                     <FileDown size={16} />
                     Export schedule
                 </button>
+
+                <button className="logout-btn" onClick={() => { logout(); navigate('/login'); }}>
+                    <LogOut size={16} />
+                    Sign Out
+                </button>
             </section>
 
             <style>{`
@@ -233,6 +242,13 @@ const Settings = () => {
         .solo-mode .export-btn { background: rgba(255,255,255,0.05); color: var(--solo-text-strong); }
         .export-btn:hover { background: rgba(0,0,0,0.08); }
         .solo-mode .export-btn:hover { background: rgba(255,255,255,0.08); }
+
+        .logout-btn {
+          width: 100%; padding: 14px; border-radius: 14px; background: rgba(244, 67, 54, 0.1); color: #f44336;
+          font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 10px;
+          transition: var(--transition-smooth); margin-top: 12px; border: none; cursor: pointer;
+        }
+        .logout-btn:hover { background: rgba(244, 67, 54, 0.2); }
       `}</style>
         </div>
     );

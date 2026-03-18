@@ -1,16 +1,65 @@
 import 'dotenv/config';
-import express, { Response } from 'express';
+import express, { Response, Request, NextFunction } from 'express';
 import cors from 'cors';
 import { EmeraldFeed, EmeraldEvent } from './types/schema.js';
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { scraperEmitter, StreamEvent } from './ingestion/scraper_events.js';
+import admin from 'firebase-admin';
+
+// Initialize Firebase Admin
+// Note: Requires GOOGLE_APPLICATION_CREDENTIALS env var pointing to service account JSON
+try {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+  });
+  console.log('[Auth] Firebase Admin initialized');
+} catch (error) {
+  console.error('[Auth] Failed to initialize Firebase Admin:', error);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Admin emails from env
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim());
+
+// Auth Middleware
+const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
+  let token: string | undefined;
+
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split('Bearer ')[1];
+  } else if (req.query.token) {
+    token = req.query.token as string;
+  }
+
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized: No token provided' });
+  }
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    const email = decodedToken.email;
+
+    if (!email || !ADMIN_EMAILS.includes(email)) {
+      return res.status(403).json({ error: 'Forbidden: Admin access required' });
+    }
+
+    (req as any).user = decodedToken;
+    next();
+  } catch (error) {
+    console.error('[Auth] Token verification failed:', error);
+    return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+  }
+};
+
 app.use(cors());
 app.use(express.json());
+
+// Protect all admin routes
+app.use('/api/admin', authMiddleware);
 
 // SSE clients
 let scrapeClients: Response[] = [];

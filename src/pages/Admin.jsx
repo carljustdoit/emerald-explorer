@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { MapPin, List, Map as MapIcon, Edit2, Trash2, Eye, X, ChevronUp, ChevronDown, Calendar, Tag, Link as LinkIcon } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -14,6 +15,7 @@ L.Icon.Default.mergeOptions({
 const API_BASE = '/api';
 
 export default function Admin() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('events');
   const [events, setEvents] = useState([]);
   const [sources, setSources] = useState([]);
@@ -39,12 +41,22 @@ export default function Admin() {
   const [selectedSources, setSelectedSources] = useState({});
   const [scrapeMode, setScrapeMode] = useState('overwrite'); // 'overwrite' or 'append'
 
+  async function getAuthHeaders() {
+    if (!user) return {};
+    const token = await user.getIdToken();
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+  }
+
   async function loadData() {
     setLoading(true);
     try {
+      const headers = await getAuthHeaders();
       const [eventsRes, sourcesRes, tagsRes] = await Promise.all([
-        fetch(`${API_BASE}/admin/events`),
-        fetch(`${API_BASE}/admin/sources`),
+        fetch(`${API_BASE}/admin/events`, { headers }),
+        fetch(`${API_BASE}/admin/sources`, { headers }),
         fetch(`${API_BASE}/tags`),
       ]);
       
@@ -73,54 +85,70 @@ export default function Admin() {
   }, []);
 
   useEffect(() => {
-    const liveEventsSource = new EventSource(`${API_BASE}/admin/live-events`);
+    if (!user) return;
     
-    liveEventsSource.onmessage = (e) => {
-      const data = JSON.parse(e.data);
+    let liveEventsSource;
+    async function initSSE() {
+      const token = await user.getIdToken();
+      liveEventsSource = new EventSource(`${API_BASE}/admin/live-events?token=${token}`);
       
-      if (data.type === 'init') {
-        if (data.events && data.events.length > 0) {
-          setEvents(data.events);
+      liveEventsSource.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        
+        if (data.type === 'init') {
+          if (data.events && data.events.length > 0) {
+            setEvents(data.events);
+          }
+        } else if (data.type === 'event') {
+          setEvents(prev => {
+            if (prev.find(e => e.id === data.event.id)) return prev;
+            return [...prev, data.event];
+          });
         }
-      } else if (data.type === 'event') {
-        setEvents(prev => {
-          if (prev.find(e => e.id === data.event.id)) return prev;
-          return [...prev, data.event];
-        });
-      }
-    };
+      };
+      
+      liveEventsSource.onerror = (err) => console.error('Live events SSE error:', err);
+    }
     
-    liveEventsSource.onerror = (err) => console.error('Live events SSE error:', err);
-    return () => liveEventsSource.close();
-  }, []);
+    initSSE();
+    return () => liveEventsSource?.close();
+  }, [user]);
 
   // Persistent Scrape Stream Connection
   useEffect(() => {
-    const eventSource = new EventSource(`${API_BASE}/admin/scrape/stream`);
-    
-    eventSource.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      setScrapeProgress(data);
+    if (!user) return;
+
+    let eventSource;
+    async function initSSE() {
+      const token = await user.getIdToken();
+      eventSource = new EventSource(`${API_BASE}/admin/scrape/stream?token=${token}`);
       
-      if (data.progress === 100 || data.message.includes('completed')) {
-        setScrapeStatus('success');
-        setTimeout(() => setScrapeStatus(null), 2000);
-      } else if (data.message.includes('failed') || data.message.includes('Failed')) {
-        setScrapeStatus('error');
-      } else if (data.message !== 'Idle' && data.progress >= 0 && data.progress < 100) {
-        setScrapeStatus(prev => {
-          if (prev !== 'running') {
-            setShowScrapeLog(true);
-            return 'running';
-          }
-          return prev;
-        });
-      }
-    };
-    
-    eventSource.onerror = (err) => console.error('Scrape SSE error:', err);
-    return () => eventSource.close();
-  }, []);
+      eventSource.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        setScrapeProgress(data);
+        
+        if (data.progress === 100 || data.message.includes('completed')) {
+          setScrapeStatus('success');
+          setTimeout(() => setScrapeStatus(null), 2000);
+        } else if (data.message.includes('failed') || data.message.includes('Failed')) {
+          setScrapeStatus('error');
+        } else if (data.message !== 'Idle' && data.progress >= 0 && data.progress < 100) {
+          setScrapeStatus(prev => {
+            if (prev !== 'running') {
+              setShowScrapeLog(true);
+              return 'running';
+            }
+            return prev;
+          });
+        }
+      };
+      
+      eventSource.onerror = (err) => console.error('Scrape SSE error:', err);
+    }
+
+    initSSE();
+    return () => eventSource?.close();
+  }, [user]);
 
   async function handleScrape() {
     setScrapeStatus('running');
@@ -133,9 +161,10 @@ export default function Admin() {
       .map(([name]) => name);
 
     try {
+      const headers = await getAuthHeaders();
       await fetch(`${API_BASE}/admin/scrape`, { 
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ 
           sources: sourcesToRun.length > 0 ? sourcesToRun : undefined,
           mode: scrapeMode 
@@ -149,7 +178,11 @@ export default function Admin() {
   async function handleDeleteEvent(id) {
     if (!confirm('Delete this event?')) return;
     try {
-      await fetch(`${API_BASE}/admin/events/${id}`, { method: 'DELETE' });
+      const headers = await getAuthHeaders();
+      await fetch(`${API_BASE}/admin/events/${id}`, { 
+        method: 'DELETE',
+        headers
+      });
       loadData();
       setSelectedEvent(null);
     } catch {
@@ -159,9 +192,10 @@ export default function Admin() {
 
   async function handleSaveEvent() {
     try {
+      const headers = await getAuthHeaders();
       await fetch(`${API_BASE}/admin/events/${editingEvent.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(editingEvent),
       });
       setEditingEvent(null);

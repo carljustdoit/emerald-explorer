@@ -87,7 +87,7 @@ const Signup = () => {
         </p>
       </div>
 
-      <style jsx>{`
+      <style>{`
         /* Reusing styles from Login.jsx */
         .login-page { min-height: 90vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .login-card { width: 100%; max-width: 400px; padding: 40px; border-radius: 32px; text-align: center; }

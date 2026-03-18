@@ -10,7 +10,7 @@ const BrandBanner = ({ isParentingWeek }) => {
         <p>{isParentingWeek ? 'Family, stability, and neighborhood exploration.' : 'High-energy social, deep adventure, and recharge.'}</p>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .brand-banner {
           position: relative;
           height: 220px;

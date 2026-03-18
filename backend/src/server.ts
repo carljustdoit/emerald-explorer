@@ -6,6 +6,7 @@ import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { scraperEmitter, StreamEvent } from './ingestion/scraper_events.js';
 import admin from 'firebase-admin';
+import { SportsDataService } from './services/SportsDataService.js';
 
 // Initialize Firebase Admin
 // Note: Requires GOOGLE_APPLICATION_CREDENTIALS env var pointing to service account JSON
@@ -216,6 +217,17 @@ app.get('/api/environment', async (req, res) => {
     res.json(feed.metadata.environment);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch environment data' });
+  }
+});
+
+// Real-time sports data (Snow/Water/Weather)
+app.get('/api/sports-data', async (req, res) => {
+  try {
+    const data = await SportsDataService.getSportsData();
+    res.json(data);
+  } catch (error) {
+    console.error('[API] Error fetching sports data:', error);
+    res.status(500).json({ error: 'Failed to fetch sports data' });
   }
 });
 

@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Home, Compass, Settings, Shield, LogOut } from 'lucide-react';
 
@@ -25,7 +26,7 @@ const Navigation = () => {
         </NavLink>
       )}
 
-      <style jsx>{`
+      <style>{`
         .bottom-nav {
           position: fixed;
           bottom: 0;

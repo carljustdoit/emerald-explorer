@@ -70,7 +70,7 @@ const WeatherInsight = ({ forecast, envData, isParentingWeek }) => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .weather-insight {
           padding: 24px;
           border-radius: var(--radius-xl);

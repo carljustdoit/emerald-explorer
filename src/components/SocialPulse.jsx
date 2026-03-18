@@ -19,7 +19,7 @@ const SocialPulse = ({ isParentingWeek }) => {
         <span className="text">Safe-Radius: 4 parent-verified locations added recently.</span>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .social-pulse {
           padding: 24px;
           border-radius: var(--radius-lg);

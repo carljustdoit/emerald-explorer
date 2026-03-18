@@ -1,39 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { useApp } from '../context/AppContext';
+import { useSportsData } from '../hooks/useApi';
 import WeatherInsight from '../components/WeatherInsight';
+import SportsDataCard from '../components/SportsDataCard';
 import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
 import EventDetailModal from '../components/EventDetailModal';
 import BrandBanner from '../components/BrandBanner';
-import { MapPin } from 'lucide-react';
+import { Navigation } from 'lucide-react';
+
+// Fix Leaflet marker icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const Home = () => {
-  const { agenda, rotation, viability, preferences, mockResources, addToAgenda, removeFromAgenda } = useApp();
+  const { 
+    agenda = [], 
+    rotation = { isParentingWeek: false }, 
+    viability = {}, 
+    mockResources = [], 
+    addToAgenda, 
+    removeFromAgenda, 
+    preferences = {} 
+  } = useApp();
+  
+  const { data: sportsData, loading: sportsLoading } = useSportsData();
   const [viewingEvent, setViewingEvent] = useState(null);
 
   const now = new Date();
   const todayStr = now.toDateString();
 
-  const todayAgenda = agenda.filter(event => {
-    const eventDate = new Date(event.startDate).toDateString();
-    return eventDate === todayStr;
-  });
+  const todayAgenda = useMemo(() => {
+    return (agenda || [])
+      .filter(event => {
+        if (!event || !event.startDate) return false;
+        try {
+          return new Date(event.startDate).toDateString() === todayStr;
+        } catch (e) {
+          return false;
+        }
+      })
+      .sort((a, b) => {
+        const dateA = new Date(a.startDate);
+        const dateB = new Date(b.startDate);
+        return dateA - dateB;
+      });
+  }, [agenda, todayStr]);
 
-  const weekAgenda = agenda.filter(event => {
+  const routePositions = useMemo(() => {
+    return todayAgenda
+      .filter(e => e.coord && typeof e.coord.x === 'number' && typeof e.coord.y === 'number')
+      .map(e => [e.coord.x, e.coord.y]);
+  }, [todayAgenda]);
+
+  const weekAgenda = (agenda || []).filter(event => {
+    if (!event || !event.startDate) return false;
     const eventDate = new Date(event.startDate);
     const eventTime = eventDate.getTime();
     const nextWeek = now.getTime() + (7 * 24 * 60 * 60 * 1000);
     return eventDate.toDateString() !== todayStr && eventTime > now.getTime() && eventTime < nextWeek;
   });
 
-  const laterAgenda = agenda.filter(event => {
+  const laterAgenda = (agenda || []).filter(event => {
+    if (!event || !event.startDate) return false;
     const eventDate = new Date(event.startDate);
     const nextWeek = now.getTime() + (7 * 24 * 60 * 60 * 1000);
     return eventDate.getTime() >= nextWeek;
-  });
-
-  const pastAgenda = agenda.filter(event => {
-    const eventDate = new Date(event.startDate);
-    return eventDate.toDateString() !== todayStr && eventDate.getTime() < now.getTime();
   });
 
   return (
@@ -42,31 +80,58 @@ const Home = () => {
         <BrandBanner isParentingWeek={rotation.isParentingWeek} />
       </header>
 
-      <WeatherInsight
-        forecast={viability.forecast}
-        envData={viability.envData}
-        isParentingWeek={rotation.isParentingWeek}
-      />
+      {sportsData && <SportsDataCard data={sportsData} loading={sportsLoading} />}
 
-      {todayAgenda.length > 1 && (
-        <section className="route-section glass">
-          <div className="section-header">
-            <MapPin size={18} />
-            <h3>Your Route Today</h3>
-          </div>
-          <div className="map-placeholder">
-            <div className="route-visual">
-              {todayAgenda.map((event, i) => (
-                <React.Fragment key={event.id}>
-                  <div className="map-dot" title={event.title} onClick={() => setViewingEvent(event)} style={{ cursor: 'pointer' }} />
-                  {i < todayAgenda.length - 1 && <div className="route-line" />}
-                </React.Fragment>
-              ))}
-            </div>
-            <p className="map-status">Optimized itinerary for {todayAgenda.length} stops</p>
-          </div>
-        </section>
+      {viability && viability.forecast && (
+        <WeatherInsight
+          forecast={viability.forecast}
+          envData={viability.envData}
+          isParentingWeek={rotation.isParentingWeek}
+        />
       )}
+
+      <section className="map-section glass">
+        <div className="section-header">
+          <Navigation size={18} />
+          <h3>Interactive Route</h3>
+        </div>
+        <div className="home-map-container">
+          <MapContainer 
+            center={[47.6062, -122.3321]} 
+            zoom={11} 
+            style={{ height: '300px', width: '100%', borderRadius: '16px', zIndex: 1 }}
+            scrollWheelZoom={false}
+          >
+            <TileLayer
+                url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                attribution='&copy; OpenStreetMap contributors &copy; CARTO'
+            />
+            {todayAgenda.map((event) => event.coord && typeof event.coord.x === 'number' && (
+                <Marker key={event.id} position={[event.coord.x, event.coord.y]}>
+                    <Popup>
+                        <div className="map-popup">
+                            <strong>{event.title}</strong>
+                            <span>{new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                    </Popup>
+                </Marker>
+            ))}
+            {routePositions.length > 1 && (
+                <Polyline 
+                    positions={routePositions} 
+                    color="var(--accent-primary)" 
+                    weight={3} 
+                    dashArray="5, 10"
+                />
+            )}
+          </MapContainer>
+          <p className="map-caption">
+            {todayAgenda.length > 0 
+                ? `Route for ${todayAgenda.length} events today`
+                : "Add events from Discovery to see your daily route"}
+          </p>
+        </div>
+      </section>
 
       <section className="agenda-section">
         <h2>Upcoming</h2>
@@ -76,36 +141,24 @@ const Home = () => {
           </div>
         ) : (
           <>
-            {todayAgenda.length === 0 && weekAgenda.length === 0 && laterAgenda.length === 0 && pastAgenda.length === 0 && (
-               <div className="empty-state glass">
-                <p>All your events are in the past. Head to Discovery to add new ones.</p>
-              </div>
-            )}
-
             {todayAgenda.length > 0 && (
               <div className="day-group">
                 <h3>Today</h3>
                 <div className="event-list">
-                  {todayAgenda.map(event => {
-                    const agendaItem = agenda.find(item => item.id === event.id);
-                    const isAdded = !!agendaItem;
-                    const isCommitted = agendaItem?.status === 'committed';
-
-                    return (
-                      <AdaptiveHeroCard
-                        key={event.id}
-                        event={event}
-                        isParentingWeek={rotation.isParentingWeek}
-                        score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
-                        isAdded={isAdded}
-                        isCommitted={isCommitted}
-                        onAdd={() => addToAgenda(event)}
-                        onRemove={() => removeFromAgenda(event.id)}
-                        onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
-                        onClick={() => setViewingEvent(event)}
-                      />
-                    );
-                  })}
+                  {todayAgenda.map(event => (
+                    <AdaptiveHeroCard
+                      key={event.id}
+                      event={event}
+                      isParentingWeek={rotation.isParentingWeek}
+                      score={viability.calculateScore ? viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda) : 50}
+                      isAdded={true}
+                      isCommitted={event.status === 'committed'}
+                      onAdd={() => addToAgenda(event)}
+                      onRemove={() => removeFromAgenda(event.id)}
+                      onCommit={() => addToAgenda(event, event.status === 'committed' ? 'added' : 'committed')}
+                      onClick={() => setViewingEvent(event)}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -114,26 +167,20 @@ const Home = () => {
               <div className="day-group">
                 <h3>This Week</h3>
                 <div className="event-list">
-                  {weekAgenda.map(event => {
-                    const agendaItem = agenda.find(item => item.id === event.id);
-                    const isAdded = !!agendaItem;
-                    const isCommitted = agendaItem?.status === 'committed';
-
-                    return (
-                      <AdaptiveHeroCard
-                        key={event.id}
-                        event={event}
-                        isParentingWeek={rotation.isParentingWeek}
-                        score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
-                        isAdded={isAdded}
-                        isCommitted={isCommitted}
-                        onAdd={() => addToAgenda(event)}
-                        onRemove={() => removeFromAgenda(event.id)}
-                        onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
-                        onClick={() => setViewingEvent(event)}
-                      />
-                    );
-                  })}
+                  {weekAgenda.map(event => (
+                    <AdaptiveHeroCard
+                      key={event.id}
+                      event={event}
+                      isParentingWeek={rotation.isParentingWeek}
+                      score={viability.calculateScore ? viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda) : 50}
+                      isAdded={true}
+                      isCommitted={event.status === 'committed'}
+                      onAdd={() => addToAgenda(event)}
+                      onRemove={() => removeFromAgenda(event.id)}
+                      onCommit={() => addToAgenda(event, event.status === 'committed' ? 'added' : 'committed')}
+                      onClick={() => setViewingEvent(event)}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -142,54 +189,20 @@ const Home = () => {
               <div className="day-group">
                 <h3>Later</h3>
                 <div className="event-list">
-                  {laterAgenda.map(event => {
-                    const agendaItem = agenda.find(item => item.id === event.id);
-                    const isAdded = !!agendaItem;
-                    const isCommitted = agendaItem?.status === 'committed';
-
-                    return (
-                      <AdaptiveHeroCard
-                        key={event.id}
-                        event={event}
-                        isParentingWeek={rotation.isParentingWeek}
-                        score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
-                        isAdded={isAdded}
-                        isCommitted={isCommitted}
-                        onAdd={() => addToAgenda(event)}
-                        onRemove={() => removeFromAgenda(event.id)}
-                        onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
-                        onClick={() => setViewingEvent(event)}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {pastAgenda.length > 0 && (
-              <div className="day-group">
-                <h3>Past Events</h3>
-                <div className="event-list">
-                  {pastAgenda.map(event => {
-                    const agendaItem = agenda.find(item => item.id === event.id);
-                    const isAdded = !!agendaItem;
-                    const isCommitted = agendaItem?.status === 'committed';
-
-                    return (
-                      <AdaptiveHeroCard
-                        key={event.id}
-                        event={event}
-                        isParentingWeek={rotation.isParentingWeek}
-                        score={viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda)}
-                        isAdded={isAdded}
-                        isCommitted={isCommitted}
-                        onAdd={() => addToAgenda(event)}
-                        onRemove={() => removeFromAgenda(event.id)}
-                        onCommit={() => addToAgenda(event, isCommitted ? 'added' : 'committed')}
-                        onClick={() => setViewingEvent(event)}
-                      />
-                    );
-                  })}
+                  {laterAgenda.map(event => (
+                    <AdaptiveHeroCard
+                      key={event.id}
+                      event={event}
+                      isParentingWeek={rotation.isParentingWeek}
+                      score={viability.calculateScore ? viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda) : 50}
+                      isAdded={true}
+                      isCommitted={event.status === 'committed'}
+                      onAdd={() => addToAgenda(event)}
+                      onRemove={() => removeFromAgenda(event.id)}
+                      onCommit={() => addToAgenda(event, event.status === 'committed' ? 'added' : 'committed')}
+                      onClick={() => setViewingEvent(event)}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -197,7 +210,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* Event Detail Modal */}
       {viewingEvent && (
         <EventDetailModal
           event={viewingEvent}
@@ -206,100 +218,21 @@ const Home = () => {
       )}
 
       <style>{`
-        .home-page {
-          display: flex;
-          flex-direction: column;
-          gap: 32px;
-          padding-bottom: 100px;
-        }
-        .home-header {
-            margin-bottom: -8px;
-        }
-        .route-section {
-          padding: 24px;
-          border-radius: var(--radius-lg);
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-        .section-header {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          color: var(--accent-primary);
-        }
-        .solo-mode .section-header { color: var(--solo-accent); }
-        .section-header h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; font-family: var(--font-body); }
-
-        .map-placeholder {
-          height: 140px;
-          background: rgba(0,0,0,0.03);
-          border-radius: 16px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 12px;
-          border: 1.5px dashed var(--glass-border);
-        }
-        .solo-mode .map-placeholder { background: rgba(255,255,255,0.03); }
-        
-        .route-visual {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-        .map-dot {
-          width: 10px;
-          height: 10px;
-          background: var(--accent-primary);
-          border-radius: 50%;
-          box-shadow: 0 0 15px var(--accent-soft);
-          transition: transform 0.2s;
-        }
-        .map-dot:hover { transform: scale(1.4); }
-        .solo-mode .map-dot { background: var(--solo-accent); box-shadow: 0 0 15px var(--solo-accent-soft); }
-        
-        .route-line {
-          width: 32px;
-          height: 2px;
-          background: var(--glass-border);
-        }
-        .map-status { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-        .solo-mode .map-status { color: var(--solo-text-muted); }
-
-        .agenda-section h2 {
-          font-family: var(--font-header);
-          font-size: 28px;
-          margin-bottom: 24px;
-        }
-        .day-group {
-          margin-bottom: 32px;
-        }
-        .day-group h3 {
-          font-size: 11px;
-          text-transform: uppercase;
-          color: var(--text-muted);
-          margin-bottom: 16px;
-          letter-spacing: 2px;
-          font-weight: 800;
-          font-family: var(--font-body);
-        }
-        .solo-mode .day-group h3 { color: var(--solo-text-muted); }
-        
-        .event-list {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-        }
-        .empty-state {
-          padding: 60px 40px;
-          text-align: center;
-          border-radius: var(--radius-lg);
-          color: var(--text-muted);
-          font-weight: 500;
-        }
-        .solo-mode .empty-state { color: var(--solo-text-muted); }
+        .home-page { display: flex; flex-direction: column; gap: 32px; padding-bottom: 100px; }
+        .home-header { margin-bottom: -8px; }
+        .map-section { padding: 24px; border-radius: var(--radius-xl); display: flex; flex-direction: column; gap: 16px; }
+        .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); }
+        .section-header h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
+        .home-map-container { display: flex; flex-direction: column; gap: 12px; }
+        .map-popup { display: flex; flex-direction: column; gap: 2px; }
+        .map-popup strong { font-size: 13px; }
+        .map-popup span { font-size: 11px; color: var(--text-muted); }
+        .map-caption { font-size: 12px; color: var(--text-muted); text-align: center; }
+        .agenda-section h2 { font-size: 28px; margin-bottom: 24px; }
+        .day-group { margin-bottom: 32px; }
+        .day-group h3 { font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 2px; font-weight: 800; }
+        .event-list { display: flex; flex-direction: column; gap: 24px; }
+        .empty-state { padding: 60px 40px; text-align: center; border-radius: var(--radius-lg); color: var(--text-muted); }
       `}</style>
     </div>
   );

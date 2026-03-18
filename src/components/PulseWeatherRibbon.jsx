@@ -22,7 +22,7 @@ const PulseWeatherRibbon = ({ isParentingWeek, envData, isGoldenHour }) => {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         .weather-ribbon {
           padding: 16px 20px;
           border-radius: 16px;

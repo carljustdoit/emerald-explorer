@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchEvents, fetchEnvironment, fetchTags } from '../services/api';
+import { fetchEvents, fetchEnvironment, fetchTags, fetchSportsData } from '../services/api';
 
 export function useEvents(filters = {}) {
   const [events, setEvents] = useState([]);
@@ -82,4 +82,31 @@ export function useTags() {
   }, []);
 
   return { tags, loading };
+}
+
+export function useSportsData() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await fetchSportsData();
+      setData(result);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+    const interval = setInterval(loadData, 5 * 60 * 1000); // Refresh every 5 mins
+    return () => clearInterval(interval);
+  }, [loadData]);
+
+  return { data, loading, error, refetch: loadData };
 }

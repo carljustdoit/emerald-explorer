@@ -33,11 +33,14 @@ export const EmeraldEventSchema = z.object({
 });
 
 export const EnvironmentDataSchema = z.object({
-  snoqualmie_snow_inches: z.number(),
-  stevens_pass_snow_inches: z.number(),
-  lake_union_temp_f: z.number(),
-  cedar_river_flow_cfs: z.number(),
-  wind_speed_mph: z.number(),
+  snoqualmie_snow_inches: z.number().optional(),
+  stevens_pass_snow_inches: z.number().optional(),
+  crystal_mountain_snow_inches: z.number().optional(),
+  lake_union_temp_f: z.number().optional(),
+  lake_washington_temp_f: z.number().optional(),
+  puget_sound_temp_f: z.number().optional(),
+  cedar_river_flow_cfs: z.number().optional(),
+  wind_speed_mph: z.number().optional(),
   sunset_time: z.string(),
   tide_height_ft: z.number().optional(),
   conditions: z.string(),

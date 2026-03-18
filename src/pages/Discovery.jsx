@@ -177,6 +177,49 @@ const Discovery = () => {
                 </div>
             </section>
 
+            <section className="activities-section glass">
+                <div className="section-header">
+                    <MapPin size={16} />
+                    <span>Outdoor Activities (Pin to Home)</span>
+                </div>
+                <div className="activity-grid">
+                    {[
+                        { id: 'act-ski-snoqualmie', title: 'Skiing / Boarding', location: 'Snoqualmie Pass', coord: { x: 47.4241, y: -121.4137 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1551698618-1fed5d96559e?auto=format&fit=crop&q=80&w=400' },
+                        { id: 'act-ski-stevens', title: 'Skiing / Boarding', location: 'Stevens Pass', coord: { x: 47.7463, y: -121.0858 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1526725359915-d256ab4d11d6?auto=format&fit=crop&q=80&w=400' },
+                        { id: 'act-paddle-union', title: 'Paddling / Kayaking', location: 'Lake Union', coord: { x: 47.6360, y: -122.3340 }, category: 'Nature', vibe: 'Water Sports', image: 'https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&q=80&w=400' },
+                        { id: 'act-paddle-sound', title: 'Paddling / Kayaking', location: 'Puget Sound (Alki)', coord: { x: 47.5815, y: -122.4047 }, category: 'Nature', vibe: 'Water Sports', image: 'https://images.unsplash.com/photo-1544551763-77ef2d0ca036?auto=format&fit=crop&q=80&w=400' }
+                    ].map(activity => {
+                        const isPinned = agenda.some(item => item.id === activity.id);
+                        return (
+                            <div key={activity.id} className="activity-card">
+                                <img src={activity.image} alt={activity.title} />
+                                <div className="activity-info">
+                                    <h4>{activity.title}</h4>
+                                    <p>{activity.location}</p>
+                                    <button 
+                                        className={`pin-btn ${isPinned ? 'pinned' : ''}`}
+                                        onClick={() => {
+                                            if (isPinned) {
+                                                removeFromAgenda(activity.id);
+                                            } else {
+                                                addToAgenda({
+                                                    ...activity,
+                                                    startDate: new Date().toLocaleString('sv').replace(' ', 'T'), // 'YYYY-MM-DDTHH:mm:ss'
+                                                    description: `Outdoor activity at ${activity.location}. Check weather before heading out!`,
+                                                    time: 'Anytime'
+                                                });
+                                            }
+                                        }}
+                                    >
+                                        {isPinned ? 'Pinned to Home' : 'Pin to Home'}
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </section>
+
             <div className={`filter-container glass ${isFilterExpanded ? 'expanded' : ''}`}>
                 <button 
                     className="filter-toggle" 
@@ -335,6 +378,23 @@ const Discovery = () => {
 
         /* Event Feed */
         .event-feed { display: flex; flex-direction: column; gap: 28px; }
+
+        /* Activities Section */
+        .activities-section { padding: 20px 24px; border-radius: var(--radius-xl); margin-top: 12px; }
+        .activities-section .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .solo-mode .activities-section .section-header { color: var(--solo-accent); }
+        .activity-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        @media (max-width: 600px) { .activity-grid { grid-template-columns: 1fr; } }
+        .activity-card { display: flex; gap: 12px; background: rgba(0,0,0,0.02); border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); }
+        .solo-mode .activity-card { background: rgba(255,255,255,0.02); }
+        .activity-card img { width: 80px; height: 100%; object-fit: cover; }
+        .activity-info { padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .activity-info h4 { font-size: 14px; font-weight: 600; }
+        .activity-info p { font-size: 11px; color: var(--text-muted); }
+        .pin-btn { margin-top: 8px; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid var(--accent-primary); background: transparent; color: var(--accent-primary); transition: all 0.2s; }
+        .pin-btn.pinned { background: var(--accent-primary); color: white; }
+        .solo-mode .pin-btn { border-color: var(--solo-accent); color: var(--solo-accent); }
+        .solo-mode .pin-btn.pinned { background: var(--solo-accent); color: black; }
       `}</style>
         </div>
     );

@@ -53,3 +53,9 @@ export async function triggerScrape(token, sources, mode) {
   if (!response.ok) throw new Error('Failed to trigger scrape');
   return response.json();
 }
+
+export async function fetchSportsData() {
+  const response = await fetch(`${API_BASE}/sports-data`);
+  if (!response.ok) throw new Error('Failed to fetch sports data');
+  return response.json();
+}

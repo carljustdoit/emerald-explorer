@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies (including production and dev for build)
 RUN npm install
 
+# Create a public directory for local feed storage
+RUN mkdir -p public
+
 # Copy source code
 COPY . .
 

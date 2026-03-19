@@ -9,7 +9,9 @@ services:
       - key: PORT
         value: 3001
       - key: FEED_PATH
-        value: ../public/seattle_master_feed.json
+        value: ./public/seattle_master_feed.json
+      - key: OUTPUT_DIR
+        value: ./public
       - key: AWS_REGION
         sync: false
       - key: AWS_ACCESS_KEY_ID

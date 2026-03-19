@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Home, Compass, Settings, Shield } from 'lucide-react';
+import { Home, Compass, Settings, Shield, LogIn } from 'lucide-react';
 
 const Navigation = () => {
-  const { isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   return (
     <nav className="bottom-nav">
@@ -23,6 +23,12 @@ const Navigation = () => {
         <NavLink to="/admin" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
           <Shield size={20} strokeWidth={1.5} />
           <span>Admin</span>
+        </NavLink>
+      )}
+      {!user && (
+        <NavLink to="/login" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <LogIn size={20} strokeWidth={1.5} />
+          <span>Login</span>
         </NavLink>
       )}
 

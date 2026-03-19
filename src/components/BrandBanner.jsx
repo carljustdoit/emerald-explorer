@@ -1,6 +1,20 @@
 import React from 'react';
+import { useAuth } from '../context/AuthContext';
+import { LogIn, LogOut, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const BrandBanner = ({ isParentingWeek }) => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAuthAction = () => {
+    if (user) {
+      logout();
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className={`brand-banner ${isParentingWeek ? 'parenting' : 'solo'}`}>
       <div className="banner-overlay" />
@@ -10,6 +24,21 @@ const BrandBanner = ({ isParentingWeek }) => {
         <p>{isParentingWeek 
           ? 'Family, stability, and neighborhood exploration.' 
           : 'High-energy social, deep adventure, and recharge.'}</p>
+      </div>
+
+      <div className="banner-actions">
+        {user ? (
+          <button onClick={handleAuthAction} className="auth-pill" title="Logout">
+            <User size={14} />
+            <span>{user.email.split('@')[0]}</span>
+            <LogOut size={14} />
+          </button>
+        ) : (
+          <button onClick={handleAuthAction} className="auth-pill login" title="Login">
+            <LogIn size={14} />
+            <span>Log In</span>
+          </button>
+        )}
       </div>
 
       <style>{`
@@ -71,6 +100,45 @@ const BrandBanner = ({ isParentingWeek }) => {
           max-width: 85%;
           line-height: 1.5;
           font-weight: 400;
+        }
+        .banner-actions {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          z-index: 10;
+        }
+        .auth-pill {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 12px;
+          background: rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 40px;
+          color: white;
+          font-size: 12px;
+          font-weight: 600;
+          transition: var(--transition-fast);
+        }
+        .auth-pill:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-1px);
+        }
+        .auth-pill.login {
+          background: var(--accent-primary);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+        .solo-mode .auth-pill.login {
+          background: var(--solo-accent);
+          color: black;
+        }
+        .auth-pill span {
+          max-width: 100px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       `}</style>
     </div>

@@ -54,7 +54,7 @@ const AppLayout = () => {
         </div>
       </main>
 
-      {user && <Navigation />}
+      <Navigation />
 
       <style>{`
         .app-container {

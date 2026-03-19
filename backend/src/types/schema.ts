@@ -33,10 +33,12 @@ export const EmeraldEventSchema = z.object({
 });
 
 export const EnvironmentDataSchema = z.object({
+  snoqualmie_snow_inches: z.number().optional(),
   snoqualmie_base_depth_inches: z.number().optional(),
   snoqualmie_mid_depth_inches: z.number().optional(),
   snoqualmie_peak_depth_inches: z.number().optional(),
   snoqualmie_snow_condition: z.string().optional(),
+  stevens_pass_snow_inches: z.number().optional(),
   stevens_pass_new_snow_inches: z.number().optional(),
   stevens_pass_base_depth_inches: z.number().optional(),
   stevens_pass_snow_condition: z.string().optional(),

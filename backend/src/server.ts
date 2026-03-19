@@ -143,14 +143,30 @@ async function loadFeed(): Promise<EmeraldFeed> {
   }
 
   try {
-    const feedPath = process.env.FEED_PATH || join(process.cwd(), '..', 'public', 'seattle_master_feed.json');
-    const data = await readFile(feedPath, 'utf-8');
-    cachedFeed = JSON.parse(data) as EmeraldFeed;
-    lastLoadTime = now;
-    console.log(`[API] Loaded feed with ${cachedFeed.events.length} events`);
-    return cachedFeed;
+    const feedPath = process.env.FEED_PATH || join(process.cwd(), 'public', 'seattle_master_feed.json');
+    try {
+      const data = await readFile(feedPath, 'utf-8');
+      cachedFeed = JSON.parse(data) as EmeraldFeed;
+      lastLoadTime = now;
+      console.log(`[API] Loaded feed with ${cachedFeed.events.length} events`);
+      return cachedFeed;
+    } catch (err) {
+      console.warn(`[API] Master feed not found at ${feedPath}, returning empty feed.`);
+      const emptyFeed: EmeraldFeed = {
+        metadata: {
+          last_updated: new Date().toISOString(),
+          environment: {
+            sunset_time: 'N/A',
+            conditions: 'N/A',
+          }
+        },
+        events: []
+      };
+      cachedFeed = emptyFeed;
+      return emptyFeed;
+    }
   } catch (error) {
-    console.error('[API] Failed to load feed:', error);
+    console.error('[API] Unexpected error in loadFeed:', error);
     if (cachedFeed) return cachedFeed;
     throw error;
   }

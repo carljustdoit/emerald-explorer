@@ -64,15 +64,17 @@ export default function Admin() {
       const sourcesData = await sourcesRes.json();
       const tagsData = await tagsRes.json();
       
-      setEvents(eventsData.events);
-      setSources(sourcesData.sources);
-      setTags(tagsData.tags);
+      setEvents(eventsData?.events || []);
+      setSources(sourcesData?.sources || []);
+      setTags(tagsData?.tags || []);
 
       // Initialize selected sources based on enabled status
       const initialSelected = {};
-      sourcesData.sources.forEach(s => {
-        initialSelected[s.name] = true; // Default all to true
-      });
+      if (sourcesData?.sources) {
+        sourcesData.sources.forEach(s => {
+          initialSelected[s.name] = true; // Default all to true
+        });
+      }
       setSelectedSources(initialSelected);
     } catch (err) {
       console.error('Failed to load data:', err);

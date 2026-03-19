@@ -164,7 +164,7 @@ export default function Admin() {
 
     try {
       const headers = await getAuthHeaders();
-      await fetch(`${API_BASE}/admin/scrape`, { 
+      const response = await fetch(`${API_BASE}/admin/scrape`, { 
         method: 'POST',
         headers,
         body: JSON.stringify({ 
@@ -172,8 +172,27 @@ export default function Admin() {
           mode: scrapeMode 
         })
       });
-    } catch {
+
+      if (response.status === 409) {
+        const errorData = await response.json();
+        setScrapeStatus('error');
+        setScrapeProgress(prev => ({ 
+          ...prev, 
+          message: errorData.error, 
+          logs: [...prev.logs, `[ERROR] ${errorData.error}`] 
+        }));
+        return;
+      }
+      
+      if (!response.ok) throw new Error('Failed to trigger scrape');
+      
+    } catch (err) {
       setScrapeStatus('error');
+      setScrapeProgress(prev => ({ 
+        ...prev, 
+        message: 'Failed to connect to scraper service.', 
+        logs: [...prev.logs, `[ERROR] ${err.message}`] 
+      }));
     }
   }
 

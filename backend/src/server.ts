@@ -9,12 +9,13 @@ import admin from 'firebase-admin';
 import { SportsDataService } from './services/SportsDataService.js';
 
 // Initialize Firebase Admin
-// Note: Requires GOOGLE_APPLICATION_CREDENTIALS env var pointing to service account JSON
+let db: admin.firestore.Firestore | null = null;
 try {
   admin.initializeApp({
     credential: admin.credential.applicationDefault(),
   });
-  console.log('[Auth] Firebase Admin initialized');
+  db = admin.firestore();
+  console.log('[Auth] Firebase Admin & Firestore initialized');
 } catch (error) {
   console.error('[Auth] Failed to initialize Firebase Admin:', error);
 }
@@ -100,8 +101,43 @@ app.get('/api/admin/scrape/stream', (req, res: Response) => {
 
 function sendScrapeProgress(data: { progress: number; source: string; message: string; logs: string[] }) {
   currentScrapeProgress = data;
+  
+  // 1. Broadcast to local SSE clients
   scrapeClients.forEach(client => {
     client.write(`data: ${JSON.stringify(data)}\n\n`);
+  });
+
+  // 2. Persist to Firestore for other instances (Universal Progress)
+  if (db) {
+    db.collection('system').doc('scraper').set({
+      ...data,
+      status: scrapeStatus,
+      lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true }).catch(err => console.error('[Firestore] Progress sync failed:', err));
+  }
+}
+
+// Universal Progress Listener: All instances watch Firestore to stay in sync
+if (db) {
+  db.collection('system').doc('scraper').onSnapshot(doc => {
+    if (doc.exists) {
+      const data = doc.data() as any;
+      // If Firestore has a newer status than our local variable, adopt it
+      if (data.status) scrapeStatus = data.status;
+      
+      // Sync local progress variable so new SSE connections get latest Correct data
+      currentScrapeProgress = {
+        progress: data.progress || 0,
+        source: data.source || '',
+        message: data.message || '',
+        logs: data.logs || []
+      };
+
+      // Broadcast to any local SSE clients that might be waiting
+      scrapeClients.forEach(client => {
+        client.write(`data: ${JSON.stringify(currentScrapeProgress)}\n\n`);
+      });
+    }
   });
 }
 
@@ -604,7 +640,7 @@ async function triggerScrape(selectedSources?: string[], mode: 'overwrite' | 'ap
        });
     }
 
-    // Store in live events
+    // Final updates
     liveEvents = finalEvents;
     scrapeStatus = 'complete';
     
@@ -617,7 +653,22 @@ async function triggerScrape(selectedSources?: string[], mode: 'overwrite' | 'ap
       message: `Scraping complete! ${finalEvents.length} total events in feed.`,
       logs: ['Done!'],
     });
+
+    // Final Firestore update to ensure status is closed
+    if (db) {
+      await db.collection('system').doc('scraper').update({
+        status: 'complete',
+        lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+      });
+    }
   } catch (error) {
+    scrapeStatus = 'idle';
+    if (db) {
+      await db.collection('system').doc('scraper').update({
+        status: 'idle',
+        lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+      });
+    }
     sendScrapeProgress({
       progress: 0,
       source: 'Failed',
@@ -631,34 +682,49 @@ async function triggerScrape(selectedSources?: string[], mode: 'overwrite' | 'ap
 app.post('/api/admin/scrape', async (req, res) => {
   try {
     const { sources, mode } = req.body;
+    const userEmail = (req as any).user?.email || 'Unknown Admin';
+
+    if (db) {
+      const scraperDoc = await db.collection('system').doc('scraper').get();
+      if (scraperDoc.exists) {
+        const data = scraperDoc.data();
+        const startTime = data?.startTime?.toDate();
+        const now = new Date();
+        const diffMinutes = startTime ? (now.getTime() - startTime.getTime()) / 60000 : 999;
+
+        // If scraper says it's running AND it started less than 45 mins ago, block concurrent run
+        if (data?.status === 'running' && diffMinutes < 45) {
+          return res.status(409).json({ 
+            error: `Scraper is already running! Triggered by ${data.requestedBy} at ${startTime?.toLocaleTimeString()}.`,
+            requestBy: data.requestedBy
+          });
+        }
+      }
+
+      // Claim the lock
+      await db.collection('system').doc('scraper').set({
+        status: 'running',
+        startTime: admin.firestore.FieldValue.serverTimestamp(),
+        requestedBy: userEmail,
+        progress: 0,
+        source: 'Starting',
+        message: 'Initializing scrape pipeline...',
+        logs: [`Scrape triggered by ${userEmail}`]
+      }, { merge: true });
+    }
+
     console.log(`[API] Triggering scrape... Sources: ${sources?.join(', ') || 'ALL'}, Mode: ${mode}`);
-    console.log('[API] Clients connected:', scrapeClients.length);
     
-    // Clear live events and set status
+    // Clear live events locally and start pipeline
     liveEvents = [];
     scrapeStatus = 'running';
-    // REMOVED premature clearFeedCache() here to keep Append mode working
-    
-    // Send immediate progress update
-    sendScrapeProgress({
-      progress: 0,
-      source: 'Starting',
-      message: 'Initializing scrape pipeline...',
-      logs: ['Starting scrape...', `Connected clients: ${scrapeClients.length}`]
-    });
-    
-    // Small delay to ensure client connects to SSE
-    await new Promise(r => setTimeout(r, 500));
     
     // Start scrape in background
     triggerScrape(sources, mode).then(async () => {
       clearFeedCache();
       const feed = await loadFeed();
-      
-      // Store enriched events in live events
       liveEvents = feed.events;
       scrapeStatus = 'complete';
-      
       console.log(`[API] Scrape complete, ${feed.events.length} events`);
     }).catch(err => {
       scrapeStatus = 'idle';

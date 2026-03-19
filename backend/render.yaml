@@ -3,7 +3,7 @@ services:
     name: emerald-explorer-backend
     runtime: node
     rootDir: backend
-    buildCommand: npm install && npm run build && npx playwright install chromium --with-deps
+    buildCommand: npm install && npm run build && PLAYWRIGHT_BROWSERS_PATH=./.playwright-browsers npx playwright install chromium
     startCommand: npm start
     envVars:
       - key: PORT
@@ -36,3 +36,5 @@ services:
         sync: false
       - key: ADMIN_EMAILS
         sync: false
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: ./.playwright-browsers

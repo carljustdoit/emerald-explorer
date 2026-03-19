@@ -3,7 +3,7 @@ services:
     name: emerald-explorer-backend
     runtime: node
     rootDir: backend
-    buildCommand: npm install && npm run build
+    buildCommand: npm install && npm run build && npx playwright install chromium --with-deps
     startCommand: npm start
     envVars:
       - key: PORT

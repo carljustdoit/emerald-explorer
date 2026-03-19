@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { fetchSportsData } from '../services/api';
 
 export const useViabilityEngine = () => {
     const [isGoldenHour, setIsGoldenHour] = useState(false);
@@ -35,9 +36,7 @@ export const useViabilityEngine = () => {
     useEffect(() => {
         const fetchRealData = async () => {
             try {
-                const response = await fetch('/api/sports-data');
-                if (!response.ok) return;
-                const data = await response.json();
+                const data = await fetchSportsData();
                 
                 const today = data.today;
                 if (!today) {

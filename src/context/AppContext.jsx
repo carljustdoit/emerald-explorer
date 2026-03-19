@@ -18,6 +18,15 @@ export const AppProvider = ({ children }) => {
         localStorage.setItem('emerald_agenda', JSON.stringify(agenda));
     }, [agenda]);
 
+    const [theme, setTheme] = useState(() => {
+        const saved = localStorage.getItem('emerald_theme');
+        return saved || 'auto';
+    });
+
+    useEffect(() => {
+        localStorage.setItem('emerald_theme', theme);
+    }, [theme]);
+
     const [preferences, setPreferences] = useState({
         breakEveryOtherDay: false,
         noEventsBefore: '08:00',
@@ -46,6 +55,8 @@ export const AppProvider = ({ children }) => {
         viability.setForceSummerMode(prev => !prev);
     };
 
+    const effectiveIsParenting = theme === 'light' || (theme === 'auto' && rotation.isParentingWeek);
+
     const value = {
         rotation,
         viability,
@@ -55,6 +66,9 @@ export const AppProvider = ({ children }) => {
         preferences,
         updatePreferences,
         toggleSummerMode,
+        theme,
+        setTheme,
+        effectiveIsParenting,
         mockResources
     };
 

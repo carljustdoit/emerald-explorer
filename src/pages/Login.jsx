@@ -103,11 +103,11 @@ const Login = () => {
 
         .login-card {
           width: 100%;
-          max-width: 400px;
-          padding: 40px;
-          border-radius: 32px;
+          max-width: 380px;
+          padding: 36px;
+          border-radius: var(--radius-xl);
           text-align: center;
-          animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+          animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes slideUp {
@@ -162,11 +162,11 @@ const Login = () => {
           position: relative;
           display: flex;
           align-items: center;
-          background: rgba(0, 0, 0, 0.05);
-          border: 1px solid rgba(0, 0, 0, 0.05);
-          border-radius: 16px;
-          padding: 0 16px;
-          transition: all 0.3s ease;
+          background: var(--bg-surface);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          padding: 0 14px;
+          transition: var(--transition-fast);
         }
 
         .solo-mode .input-group {
@@ -204,26 +204,26 @@ const Login = () => {
           background: var(--accent-primary);
           color: white;
           border: none;
-          border-radius: 16px;
-          padding: 16px;
-          font-size: 16px;
+          border-radius: var(--radius-lg);
+          padding: 14px;
+          font-size: 15px;
           font-weight: 600;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: var(--transition-fast);
         }
 
         .solo-mode .login-btn {
           background: var(--solo-accent);
-          color: black;
+          color: #0c0f1a;
         }
 
         .login-btn:hover {
-          transform: translateY(-2px);
-          filter: brightness(1.1);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-md);
         }
 
         .login-btn:active {
@@ -255,18 +255,18 @@ const Login = () => {
 
         .google-btn {
           width: 100%;
-          background: white;
-          border: 1px solid rgba(0, 0, 0, 0.1);
-          border-radius: 16px;
-          padding: 14px;
-          font-size: 15px;
-          font-weight: 500;
+          background: var(--bg-surface);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          padding: 13px;
+          font-size: 14px;
+          font-weight: 600;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 12px;
+          gap: 10px;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: var(--transition-fast);
         }
 
         .solo-mode .google-btn {

@@ -1,34 +1,53 @@
 :root {
-  /* Dynamic Accessible Palette (Mist & Cedar) */
-  --bg-primary: #f8fafc;
-  --text-strong: #0f172a;
-  --text-muted: #64748b;
-  --accent-primary: #166534;
-  --accent-soft: rgba(22, 101, 52, 0.08);
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(15, 23, 42, 0.06);
+  /* Mist & Cedar — warm, classy light palette */
+  --bg-primary: #f5f3ef;
+  --bg-surface: #faf9f7;
+  --text-strong: #1a1a1a;
+  --text-body: #3d3d3d;
+  --text-muted: #8a8780;
+  --accent-primary: #2d6a4f;
+  --accent-warm: #a3785f;
+  --accent-soft: rgba(45, 106, 79, 0.07);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.02);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.06);
 
-  /* Solo Mode Overrides */
-  --solo-bg: #020617;
-  --solo-text-strong: #f1f5f9;
-  --solo-text-muted: #94a3b8;
-  --solo-accent: #bef264;
-  --solo-accent-soft: rgba(190, 242, 100, 0.12);
-  --solo-glass-bg: rgba(15, 23, 42, 0.85);
-  --solo-glass-border: rgba(248, 250, 252, 0.08);
+  /* Shared Accent Tokens */
+  --emerald-400: #34d399;
+  --emerald-500: #10b981;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --amber-400: #fbbf24;
+  --amber-500: #f59e0b;
+
+  /* Solo Mode — deep ink, calm neon */
+  --solo-bg: #0c0f1a;
+  --solo-bg-surface: #141825;
+  --solo-text-strong: #e8e6e1;
+  --solo-text-muted: #7a7e8f;
+  --solo-accent: #c8e66e;
+  --solo-accent-soft: rgba(200, 230, 110, 0.1);
+  --solo-glass-bg: rgba(20, 24, 37, 0.82);
+  --solo-glass-border: rgba(255, 255, 255, 0.06);
+  --solo-shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --solo-shadow-md: 0 4px 16px rgba(0,0,0,0.3);
 
   /* Typography */
-  --font-header: "Georgia", serif;
-  --font-body: -apple-system, "SF Pro Display", "Inter", "Segoe UI", sans-serif;
+  --font-header: "Outfit", -apple-system, sans-serif;
+  --font-body: "Inter", -apple-system, sans-serif;
   --font-mono: "SF Mono", "Menlo", monospace;
 
-  /* Spacing */
-  --radius-xl: 24px;
-  --radius-lg: 16px;
-  --gap-md: 24px;
+  /* Spacing & Radius */
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --gap-md: 20px;
 
   /* Transitions */
-  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.2s ease;
 }
 
 * {
@@ -37,15 +56,21 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-body);
   background-color: var(--bg-primary);
-  color: var(--text-strong);
-  line-height: 1.6;
+  color: var(--text-body);
+  line-height: 1.55;
   font-weight: 400;
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.01em;
-  transition: var(--transition-smooth);
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body.solo-mode {
@@ -53,25 +78,31 @@ body.solo-mode {
   color: var(--solo-text-strong);
 }
 
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
   font-family: var(--font-header);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--text-strong);
+  line-height: 1.2;
+}
+
+.solo-mode h1, .solo-mode h2, .solo-mode h3, .solo-mode h4 {
+  color: var(--solo-text-strong);
 }
 
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
   border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-xl);
 }
 
 .solo-mode .glass {
   background: var(--solo-glass-bg);
   border: 1px solid var(--solo-glass-border);
+  box-shadow: var(--solo-shadow-sm);
 }
 
 button {
@@ -79,4 +110,15 @@ button {
   cursor: pointer;
   border: none;
   background: none;
+  font-size: inherit;
+}
+
+::selection {
+  background: rgba(45, 106, 79, 0.15);
+  color: var(--text-strong);
+}
+
+.solo-mode ::selection {
+  background: rgba(200, 230, 110, 0.2);
+  color: var(--solo-text-strong);
 }

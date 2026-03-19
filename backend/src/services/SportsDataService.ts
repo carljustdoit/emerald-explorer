@@ -5,7 +5,7 @@ import { SnowScraper } from '../ingestion/scrapers/SnowScraper.js';
 export interface SportsData {
   today: EnvironmentData & { snow_forecast_inches: number };
   tomorrow: EnvironmentData & { snow_forecast_inches: number; icon: string };
-  weekend?: { temp_f: number; wind_speed_mph: number; conditions: string; snow_forecast_inches: number; icon: string };
+  weekend?: EnvironmentData & { snow_forecast_inches: number; icon: string };
   thisWeek?: { temp_f: number; wind_speed_mph: number; conditions: string; snow_forecast_inches: number; icon: string };
   weekly_forecast: Array<{
     day: string;
@@ -107,8 +107,29 @@ export class SportsDataService {
           icon: mountainForecast.periods[2]?.icon || '',
         },
         weekend: {
+          snoqualmie_base_depth_inches: (snowData.snoqualmie.baseDepth || 0) + weekendSnow,
+          snoqualmie_mid_depth_inches: (snowData.snoqualmie.midDepth || 0) + weekendSnow,
+          snoqualmie_peak_depth_inches: (snowData.snoqualmie.peakDepth || 0) + weekendSnow,
+          snoqualmie_snow_condition: weekendSnow > 3 ? 'Fresh Powder' : (snowData.snoqualmie.condition || 'Unknown'),
+          stevens_pass_new_snow_inches: weekendSnow,
+          stevens_pass_base_depth_inches: (snowData.stevens.baseDepth || 0) + weekendSnow,
+          stevens_pass_snow_condition: weekendSnow > 3 ? 'Fresh Powder' : (snowData.stevens.condition || 'Unknown'),
+          crystal_mountain_new_snow_inches: weekendSnow,
+          crystal_mountain_base_depth_inches: (snowData.crystal.baseDepth || 0) + weekendSnow,
+          crystal_mountain_mid_depth_inches: (snowData.crystal.midDepth || 0) + weekendSnow,
+          crystal_mountain_peak_depth_inches: (snowData.crystal.peakDepth || 0) + weekendSnow,
+          crystal_mountain_snow_condition: weekendSnow > 3 ? 'Fresh Powder' : (snowData.crystal.condition || 'Unknown'),
+          lake_union_temp_f: usgsData.lake_union_temp_f ?? 62,
+          lake_washington_temp_f: usgsData.lake_washington_temp_f ?? 60,
+          lake_washington_wind_mph: weekendWind,
+          puget_sound_temp_f: usgsData.puget_sound_temp_f ?? 52,
+          puget_sound_wind_mph: weekendWind + 2,
+          wave_summary: this.calculateWaves(weekendWind, weekendWind + 2),
+          cedar_river_flow_cfs: usgsData.cedar_river_flow_cfs ?? 450,
           temp_f: weekendTemp,
           wind_speed_mph: weekendWind,
+          sunset_time: '20:02',
+          tide_height_ft: (usgsData.tide_height_ft ?? 1.5) + 0.3,
           conditions: weekendPeriods[0]?.shortForecast || 'Variable',
           snow_forecast_inches: weekendSnow,
           icon: weekendPeriods[0]?.icon,

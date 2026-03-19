@@ -10,7 +10,9 @@ const Settings = () => {
         preferences,
         updatePreferences,
         viability,
-        toggleSummerMode
+        toggleSummerMode,
+        theme,
+        setTheme
     } = useApp();
     const { logout } = useAuth();
     const navigate = useNavigate();
@@ -60,7 +62,7 @@ const Settings = () => {
 
             <section className="settings-card glass">
                 <div className="section-header">
-                    <Calendar size={16} />
+                    <Calendar size={16} strokeWidth={1.5} />
                     <h3>Parenting Schedule</h3>
                 </div>
 
@@ -106,7 +108,7 @@ const Settings = () => {
 
             <section className="settings-card glass">
                 <div className="section-header">
-                    <Clock size={16} />
+                    <Clock size={16} strokeWidth={1.5} />
                     <h3>Scheduling Constraints</h3>
                 </div>
 
@@ -131,7 +133,7 @@ const Settings = () => {
 
                 <div className="toggle-row">
                     <div className="toggle-label">
-                        <Coffee size={16} />
+                        <Coffee size={16} strokeWidth={1.5} />
                         <div>
                             <span className="toggle-title">Rest days</span>
                             <p className="toggle-desc">Buffer every other day</p>
@@ -147,9 +149,23 @@ const Settings = () => {
 
             <section className="settings-card glass">
                 <div className="section-header">
-                    <Sun size={16} />
-                    <h3>Environment</h3>
+                    <Sun size={16} strokeWidth={1.5} />
+                    <h3>Appearance</h3>
                 </div>
+                <div className="theme-toggle-group">
+                    {['auto', 'light', 'dark'].map(t => (
+                        <button
+                            key={t}
+                            className={`theme-btn ${theme === t ? 'active' : ''}`}
+                            onClick={() => setTheme(t)}
+                        >
+                            {t.charAt(0).toUpperCase() + t.slice(1)}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            <section className="settings-card glass">
                 <div className="toggle-row">
                     <div className="toggle-label">
                         <div>
@@ -165,90 +181,124 @@ const Settings = () => {
                 </div>
 
                 <button className="export-btn" onClick={exportToICS}>
-                    <FileDown size={16} />
+                    <FileDown size={16} strokeWidth={1.5} />
                     Export schedule
                 </button>
 
                 <button className="logout-btn" onClick={() => { logout(); navigate('/login'); }}>
-                    <LogOut size={16} />
+                    <LogOut size={16} strokeWidth={1.5} />
                     Sign Out
                 </button>
             </section>
 
             <style>{`
-        .settings-page { display: flex; flex-direction: column; gap: 24px; padding-bottom: 120px; }
-        .page-title { font-size: 28px; margin-bottom: 8px; }
+        .settings-page { display: flex; flex-direction: column; gap: 20px; padding-bottom: 120px; }
+        .page-title { font-size: 24px; margin-bottom: 4px; font-weight: 700; }
         
-        .settings-card { padding: 24px; border-radius: var(--radius-xl); }
-        .section-header { display: flex; align-items: center; gap: 10px; color: var(--accent-primary); margin-bottom: 24px; }
+        .settings-card { padding: 22px; }
+        .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); margin-bottom: 20px; }
         .solo-mode .section-header { color: var(--solo-accent); }
-        .section-header h3 { font-size: 15px; letter-spacing: -0.01em; font-weight: 700; font-family: var(--font-body); }
+        .section-header h3 { font-size: 14px; letter-spacing: -0.01em; font-weight: 600; font-family: var(--font-body); }
         
-        .rotation-control { margin-bottom: 28px; }
-        .rotation-control label { font-size: 13px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 8px; }
+        .rotation-control { margin-bottom: 24px; }
+        .rotation-control label { font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
         select { 
-          width: 100%; padding: 14px 16px; border-radius: 12px; background: rgba(0,0,0,0.03); border: 1px solid var(--glass-border);
+          width: 100%; padding: 12px 14px; border-radius: var(--radius-md); background: var(--bg-surface); border: 1px solid var(--glass-border);
           color: var(--text-strong); font-weight: 500; font-family: var(--font-body); font-size: 14px; cursor: pointer;
           -webkit-appearance: none; appearance: none;
         }
-        .solo-mode select { background: rgba(255,255,255,0.05); color: var(--solo-text-strong); }
+        .solo-mode select { background: rgba(255,255,255,0.04); color: var(--solo-text-strong); border-color: var(--solo-glass-border); }
 
-        .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .calendar-nav button { color: var(--text-muted); padding: 4px; }
+        .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+        .calendar-nav button { color: var(--text-muted); padding: 4px; transition: var(--transition-fast); }
+        .calendar-nav button:hover { color: var(--accent-primary); }
         .solo-mode .calendar-nav button { color: var(--solo-text-muted); }
-        .month-label { font-weight: 500; font-size: 15px; }
+        .solo-mode .calendar-nav button:hover { color: var(--solo-accent); }
+        .month-label { font-weight: 600; font-size: 14px; }
         
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .day-header { text-align: center; font-size: 11px; font-weight: 600; color: var(--text-muted); padding: 6px 0; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+        .day-header { text-align: center; font-size: 10px; font-weight: 600; color: var(--text-muted); padding: 6px 0; text-transform: uppercase; letter-spacing: 0.04em; }
         .solo-mode .day-header { color: var(--solo-text-muted); }
         
         .day-btn { 
-          aspect-ratio: 1; border-radius: 10px; border: 1px solid transparent; display: flex; align-items: center; justify-content: center;
-          font-weight: 500; font-size: 13px; transition: var(--transition-smooth);
+          aspect-ratio: 1; border-radius: var(--radius-md); border: 1px solid transparent; display: flex; align-items: center; justify-content: center;
+          font-weight: 500; font-size: 13px; transition: var(--transition-fast);
         }
         .day-btn.parenting { background: var(--accent-primary); color: white; }
-        .day-btn.solo { background: rgba(0,0,0,0.03); color: var(--text-muted); }
-        .solo-mode .day-btn.parenting { background: var(--solo-accent); color: #020617; }
-        .solo-mode .day-btn.solo { background: rgba(255,255,255,0.04); color: var(--solo-text-muted); }
-        .day-btn:hover { opacity: 0.8; transform: scale(0.95); }
+        .day-btn.solo { background: var(--bg-surface); color: var(--text-muted); }
+        .solo-mode .day-btn.parenting { background: var(--solo-accent); color: #0c0f1a; }
+        .solo-mode .day-btn.solo { background: rgba(255,255,255,0.03); color: var(--solo-text-muted); }
+        .day-btn:hover { opacity: 0.85; transform: scale(0.96); }
         
-        .hint { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 16px; }
+        .hint { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 14px; font-weight: 500; }
         .solo-mode .hint { color: var(--solo-text-muted); }
 
-        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-        .input-group label { font-size: 13px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 8px; }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+        .input-group label { font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px; }
         .solo-mode .input-group label { color: var(--solo-text-muted); }
         input[type="time"] {
-          width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.03);
+          width: 100%; padding: 11px 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); background: var(--bg-surface);
           color: var(--text-strong); font-family: var(--font-body); font-weight: 500; font-size: 14px;
         }
-        .solo-mode input[type="time"] { background: rgba(255,255,255,0.05); color: var(--solo-text-strong); }
+        .solo-mode input[type="time"] { background: rgba(255,255,255,0.04); color: var(--solo-text-strong); border-color: var(--solo-glass-border); }
 
-        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
-        .toggle-label { display: flex; align-items: center; gap: 14px; color: var(--text-strong); }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+        .toggle-label { display: flex; align-items: center; gap: 12px; color: var(--text-strong); }
         .solo-mode .toggle-label { color: var(--solo-text-strong); }
-        .toggle-title { display: block; font-weight: 500; font-size: 15px; }
-        .toggle-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+        .toggle-title { display: block; font-weight: 600; font-size: 14px; }
+        .toggle-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-weight: 400; }
         .solo-mode .toggle-desc { color: var(--solo-text-muted); }
         
-        input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--accent-primary); cursor: pointer; }
+        input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent-primary); cursor: pointer; }
         .solo-mode input[type="checkbox"] { accent-color: var(--solo-accent); }
 
         .export-btn {
-          width: 100%; padding: 14px; border-radius: 14px; background: rgba(0,0,0,0.04); color: var(--text-strong);
-          font-weight: 500; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 10px;
-          transition: var(--transition-smooth); margin-top: 20px;
+          width: 100%; padding: 13px; border-radius: var(--radius-md); background: var(--bg-surface); color: var(--text-strong);
+          font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px;
+          transition: var(--transition-fast); margin-top: 16px; border: 1px solid var(--glass-border);
         }
-        .solo-mode .export-btn { background: rgba(255,255,255,0.05); color: var(--solo-text-strong); }
-        .export-btn:hover { background: rgba(0,0,0,0.08); }
-        .solo-mode .export-btn:hover { background: rgba(255,255,255,0.08); }
+        .solo-mode .export-btn { background: rgba(255,255,255,0.04); color: var(--solo-text-strong); border-color: var(--solo-glass-border); }
+        .export-btn:hover { background: var(--accent-soft); border-color: var(--accent-primary); color: var(--accent-primary); }
+        .solo-mode .export-btn:hover { background: var(--solo-accent-soft); border-color: var(--solo-accent); color: var(--solo-accent); }
 
         .logout-btn {
-          width: 100%; padding: 14px; border-radius: 14px; background: rgba(244, 67, 54, 0.1); color: #f44336;
-          font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 10px;
-          transition: var(--transition-smooth); margin-top: 12px; border: none; cursor: pointer;
+          width: 100%; padding: 13px; border-radius: var(--radius-md); background: rgba(220, 38, 38, 0.06); color: #dc2626;
+          font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px;
+          transition: var(--transition-fast); margin-top: 10px; border: 1px solid rgba(220, 38, 38, 0.1);
         }
-        .logout-btn:hover { background: rgba(244, 67, 54, 0.2); }
+        .logout-btn:hover { background: rgba(220, 38, 38, 0.12); }
+
+        .theme-toggle-group {
+          display: flex;
+          background: var(--bg-surface);
+          padding: 3px;
+          border-radius: var(--radius-md);
+          gap: 3px;
+          border: 1px solid var(--glass-border);
+        }
+        .solo-mode .theme-toggle-group { background: rgba(255,255,255,0.03); border-color: var(--solo-glass-border); }
+        
+        .theme-btn {
+          flex: 1;
+          padding: 9px;
+          font-size: 12px;
+          font-weight: 600;
+          border-radius: 7px;
+          color: var(--text-muted);
+          transition: var(--transition-fast);
+        }
+        .solo-mode .theme-btn { color: var(--solo-text-muted); }
+        
+        .theme-btn.active {
+          background: white;
+          color: var(--accent-primary);
+          box-shadow: var(--shadow-sm);
+        }
+        .solo-mode .theme-btn.active {
+          background: rgba(255, 255, 255, 0.08);
+          color: var(--solo-accent);
+          box-shadow: var(--solo-shadow-sm);
+        }
       `}</style>
         </div>
     );

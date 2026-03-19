@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import React, { useState, useMemo, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useApp } from '../context/AppContext';
@@ -18,6 +18,21 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+// Auto-fits the map to the given lat/lon positions
+const MapController = ({ positions }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (positions.length === 0) {
+      map.setView([47.6062, -122.3321], 12);
+    } else if (positions.length === 1) {
+      map.setView(positions[0], 14);
+    } else {
+      map.fitBounds(L.latLngBounds(positions), { padding: [40, 40] });
+    }
+  }, [positions, map]);
+  return null;
+};
+
 const Home = () => {
   const { 
     agenda = [], 
@@ -26,7 +41,8 @@ const Home = () => {
     mockResources = [], 
     addToAgenda, 
     removeFromAgenda, 
-    preferences = {} 
+    preferences = {},
+    effectiveIsParenting // Destructure effectiveIsParenting here
   } = useApp();
   
   const { data: sportsData, loading: sportsLoading } = useSportsData();
@@ -58,6 +74,29 @@ const Home = () => {
       .map(e => [e.coord.x, e.coord.y]);
   }, [todayAgenda]);
 
+  const [drivingRoute, setDrivingRoute] = useState([]);
+
+  useEffect(() => {
+    if (routePositions.length < 2) {
+      setDrivingRoute([]);
+      return;
+    }
+    // OSRM expects lon,lat order
+    const waypoints = routePositions.map(([lat, lon]) => `${lon},${lat}`).join(';');
+    fetch(`https://router.project-osrm.org/route/v1/driving/${waypoints}?overview=full&geometries=geojson`)
+      .then(r => r.json())
+      .then(data => {
+        const coords = data.routes?.[0]?.geometry?.coordinates;
+        if (coords) {
+          // GeoJSON is [lon, lat] — flip to Leaflet [lat, lon]
+          setDrivingRoute(coords.map(([lon, lat]) => [lat, lon]));
+        } else {
+          setDrivingRoute(routePositions);
+        }
+      })
+      .catch(() => setDrivingRoute(routePositions));
+  }, [JSON.stringify(routePositions)]);
+
   const weekAgenda = (agenda || []).filter(event => {
     if (!event || !event.startDate) return false;
     const eventDate = new Date(event.startDate);
@@ -76,14 +115,14 @@ const Home = () => {
   return (
     <div className="home-page">
       <header className="home-header">
-        <BrandBanner isParentingWeek={rotation.isParentingWeek} />
+        <BrandBanner isParentingWeek={effectiveIsParenting} />
       </header>
 
       <UnifiedInsightCard 
         forecast={viability?.forecast}
         envData={viability?.envData}
         sportsData={sportsData}
-        isParentingWeek={rotation.isParentingWeek}
+        isParentingWeek={effectiveIsParenting}
         loading={sportsLoading}
       />
 
@@ -93,9 +132,9 @@ const Home = () => {
           <h3>Interactive Route</h3>
         </div>
         <div className="home-map-container">
-          <MapContainer 
-            center={[47.6062, -122.3321]} 
-            zoom={11} 
+          <MapContainer
+            center={[47.6062, -122.3321]}
+            zoom={12}
             style={{ height: '300px', width: '100%', borderRadius: '16px', zIndex: 1 }}
             scrollWheelZoom={false}
           >
@@ -103,6 +142,7 @@ const Home = () => {
                 url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                 attribution='&copy; OpenStreetMap contributors &copy; CARTO'
             />
+            <MapController positions={routePositions} />
             {todayAgenda.map((event) => event.coord && typeof event.coord.x === 'number' && (
                 <Marker key={event.id} position={[event.coord.x, event.coord.y]}>
                     <Popup>
@@ -113,12 +153,12 @@ const Home = () => {
                     </Popup>
                 </Marker>
             ))}
-            {routePositions.length > 1 && (
-                <Polyline 
-                    positions={routePositions} 
-                    color="var(--accent-primary)" 
-                    weight={3} 
-                    dashArray="5, 10"
+            {drivingRoute.length > 1 && (
+                <Polyline
+                    positions={drivingRoute}
+                    color="#2d6a4f"
+                    weight={4}
+                    opacity={0.85}
                 />
             )}
           </MapContainer>
@@ -215,21 +255,23 @@ const Home = () => {
       )}
 
       <style>{`
-        .home-page { display: flex; flex-direction: column; gap: 24px; padding-bottom: 100px; }
-        .home-header { margin-bottom: -8px; }
-        .map-section { padding: 24px; border-radius: var(--radius-xl); display: flex; flex-direction: column; gap: 16px; }
+        .home-page { display: flex; flex-direction: column; gap: 20px; padding-bottom: 100px; }
+        .home-header { margin-bottom: -4px; }
+        .map-section { padding: 20px; border-radius: var(--radius-xl); display: flex; flex-direction: column; gap: 14px; }
         .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); }
-        .section-header h3 { font-size: 15px; letter-spacing: -0.01em; font-weight: 700; }
-        .home-map-container { display: flex; flex-direction: column; gap: 12px; }
+        .solo-mode .section-header { color: var(--solo-accent); }
+        .section-header h3 { font-size: 14px; letter-spacing: -0.01em; font-weight: 600; }
+        .home-map-container { display: flex; flex-direction: column; gap: 10px; }
         .map-popup { display: flex; flex-direction: column; gap: 2px; }
         .map-popup strong { font-size: 13px; }
         .map-popup span { font-size: 11px; color: var(--text-muted); }
-        .map-caption { font-size: 12px; color: var(--text-muted); text-align: center; }
-        .agenda-section h2 { font-size: 28px; margin-bottom: 16px; }
-        .day-group { margin-bottom: 32px; }
-        .day-group > h3 { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 0.02em; font-weight: 700; }
-        .event-list { display: flex; flex-direction: column; gap: 28px; }
-        .empty-state { padding: 60px 40px; text-align: center; border-radius: var(--radius-lg); color: var(--text-muted); }
+        .map-caption { font-size: 12px; color: var(--text-muted); text-align: center; font-weight: 500; }
+        .agenda-section h2 { font-size: 24px; margin-bottom: 14px; font-weight: 700; }
+        .day-group { margin-bottom: 28px; }
+        .day-group > h3 { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.04em; font-weight: 600; text-transform: uppercase; }
+        .solo-mode .day-group > h3 { color: var(--solo-text-muted); }
+        .event-list { display: flex; flex-direction: column; gap: 20px; }
+        .empty-state { padding: 48px 32px; text-align: center; border-radius: var(--radius-xl); color: var(--text-muted); font-size: 14px; }
       `}</style>
     </div>
   );

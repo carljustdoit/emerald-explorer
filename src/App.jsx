@@ -21,16 +21,16 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 };
 
 const AppLayout = () => {
-  const { rotation } = useApp();
+  const { effectiveIsParenting } = useApp();
   const { user } = useAuth();
-
+  
   useEffect(() => {
-    if (rotation.isParentingWeek) {
+    if (effectiveIsParenting) {
       document.body.classList.remove('solo-mode');
     } else {
       document.body.classList.add('solo-mode');
     }
-  }, [rotation.isParentingWeek]);
+  }, [effectiveIsParenting]);
 
   return (
     <div className="app-container">
@@ -59,18 +59,18 @@ const AppLayout = () => {
       <style>{`
         .app-container {
           min-height: 100vh;
-          padding-bottom: 80px;
+          padding-bottom: 88px;
         }
 
         main {
-          padding: 24px 20px;
-          max-width: 650px;
+          padding: 20px 16px;
+          max-width: 600px;
           margin: 0 auto;
         }
         .content-wrapper {
           display: flex;
           flex-direction: column;
-          gap: 24px;
+          gap: 20px;
         }
       `}</style>
     </div>

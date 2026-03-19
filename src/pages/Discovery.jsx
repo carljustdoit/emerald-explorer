@@ -11,11 +11,12 @@ const Discovery = () => {
     const {
         rotation,
         viability,
-        mockResources,
+        agenda,
         addToAgenda,
         removeFromAgenda,
-        agenda,
-        preferences
+        preferences,
+        effectiveIsParenting,
+        mockResources
     } = useApp();
 
     const { events: realEvents, loading, error } = useEvents({ limit: 500 });
@@ -137,8 +138,8 @@ const Discovery = () => {
             if (eventDate < now || eventDate > nextWeek) return false;
         }
 
-        const score = viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda);
-        if (rotation.isParentingWeek && score === 0) return false;
+        const score = viability.calculateScore(event, mockResources, effectiveIsParenting, preferences, agenda);
+        if (effectiveIsParenting && score === 0) return false;
         return true;
     });
 
@@ -184,10 +185,11 @@ const Discovery = () => {
                 </div>
                 <div className="activity-grid">
                     {[
-                        { id: 'act-ski-snoqualmie', title: 'Skiing / Boarding', location: 'Snoqualmie Pass', coord: { x: 47.4241, y: -121.4137 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1551698618-1fed5d96559e?auto=format&fit=crop&q=80&w=400' },
-                        { id: 'act-ski-stevens', title: 'Skiing / Boarding', location: 'Stevens Pass', coord: { x: 47.7463, y: -121.0858 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1526725359915-d256ab4d11d6?auto=format&fit=crop&q=80&w=400' },
-                        { id: 'act-paddle-union', title: 'Paddling / Kayaking', location: 'Lake Union', coord: { x: 47.6360, y: -122.3340 }, category: 'Nature', vibe: 'Water Sports', image: 'https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&q=80&w=400' },
-                        { id: 'act-paddle-sound', title: 'Paddling / Kayaking', location: 'Puget Sound (Alki)', coord: { x: 47.5815, y: -122.4047 }, category: 'Nature', vibe: 'Water Sports', image: 'https://images.unsplash.com/photo-1544551763-77ef2d0ca036?auto=format&fit=crop&q=80&w=400' }
+                        { id: 'act-ski-snoqualmie', title: 'Skiing / Boarding', location: 'Snoqualmie Pass', coord: { x: 47.4241, y: -121.4137 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1548507293-9befeaf8f36b?auto=format&fit=crop&q=80&w=800' },
+                        { id: 'act-ski-stevens', title: 'Skiing / Boarding', location: 'Stevens Pass', coord: { x: 47.7463, y: -121.0858 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1605540436563-5bca919ae766?auto=format&fit=crop&q=80&w=800' },
+                        { id: 'act-ski-crystal', title: 'Skiing / Boarding', location: 'Crystal Mountain', coord: { x: 46.9282, y: -121.5045 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=800' },
+                        { id: 'act-paddle-union', title: 'Paddling / Kayaking', location: 'Lake Union', coord: { x: 47.6360, y: -122.3340 }, category: 'Nature', vibe: 'Water Sports', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=800' },
+                        { id: 'act-paddle-sound', title: 'Paddling / Kayaking', location: 'Puget Sound (Alki)', coord: { x: 47.5815, y: -122.4047 }, category: 'Nature', vibe: 'Water Sports', image: 'https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&q=80&w=800' }
                     ].map(activity => {
                         const isPinned = agenda.some(item => item.id === activity.id);
                         return (
@@ -289,7 +291,7 @@ const Discovery = () => {
                         <AdaptiveHeroCard
                             key={event.id}
                             event={event}
-                            isParentingWeek={rotation.isParentingWeek}
+                            isParentingWeek={effectiveIsParenting}
                             score={score}
                             isAdded={isAdded}
                             isCommitted={isCommitted}

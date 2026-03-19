@@ -31,7 +31,7 @@ const AdaptiveHeroCard = ({
 
   const displayDateLabel = getDynamicDateLabel();
   return (
-    <div className={`hero-card glass ${isParentingWeek ? 'parenting' : 'solo'}`} onClick={onClick}>
+    <div className={`hero-card glass`} onClick={onClick}>
       <div className="card-image">
         <img
           src={event.image || '/placeholder.png'}
@@ -51,25 +51,24 @@ const AdaptiveHeroCard = ({
 
         <div className="meta-info">
           <div className="meta-item">
-            <MapPin size={13} />
+            <MapPin size={12} strokeWidth={1.5} />
             <span>{event.location}</span>
           </div>
           <div className="meta-item">
-            <Clock size={13} />
+            <Clock size={12} strokeWidth={1.5} />
             <span>
-              {displayDateLabel} • {event.time}
+              {displayDateLabel} · {event.time}
               {event.sessions && event.sessions.length > 1 && ` (+${event.sessions.length - 1} more)`}
             </span>
           </div>
         </div>
 
-        {/* Inline Actions — only shown when action props are provided */}
         {onAdd && (
           <div className="card-actions" onClick={e => e.stopPropagation()}>
             {isAdded ? (
               <div className="action-row">
                 <button className="action-btn added-btn" onClick={onRemove}>
-                  <Check size={14} /> Added
+                  <Check size={13} /> Added
                 </button>
                 <button
                   className={`action-btn commit-btn ${isCommitted ? 'committed' : ''}`}
@@ -80,7 +79,7 @@ const AdaptiveHeroCard = ({
               </div>
             ) : (
               <button className="action-btn add-btn" onClick={onAdd}>
-                <Plus size={14} /> Add to agenda
+                <Plus size={13} /> Add to agenda
               </button>
             )}
           </div>
@@ -91,25 +90,21 @@ const AdaptiveHeroCard = ({
         .hero-card {
           display: flex;
           flex-direction: column;
-          border-radius: var(--radius-xl);
           overflow: hidden;
           transition: var(--transition-smooth);
           cursor: pointer;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          box-shadow: 0 2px 12px rgba(0,0,0,0.03);
         }
         .hero-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+          transform: translateY(-3px);
+          box-shadow: var(--shadow-lg);
         }
         .solo-mode .hero-card:hover {
-          box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.35);
         }
 
         .card-image {
           position: relative;
-          height: 200px;
+          height: 180px;
         }
         .card-image img {
           width: 100%;
@@ -118,40 +113,40 @@ const AdaptiveHeroCard = ({
         }
         .vibe-tag {
           position: absolute;
-          top: 16px;
-          left: 16px;
-          background: rgba(15, 23, 42, 0.85);
-          color: rgba(255,255,255,0.95);
-          padding: 6px 14px;
-          border-radius: 10px;
-          font-size: 11px;
-          font-weight: 500;
-          letter-spacing: 0.5px;
+          top: 14px;
+          left: 14px;
+          background: rgba(26, 26, 26, 0.7);
+          color: rgba(255,255,255,0.9);
+          padding: 5px 12px;
+          border-radius: 8px;
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.02em;
           backdrop-filter: blur(8px);
         }
         .source-tag {
           position: absolute;
-          top: 16px;
-          right: 16px;
-          background: rgba(255, 255, 255, 0.9);
+          top: 14px;
+          right: 14px;
+          background: rgba(255, 255, 255, 0.88);
           color: var(--text-strong);
-          padding: 6px 14px;
-          border-radius: 10px;
-          font-size: 11px;
+          padding: 5px 12px;
+          border-radius: 8px;
+          font-size: 10px;
           font-weight: 600;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.02em;
           backdrop-filter: blur(8px);
         }
         .solo-mode .source-tag {
-          background: rgba(0, 0, 0, 0.85);
-          color: white;
+          background: rgba(20, 24, 37, 0.85);
+          color: var(--solo-text-strong);
         }
 
         .card-content {
-          padding: 20px 24px 24px;
+          padding: 18px 20px 20px;
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 10px;
         }
         .top-row {
           display: flex;
@@ -159,56 +154,57 @@ const AdaptiveHeroCard = ({
           align-items: flex-start;
           gap: 16px;
         }
-        h3 {
-          font-size: 22px;
+        .hero-card h3 {
+          font-size: 18px;
+          font-weight: 600;
           color: var(--text-strong);
           line-height: 1.25;
+          letter-spacing: -0.02em;
         }
         .solo-mode .hero-card h3 { color: var(--solo-text-strong); }
 
         .description {
-          font-size: 14px;
+          font-size: 13px;
           color: var(--text-muted);
-          line-height: 1.6;
+          line-height: 1.55;
         }
         .solo-mode .description { color: var(--solo-text-muted); }
 
         .meta-info {
           display: flex;
-          gap: 20px;
-          font-size: 12px;
+          gap: 16px;
+          font-size: 11px;
           color: var(--text-muted);
           font-weight: 500;
         }
         .solo-mode .meta-info { color: var(--solo-text-muted); }
-        .meta-item { display: flex; align-items: center; gap: 6px; }
+        .meta-item { display: flex; align-items: center; gap: 5px; }
 
-        /* Inline Actions */
         .card-actions {
-          margin-top: 4px;
-          padding-top: 16px;
-          border-top: 1px solid rgba(0,0,0,0.04);
+          margin-top: 6px;
+          padding-top: 14px;
+          border-top: 1px solid var(--glass-border);
         }
-        .solo-mode .card-actions { border-top-color: rgba(255,255,255,0.04); }
+        .solo-mode .card-actions { border-top-color: var(--solo-glass-border); }
 
-        .action-row { display: flex; gap: 10px; }
+        .action-row { display: flex; gap: 8px; }
 
         .action-btn {
-          padding: 10px 16px;
-          border-radius: 12px;
-          font-size: 13px;
-          font-weight: 500;
+          padding: 9px 14px;
+          border-radius: var(--radius-md);
+          font-size: 12px;
+          font-weight: 600;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 6px;
-          transition: var(--transition-smooth);
+          gap: 5px;
+          transition: var(--transition-fast);
           cursor: pointer;
         }
 
         .add-btn {
           width: 100%;
-          border: 1.5px solid var(--glass-border);
+          border: 1px solid var(--glass-border);
           background: transparent;
           color: var(--text-strong);
         }
@@ -226,7 +222,7 @@ const AdaptiveHeroCard = ({
 
         .added-btn {
           flex: 1;
-          border: 1.5px solid var(--accent-primary);
+          border: 1px solid var(--accent-primary);
           background: var(--accent-soft);
           color: var(--accent-primary);
         }
@@ -238,11 +234,11 @@ const AdaptiveHeroCard = ({
 
         .commit-btn {
           flex: 1.5;
-          border: 1.5px solid var(--glass-border);
+          border: 1px solid var(--glass-border);
           background: transparent;
           color: var(--text-muted);
         }
-        .solo-mode .commit-btn { color: var(--solo-text-muted); }
+        .solo-mode .commit-btn { color: var(--solo-text-muted); border-color: var(--solo-glass-border); }
         .commit-btn.committed {
           background: var(--accent-primary);
           color: white;
@@ -250,10 +246,9 @@ const AdaptiveHeroCard = ({
         }
         .solo-mode .commit-btn.committed {
           background: var(--solo-accent);
-          color: black;
+          color: #0c0f1a;
           border-color: var(--solo-accent);
         }
-
       `}</style>
     </div>
   );

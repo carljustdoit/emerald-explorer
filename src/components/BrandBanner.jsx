@@ -7,19 +7,21 @@ const BrandBanner = ({ isParentingWeek }) => {
       <div className="banner-content">
         <span className="eyebrow">Seattle Discovery Engine</span>
         <h1>{isParentingWeek ? 'Mist & Cedar' : 'Electric Sound'}</h1>
-        <p>{isParentingWeek ? 'Family, stability, and neighborhood exploration.' : 'High-energy social, deep adventure, and recharge.'}</p>
+        <p>{isParentingWeek 
+          ? 'Family, stability, and neighborhood exploration.' 
+          : 'High-energy social, deep adventure, and recharge.'}</p>
       </div>
 
       <style>{`
         .brand-banner {
           position: relative;
-          height: 220px;
+          height: 200px;
           border-radius: var(--radius-xl);
           overflow: hidden;
           display: flex;
           align-items: flex-end;
           background-size: cover;
-          background-position: center;
+          background-position: center 40%;
           transition: var(--transition-smooth);
         }
         .brand-banner.parenting {
@@ -31,36 +33,44 @@ const BrandBanner = ({ isParentingWeek }) => {
         .banner-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.3) 50%, transparent 100%);
+          z-index: 1;
+        }
+        .brand-banner.parenting .banner-overlay {
+          background: linear-gradient(to top, rgba(26, 26, 26, 0.75) 0%, rgba(26, 26, 26, 0.1) 60%, transparent 100%);
+        }
+        .brand-banner.solo .banner-overlay {
+          background: linear-gradient(to top, rgba(12, 15, 26, 0.92) 0%, rgba(12, 15, 26, 0.3) 55%, transparent 100%);
         }
         .banner-content {
           position: relative;
           z-index: 2;
-          padding: 28px;
+          padding: 24px 28px;
           color: white;
         }
-        .eyebrow {
-          font-size: 11px;
-          letter-spacing: 0.5px;
-          opacity: 0.7;
+        .brand-banner .eyebrow {
+          font-size: 10px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          opacity: 0.6;
           display: block;
-          margin-bottom: 8px;
-          font-weight: 500;
+          margin-bottom: 6px;
+          font-weight: 600;
         }
-        h1 {
+        .brand-banner h1 {
           font-family: var(--font-header);
-          font-size: 32px;
-          font-weight: 500;
-          letter-spacing: -1px;
-          line-height: 1;
-          margin-bottom: 8px;
+          font-size: 28px;
+          font-weight: 700;
+          letter-spacing: -0.03em;
+          line-height: 1.1;
+          margin-bottom: 6px;
           color: white;
         }
-        p {
-          font-size: 14px;
-          opacity: 0.8;
-          max-width: 80%;
+        .brand-banner p {
+          font-size: 13px;
+          opacity: 0.72;
+          max-width: 85%;
           line-height: 1.5;
+          font-weight: 400;
         }
       `}</style>
     </div>

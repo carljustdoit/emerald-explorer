@@ -173,7 +173,7 @@ async function loadFeed(): Promise<EmeraldFeed> {
 }
 
 async function saveFeed(feed: EmeraldFeed): Promise<void> {
-  const feedPath = join(process.cwd(), '..', 'public', 'seattle_master_feed.json');
+  const feedPath = process.env.FEED_PATH || join(process.cwd(), 'public', 'seattle_master_feed.json');
   await writeFile(feedPath, JSON.stringify(feed, null, 2));
   cachedFeed = feed;
   lastLoadTime = Date.now();
@@ -691,7 +691,7 @@ app.post('/api/admin/regeocode', async (req, res) => {
     }
     
     // Save updated feed
-    const feedPath = join(process.cwd(), '..', 'public', 'seattle_master_feed.json');
+    const feedPath = process.env.FEED_PATH || join(process.cwd(), 'public', 'seattle_master_feed.json');
     await writeFile(feedPath, JSON.stringify(feed, null, 2));
     cachedFeed = feed;
     

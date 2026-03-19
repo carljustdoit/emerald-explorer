@@ -33,17 +33,53 @@ export const EmeraldEventSchema = z.object({
 });
 
 export const EnvironmentDataSchema = z.object({
-  snoqualmie_snow_inches: z.number().optional(),
-  stevens_pass_snow_inches: z.number().optional(),
-  crystal_mountain_snow_inches: z.number().optional(),
+  snoqualmie_base_depth_inches: z.number().optional(),
+  snoqualmie_mid_depth_inches: z.number().optional(),
+  snoqualmie_peak_depth_inches: z.number().optional(),
+  snoqualmie_snow_condition: z.string().optional(),
+  stevens_pass_new_snow_inches: z.number().optional(),
+  stevens_pass_base_depth_inches: z.number().optional(),
+  stevens_pass_snow_condition: z.string().optional(),
+  crystal_mountain_new_snow_inches: z.number().optional(),
+  crystal_mountain_base_depth_inches: z.number().optional(),
+  crystal_mountain_mid_depth_inches: z.number().optional(),
+  crystal_mountain_peak_depth_inches: z.number().optional(),
+  crystal_mountain_snow_condition: z.string().optional(),
   lake_union_temp_f: z.number().optional(),
   lake_washington_temp_f: z.number().optional(),
+  lake_washington_wind_mph: z.number().optional(),
   puget_sound_temp_f: z.number().optional(),
+  puget_sound_wind_mph: z.number().optional(),
+  wave_summary: z.string().optional(),
   cedar_river_flow_cfs: z.number().optional(),
   wind_speed_mph: z.number().optional(),
+  temp_f: z.number().optional(),
   sunset_time: z.string(),
   tide_height_ft: z.number().optional(),
   conditions: z.string(),
+});
+
+export const ForecastPeriodSchema = z.object({
+  temp_f: z.number().optional(),
+  wind_speed_mph: z.number().optional(),
+  conditions: z.string().optional(),
+  snow_forecast_inches: z.number().optional(),
+  icon: z.string().optional(),
+});
+
+export const SportsDataSchema = z.object({
+  today: EnvironmentDataSchema.extend({
+    snow_forecast_inches: z.number().optional(),
+  }),
+  tomorrow: ForecastPeriodSchema.optional(),
+  weekend: ForecastPeriodSchema.optional(),
+  thisWeek: ForecastPeriodSchema.optional(),
+  weekly_forecast: z.array(z.object({
+    day: z.string(),
+    temp: z.number(),
+    icon: z.string(),
+    condition: z.string(),
+  })),
 });
 
 export const EmeraldFeedMetadataSchema = z.object({

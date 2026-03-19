@@ -223,7 +223,8 @@ app.get('/api/environment', async (req, res) => {
 // Real-time sports data (Snow/Water/Weather)
 app.get('/api/sports-data', async (req, res) => {
   try {
-    const data = await SportsDataService.getSportsData();
+    const forceReload = req.query.reload === 'true';
+    const data = await SportsDataService.getSportsData(forceReload);
     res.json(data);
   } catch (error) {
     console.error('[API] Error fetching sports data:', error);

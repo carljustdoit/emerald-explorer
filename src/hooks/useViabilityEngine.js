@@ -4,32 +4,93 @@ export const useViabilityEngine = () => {
     const [isGoldenHour, setIsGoldenHour] = useState(false);
     const [forceSummerMode, setForceSummerMode] = useState(false);
 
+    const [sportsData, setSportsData] = useState(null);
     const [envData, setEnvData] = useState({
         tideHeight: 1.2,
-        snowDepth: 4.0,
-        temp: 65,
-        condition: 'Sunny'
+        snowDepth: 0,
+        temp: 45,
+        condition: 'Cloudy'
     });
 
     const [forecast, setForecast] = useState({
         today: {
-            temp: 65,
-            condition: 'Sunny',
-            vibe: 'Golden Hour Paddle',
-            insight: 'Perfect glass on the water. High-vis conditions.'
+            temp: 45,
+            condition: 'Cloudy',
+            vibe: 'Cozy Morning',
+            insight: 'Checking the pulse of the city...'
         },
         weekend: {
-            temp: 58,
-            condition: 'Crisp',
-            vibe: 'Mountain Adventure',
-            insight: 'New snow at Snoqualmie. Ideal for first tracks.'
+            temp: 52,
+            condition: 'Mild',
+            vibe: 'Discovery Mode',
+            insight: 'Stay tuned for weekend updates.'
         },
         week: {
-            summary: 'Warming Trend',
-            vibe: 'Urban Exploration',
-            insight: 'Temps rising to 70° by Friday. Plan for an outdoor dinner.'
+            summary: 'Typical Seattle',
+            vibe: 'Steady Vibe',
+            insight: 'Preparing your weekly outlook.'
         }
     });
+
+    useEffect(() => {
+        const fetchRealData = async () => {
+            try {
+                const response = await fetch('/api/sports-data');
+                if (!response.ok) return;
+                const data = await response.json();
+                
+                const today = data.today;
+                if (!today) {
+                  console.error('Sports data missing "today" object:', data);
+                  return;
+                }
+                setSportsData(data);
+                setEnvData({
+                    tideHeight: today.tide_height_ft || 1.2,
+                    snowDepth: today.snoqualmie_base_depth_inches || 0,
+                    temp: today.temp_f || 45,
+                    condition: today.conditions || 'Cloudy'
+                });
+
+                // Dynamically update forecast categories based on real tiered data
+                setForecast({
+                    today: {
+                        temp: Math.round(today.temp_f || 45),
+                        condition: today.conditions || 'Cloudy',
+                        vibe: today.temp_f > 60 ? 'Lake Vibes' : 'Cozy Morning',
+                        insight: today.snoqualmie_new_snow_inches > 0 
+                            ? `Fresh tracks! ${today.snoqualmie_new_snow_inches}" of new snow at Snoqualmie.`
+                            : `${today.wave_summary}. Lake temp is ${today.lake_union_temp_f || 62}°.`
+                    },
+                    tomorrow: data.tomorrow ? {
+                        temp: Math.round(data.tomorrow.temp_f),
+                        condition: data.tomorrow.conditions,
+                        vibe: 'Next Up',
+                        insight: data.tomorrow.snow_forecast_inches > 0
+                            ? `Tomorrow: Expect ${data.tomorrow.snow_forecast_inches}" of fresh snow!`
+                            : `Smooth sailing tomorrow with ${data.tomorrow.conditions.toLowerCase()} skies.`
+                    } : null,
+                    weekend: data.weekend ? {
+                        temp: Math.round(data.weekend.temp_f),
+                        condition: data.weekend.conditions,
+                        vibe: 'Weekend Warrior',
+                        insight: data.weekend.snow_forecast_inches > 0
+                            ? `Big weekend coming! Total ${data.weekend.snow_forecast_inches}" snow forecast.`
+                            : `Outdoor friendly weekend with highs of ${Math.round(data.weekend.temp_f)}°.`
+                    } : null,
+                    week: {
+                        summary: 'Full Week',
+                        vibe: 'Steady Vibe',
+                        insight: 'Click for the 7-day temperature trend and outlook.'
+                    }
+                });
+            } catch (error) {
+                console.error('Failed to fetch real-time data for viability engine:', error);
+            }
+        };
+
+        fetchRealData();
+    }, []);
 
     const updateEnvironment = useCallback(() => {
         if (forceSummerMode) {
@@ -119,5 +180,5 @@ export const useViabilityEngine = () => {
         return Math.min(100, Math.max(0, score));
     };
 
-    return { isGoldenHour, forceSummerMode, setForceSummerMode, envData, forecast, calculateScore };
+    return { isGoldenHour, forceSummerMode, setForceSummerMode, envData, forecast, sportsData, calculateScore };
 };

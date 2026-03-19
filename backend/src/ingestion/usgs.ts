@@ -2,6 +2,19 @@ import { EnvironmentData } from '../types/schema.js';
 
 const USGS_BASE_URL = 'https://waterservices.usgs.gov/nwis';
 
+async function fetchWithTimeout(url: string, options: any = {}, timeout = 5000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(id);
+    return response;
+  } catch (e) {
+    clearTimeout(id);
+    throw e;
+  }
+}
+
 interface USGSResponse {
   value: {
     timeSeries: Array<{
@@ -24,7 +37,7 @@ export async function fetchLakeUnionTemp(): Promise<{ temp: number; dateTime: st
   const parameterCode = '00010';
 
   try {
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       `${USGS_BASE_URL}/iv/?format=json&site=${siteCode}&parameterCd=${parameterCode}&period=P1D`
     );
     
@@ -56,7 +69,7 @@ export async function fetchCedarRiverFlow(): Promise<{ flow: number; dateTime: s
   const parameterCode = '00060';
 
   try {
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       `${USGS_BASE_URL}/iv/?format=json&site=${siteCode}&parameterCd=${parameterCode}&period=P1D`
     );
     
@@ -87,7 +100,7 @@ export async function fetchTideData(): Promise<{ height: number; dateTime: strin
   const stationId = '9447130';
   
   try {
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station_id=${stationId}&product=predictions&datum=MLLW&units=english&time_zone=lst_ldt&format=json`
     );
     

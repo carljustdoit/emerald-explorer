@@ -4,8 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useApp } from '../context/AppContext';
 import { useSportsData } from '../hooks/useApi';
-import WeatherInsight from '../components/WeatherInsight';
-import SportsDataCard from '../components/SportsDataCard';
+import UnifiedInsightCard from '../components/UnifiedInsightCard';
 import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
 import EventDetailModal from '../components/EventDetailModal';
 import BrandBanner from '../components/BrandBanner';
@@ -80,15 +79,13 @@ const Home = () => {
         <BrandBanner isParentingWeek={rotation.isParentingWeek} />
       </header>
 
-      {sportsData && <SportsDataCard data={sportsData} loading={sportsLoading} />}
-
-      {viability && viability.forecast && (
-        <WeatherInsight
-          forecast={viability.forecast}
-          envData={viability.envData}
-          isParentingWeek={rotation.isParentingWeek}
-        />
-      )}
+      <UnifiedInsightCard 
+        forecast={viability?.forecast}
+        envData={viability?.envData}
+        sportsData={sportsData}
+        isParentingWeek={rotation.isParentingWeek}
+        loading={sportsLoading}
+      />
 
       <section className="map-section glass">
         <div className="section-header">
@@ -218,7 +215,7 @@ const Home = () => {
       )}
 
       <style>{`
-        .home-page { display: flex; flex-direction: column; gap: 32px; padding-bottom: 100px; }
+        .home-page { display: flex; flex-direction: column; gap: 24px; padding-bottom: 100px; }
         .home-header { margin-bottom: -8px; }
         .map-section { padding: 24px; border-radius: var(--radius-xl); display: flex; flex-direction: column; gap: 16px; }
         .section-header { display: flex; align-items: center; gap: 8px; color: var(--accent-primary); }
@@ -228,10 +225,10 @@ const Home = () => {
         .map-popup strong { font-size: 13px; }
         .map-popup span { font-size: 11px; color: var(--text-muted); }
         .map-caption { font-size: 12px; color: var(--text-muted); text-align: center; }
-        .agenda-section h2 { font-size: 28px; margin-bottom: 24px; }
+        .agenda-section h2 { font-size: 28px; margin-bottom: 16px; }
         .day-group { margin-bottom: 32px; }
-        .day-group h3 { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; letter-spacing: -0.01em; font-weight: 700; }
-        .event-list { display: flex; flex-direction: column; gap: 24px; }
+        .day-group > h3 { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 0.02em; font-weight: 700; }
+        .event-list { display: flex; flex-direction: column; gap: 28px; }
         .empty-state { padding: 60px 40px; text-align: center; border-radius: var(--radius-lg); color: var(--text-muted); }
       `}</style>
     </div>

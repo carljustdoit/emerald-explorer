@@ -160,11 +160,11 @@ const AdaptiveHeroCard = ({
           gap: 16px;
         }
         h3 {
-          font-size: 20px;
+          font-size: 22px;
           color: var(--text-strong);
           line-height: 1.25;
         }
-        .solo-mode h3 { color: var(--solo-text-strong); }
+        .solo-mode .hero-card h3 { color: var(--solo-text-strong); }
 
         .description {
           font-size: 14px;

@@ -1,10 +1,9 @@
 services:
   - type: web
     name: emerald-explorer-backend
-    runtime: node
-    rootDir: backend
-    buildCommand: npm install && npm run build && PLAYWRIGHT_BROWSERS_PATH=./.playwright-browsers npx playwright install chromium
-    startCommand: npm start
+    runtime: docker
+    # rootDir: backend  # Docker builds usually run from rootDir, but Render uses this to find the Dockerfile
+    # No buildCommand or startCommand needed for Docker; it uses the Dockerfile
     envVars:
       - key: PORT
         value: 3001
@@ -36,5 +35,3 @@ services:
         sync: false
       - key: ADMIN_EMAILS
         sync: false
-      - key: PLAYWRIGHT_BROWSERS_PATH
-        value: ./.playwright-browsers

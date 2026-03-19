@@ -1,5 +1,6 @@
 import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -14,12 +15,14 @@ const isConfigValid = firebaseConfig.apiKey && firebaseConfig.projectId;
 
 let app;
 let auth;
+let db;
 
 if (isConfigValid) {
   app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
   auth = getAuth(app);
+  db = getFirestore(app);
 } else {
   console.warn('[Firebase] Configuration is missing or invalid. Auth will be disabled.');
 }
 
-export { auth, isConfigValid };
+export { auth, db, isConfigValid };

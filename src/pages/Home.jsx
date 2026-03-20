@@ -68,6 +68,7 @@ const Home = () => {
 
   const now = new Date();
   const todayStr = now.toDateString();
+  const tomorrowStr = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).toDateString();
 
   const todayAgenda = useMemo(() => {
     return (agenda || [])
@@ -80,11 +81,21 @@ const Home = () => {
       .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
   }, [agenda, todayStr]);
 
+  const tomorrowAgenda = useMemo(() => {
+    return (agenda || [])
+      .filter(e => e?.startDate && new Date(e.startDate).toDateString() === tomorrowStr)
+      .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+  }, [agenda, tomorrowStr]);
+
+  // Show today's events on map; fall back to tomorrow if today is empty
+  const mapAgenda = todayAgenda.length > 0 ? todayAgenda : tomorrowAgenda;
+  const mapLabel = todayAgenda.length > 0 ? "Today's Route" : tomorrowAgenda.length > 0 ? "Tomorrow's Route" : "Interactive Route";
+
   const routePositions = useMemo(() => {
-    return todayAgenda
+    return mapAgenda
       .filter(e => e.coord && typeof e.coord.x === 'number' && typeof e.coord.y === 'number')
       .map(e => [e.coord.x, e.coord.y]);
-  }, [todayAgenda]);
+  }, [mapAgenda]);
 
   const [drivingRoute, setDrivingRoute] = useState([]);
 
@@ -109,27 +120,35 @@ const Home = () => {
       .catch(() => setDrivingRoute(routePositions));
   }, [JSON.stringify(routePositions)]);
 
-  const chainedTodayEvents = useMemo(() => {
-    if (todayAgenda.length === 0) return [];
+  const chainedMapEvents = useMemo(() => {
+    if (mapAgenda.length === 0) return [];
     const chains = [];
-    let current = [todayAgenda[0]];
-    for (let i = 1; i < todayAgenda.length; i++) {
+    let current = [mapAgenda[0]];
+    for (let i = 1; i < mapAgenda.length; i++) {
       const prev = current[current.length - 1];
       const prevEnd = prev.endDate
         ? new Date(prev.endDate).getTime()
-        : new Date(prev.startDate).getTime() + 2 * 3600000; // 2hr fallback
-      const nextStart = new Date(todayAgenda[i].startDate).getTime();
+        : new Date(prev.startDate).getTime() + 2 * 3600000;
+      const nextStart = new Date(mapAgenda[i].startDate).getTime();
       const gapHours = (nextStart - prevEnd) / 3600000;
       if (gapHours <= 4) {
-        current.push(todayAgenda[i]);
+        current.push(mapAgenda[i]);
       } else {
         chains.push(current);
-        current = [todayAgenda[i]];
+        current = [mapAgenda[i]];
       }
     }
     chains.push(current);
     return chains;
-  }, [todayAgenda]);
+  }, [mapAgenda]);
+
+  const createNumberedIcon = (num) => L.divIcon({
+    className: '',
+    html: `<div class="map-num-marker">${num}</div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+    popupAnchor: [0, -16],
+  });
 
   const groupedAgenda = useMemo(() => {
     const future = (agenda || []).filter(e => {
@@ -176,7 +195,7 @@ const Home = () => {
       <section className="map-section glass">
         <div className="section-header">
           <Navigation size={18} />
-          <h3>Interactive Route</h3>
+          <h3>{mapLabel}</h3>
         </div>
         <div className="home-map-container">
           <MapContainer
@@ -190,11 +209,11 @@ const Home = () => {
                 attribution='&copy; OpenStreetMap contributors &copy; CARTO'
             />
             <MapController positions={routePositions} />
-            {todayAgenda.map((event) => event.coord && typeof event.coord.x === 'number' && (
-                <Marker key={event.id} position={[event.coord.x, event.coord.y]}>
+            {mapAgenda.map((event, idx) => event.coord && typeof event.coord.x === 'number' && (
+                <Marker key={event.id} position={[event.coord.x, event.coord.y]} icon={createNumberedIcon(idx + 1)}>
                     <Popup>
                         <div className="map-popup">
-                            <strong>{event.title}</strong>
+                            <strong>#{idx + 1} {event.title}</strong>
                             <span>{new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>
                     </Popup>
@@ -209,26 +228,29 @@ const Home = () => {
                 />
             )}
           </MapContainer>
-          {todayAgenda.length === 0 ? (
-            <p className="map-caption">Add events from Discovery to see your daily route</p>
+          {mapAgenda.length === 0 ? (
+            <p className="map-caption">Add events from Discovery to see your route</p>
           ) : (
             <div className="route-timeline">
-              {chainedTodayEvents.map((chain, ci) => (
+              {chainedMapEvents.map((chain, ci) => (
                 <div key={ci} className="route-chain">
-                  {chain.map((event, ei) => (
-                    <React.Fragment key={event.id}>
-                      <div className="route-stop">
-                        <div className="stop-dot" />
-                        <div className="stop-info">
-                          <span className="stop-time">
-                            {new Date(event.startDate).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
-                          </span>
-                          <span className="stop-title">{event.title}</span>
+                  {chain.map((event, ei) => {
+                    const stopNum = mapAgenda.indexOf(event) + 1;
+                    return (
+                      <React.Fragment key={event.id}>
+                        <div className="route-stop">
+                          <div className="stop-num">{stopNum}</div>
+                          <div className="stop-info">
+                            <span className="stop-time">
+                              {new Date(event.startDate).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+                            </span>
+                            <span className="stop-title">{event.title}</span>
+                          </div>
                         </div>
-                      </div>
-                      {ei < chain.length - 1 && <div className="stop-connector" />}
-                    </React.Fragment>
-                  ))}
+                        {ei < chain.length - 1 && <div className="stop-connector" />}
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
               ))}
             </div>
@@ -317,8 +339,19 @@ const Home = () => {
         .route-chain { display: flex; flex-direction: column; background: rgba(0,0,0,0.02); border-radius: 12px; border: 1px solid var(--glass-border); padding: 10px 14px; gap: 0; }
         .solo-mode .route-chain { background: rgba(255,255,255,0.02); }
         .route-stop { display: flex; align-items: center; gap: 10px; }
-        .stop-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-primary); flex-shrink: 0; }
-        .solo-mode .stop-dot { background: var(--solo-accent); }
+        .stop-num {
+          width: 20px; height: 20px; border-radius: 50%;
+          background: var(--accent-primary); color: white;
+          font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+        }
+        .solo-mode .stop-num { background: var(--solo-accent); color: black; }
+        .map-num-marker {
+          width: 28px; height: 28px; border-radius: 50%;
+          background: var(--accent-primary, #2d6a4f); color: white;
+          font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+          border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
         .stop-info { display: flex; align-items: baseline; gap: 6px; flex: 1; min-width: 0; }
         .stop-time { font-size: 12px; font-weight: 600; color: var(--accent-primary); flex-shrink: 0; }
         .solo-mode .stop-time { color: var(--solo-accent); }

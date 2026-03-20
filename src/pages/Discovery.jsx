@@ -197,11 +197,11 @@ const Discovery = () => {
         // Location Filter
         if (locationSearch && !event.location.toLowerCase().includes(locationSearch.toLowerCase())) return false;
 
-        // Past events filter (only show future or ongoing today)
+        // Hide events that started more than 2 hours ago
         const now = new Date();
         const eventDate = new Date(event.startDate);
+        if (eventDate.getTime() + 2 * 3600000 < now.getTime()) return false;
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        if (eventDate < today) return false;
 
         // Timeframe Filter — all comparisons use date-only (normalized to midnight)
         const eventDay = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());

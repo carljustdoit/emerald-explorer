@@ -59,3 +59,9 @@ export async function fetchSportsData() {
   if (!response.ok) throw new Error('Failed to fetch sports data');
   return response.json();
 }
+
+export async function fetchTrending() {
+  const response = await fetch(`${API_BASE}/trending`);
+  if (!response.ok) return [];
+  return response.json();
+}

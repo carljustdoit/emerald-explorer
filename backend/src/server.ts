@@ -272,6 +272,43 @@ app.get('/api/environment', async (req, res) => {
   }
 });
 
+// Trending events — aggregated from all user agendas in Firestore
+let trendingCache: { data: any[]; ts: number } = { data: [], ts: 0 };
+const TRENDING_TTL = 15 * 60 * 1000; // 15 min
+
+app.get('/api/trending', async (req, res) => {
+  try {
+    if (!db) return res.json([]);
+
+    if (Date.now() - trendingCache.ts < TRENDING_TTL) {
+      return res.json(trendingCache.data);
+    }
+
+    const usersSnap = await db.collection('users').get();
+    const counts = new Map<string, { id: string; title: string; count: number }>();
+
+    usersSnap.forEach(doc => {
+      const items: any[] = doc.data().agenda || [];
+      items.forEach(item => {
+        if (!item?.id || !item?.title) return;
+        const existing = counts.get(item.id) ?? { id: item.id, title: item.title, count: 0 };
+        existing.count++;
+        counts.set(item.id, existing);
+      });
+    });
+
+    const top3 = Array.from(counts.values())
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 3);
+
+    trendingCache = { data: top3, ts: Date.now() };
+    res.json(top3);
+  } catch (error) {
+    console.error('[API] Trending error:', error);
+    res.json([]);
+  }
+});
+
 // Real-time sports data (Snow/Water/Weather)
 app.get('/api/sports-data', async (req, res) => {
   try {

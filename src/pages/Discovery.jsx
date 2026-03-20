@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useEvents, useSportsData } from '../hooks/useApi';
+import { fetchTrending } from '../services/api';
 import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
 import EventDetailModal from '../components/EventDetailModal';
 import { TrendingUp, Users, MapPin, Filter, X, Calendar } from 'lucide-react';
@@ -81,6 +82,10 @@ const Discovery = () => {
 
     const { events: realEvents, loading, error } = useEvents({ limit: 500 });
     const { data: sportsData } = useSportsData();
+    const [trending, setTrending] = useState([]);
+    useEffect(() => {
+        fetchTrending().then(data => setTrending(data || [])).catch(() => {});
+    }, []);
 
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [selectedTimeframe, setSelectedTimeframe] = useState("All");
@@ -231,36 +236,28 @@ const Discovery = () => {
         <div className="discovery-page">
             <h1 className="page-title">Discover</h1>
 
-            {/* Trending Section */}
-            <section className="trending-section glass">
-                <div className="trending-header">
-                    <TrendingUp size={16} />
-                    <span>Trending in Seattle</span>
-                </div>
-                <div className="trending-items">
-                    <div className="trending-pill">
-                        <span className="trending-rank">1</span>
-                        <div className="trending-info">
-                            <span className="trending-name">Cherry Blossom Walk</span>
-                            <span className="trending-meta"><Users size={12} /> 2.4k interested</span>
-                        </div>
+            {/* Trending Section — only shown when there is real data */}
+            {trending.length > 0 && (
+                <section className="trending-section glass">
+                    <div className="trending-header">
+                        <TrendingUp size={16} />
+                        <span>Trending in Seattle</span>
                     </div>
-                    <div className="trending-pill">
-                        <span className="trending-rank">2</span>
-                        <div className="trending-info">
-                            <span className="trending-name">First Thursday Art Walk</span>
-                            <span className="trending-meta"><Users size={12} /> 1.8k interested</span>
-                        </div>
+                    <div className="trending-items">
+                        {trending.map((item, i) => (
+                            <div key={item.id} className="trending-pill">
+                                <span className="trending-rank">{i + 1}</span>
+                                <div className="trending-info">
+                                    <span className="trending-name">{item.title}</span>
+                                    <span className="trending-meta">
+                                        <Users size={12} /> {item.count} {item.count === 1 ? 'person' : 'people'} added this
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                    <div className="trending-pill">
-                        <span className="trending-rank">3</span>
-                        <div className="trending-info">
-                            <span className="trending-name">Pike Place Night Market</span>
-                            <span className="trending-meta"><Users size={12} /> 1.2k interested</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             <section className="activities-section glass">
                 <div className="section-header">

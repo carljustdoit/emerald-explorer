@@ -9,8 +9,7 @@ const Settings = () => {
         rotation,
         preferences,
         updatePreferences,
-        viability,
-        toggleSummerMode,
+        agenda,
         theme,
         setTheme
     } = useApp();
@@ -43,10 +42,41 @@ const Settings = () => {
     };
 
     const exportToICS = () => {
-        const icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Emerald Explorer//EN\n" +
-            "BEGIN:VEVENT\nSUMMARY:Sample Event\nDTSTART:20260310T100000Z\nEND:20260310T110000Z\nEND:VEVENT\n" +
-            "END:VCALENDAR";
-        const blob = new Blob([icsContent], { type: 'text/calendar' });
+        const formatICSDate = (date) => {
+            const d = new Date(date);
+            return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        };
+        const escape = (str) => (str || '').replace(/[\\;,]/g, '\\$&').replace(/\n/g, '\\n');
+
+        const events = (agenda || []).filter(e => e?.startDate).map((event, i) => {
+            const start = new Date(event.startDate);
+            const end = event.endDate ? new Date(event.endDate) : new Date(start.getTime() + 2 * 3600000);
+            const uid = `emerald-${event.id || i}-${Date.now()}@emerald-explorer`;
+            return [
+                'BEGIN:VEVENT',
+                `UID:${uid}`,
+                `DTSTAMP:${formatICSDate(new Date())}`,
+                `DTSTART:${formatICSDate(start)}`,
+                `DTEND:${formatICSDate(end)}`,
+                `SUMMARY:${escape(event.title)}`,
+                event.description ? `DESCRIPTION:${escape(event.description)}` : '',
+                event.location ? `LOCATION:${escape(event.location)}` : '',
+                event.link ? `URL:${event.link}` : '',
+                'END:VEVENT',
+            ].filter(Boolean).join('\r\n');
+        });
+
+        const icsContent = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//Emerald Explorer//EN',
+            'CALSCALE:GREGORIAN',
+            'METHOD:PUBLISH',
+            ...events,
+            'END:VCALENDAR',
+        ].join('\r\n');
+
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -54,6 +84,7 @@ const Settings = () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     return (
@@ -168,20 +199,6 @@ const Settings = () => {
             </section>
 
             <section className="settings-card glass">
-                <div className="toggle-row">
-                    <div className="toggle-label">
-                        <div>
-                            <span className="toggle-title">Simulate summer</span>
-                            <p className="toggle-desc">Force Golden Hour conditions</p>
-                        </div>
-                    </div>
-                    <input
-                        type="checkbox"
-                        checked={viability.forceSummerMode}
-                        onChange={toggleSummerMode}
-                    />
-                </div>
-
                 <button className="export-btn" onClick={exportToICS}>
                     <FileDown size={16} strokeWidth={1.5} />
                     Export schedule

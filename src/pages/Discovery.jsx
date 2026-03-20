@@ -117,25 +117,33 @@ const Discovery = () => {
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         if (eventDate < today) return false;
 
-        // Timeframe Filter
-        
+        // Timeframe Filter — all comparisons use date-only (normalized to midnight)
+        const eventDay = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+
         if (selectedTimeframe === "Today") {
-            if (eventDate.toDateString() !== now.toDateString()) return false;
+            if (eventDay.getTime() !== today.getTime()) return false;
         } else if (selectedTimeframe === "Tomorrow") {
-            const tomorrow = new Date(now);
-            tomorrow.setDate(now.getDate() + 1);
-            if (eventDate.toDateString() !== tomorrow.toDateString()) return false;
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            if (eventDay.getTime() !== tomorrow.getTime()) return false;
         } else if (selectedTimeframe === "This Weekend") {
-            const day = now.getDay();
-            const friday = new Date(now);
-            friday.setDate(now.getDate() + (5 - day));
-            const sunday = new Date(now);
-            sunday.setDate(now.getDate() + (7 - day));
-            if (eventDate < friday || eventDate > sunday) return false;
+            const day = now.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+            // Calculate offset to this weekend's Friday (normalize to midnight for correct comparison)
+            let fridayOffset;
+            if (day === 0) {
+                fridayOffset = -2; // Sunday: this weekend's Friday was 2 days ago
+            } else {
+                fridayOffset = 5 - day; // Mon:+4, Tue:+3, Wed:+2, Thu:+1, Fri:0, Sat:-1
+            }
+            const friday = new Date(today);
+            friday.setDate(today.getDate() + fridayOffset);
+            const sunday = new Date(friday);
+            sunday.setDate(friday.getDate() + 2);
+            if (eventDay < friday || eventDay > sunday) return false;
         } else if (selectedTimeframe === "This Week") {
-            const nextWeek = new Date(now);
-            nextWeek.setDate(now.getDate() + 7);
-            if (eventDate < now || eventDate > nextWeek) return false;
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+            if (eventDay < today || eventDay > nextWeek) return false;
         }
 
         const score = viability.calculateScore(event, mockResources, effectiveIsParenting, preferences, agenda);
@@ -185,11 +193,11 @@ const Discovery = () => {
                 </div>
                 <div className="activity-grid">
                     {[
-                        { id: 'act-ski-snoqualmie', title: 'Skiing / Boarding', location: 'Snoqualmie Pass', coord: { x: 47.4241, y: -121.4137 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1548507293-9befeaf8f36b?auto=format&fit=crop&q=80&w=800' },
-                        { id: 'act-ski-stevens', title: 'Skiing / Boarding', location: 'Stevens Pass', coord: { x: 47.7463, y: -121.0858 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1605540436563-5bca919ae766?auto=format&fit=crop&q=80&w=800' },
-                        { id: 'act-ski-crystal', title: 'Skiing / Boarding', location: 'Crystal Mountain', coord: { x: 46.9282, y: -121.5045 }, category: 'Sports', vibe: 'Winter Sports', image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=800' },
-                        { id: 'act-paddle-union', title: 'Paddling / Kayaking', location: 'Lake Union', coord: { x: 47.6360, y: -122.3340 }, category: 'Nature', vibe: 'Water Sports', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=800' },
-                        { id: 'act-paddle-sound', title: 'Paddling / Kayaking', location: 'Puget Sound (Alki)', coord: { x: 47.5815, y: -122.4047 }, category: 'Nature', vibe: 'Water Sports', image: 'https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&q=80&w=800' }
+                        { id: 'act-ski-snoqualmie', title: 'Skiing / Boarding', location: 'Snoqualmie Pass', coord: { x: 47.4241, y: -121.4137 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/snoqualmie_pass.png' },
+                        { id: 'act-ski-stevens', title: 'Skiing / Boarding', location: 'Stevens Pass', coord: { x: 47.7463, y: -121.0858 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/stevens_pass.png' },
+                        { id: 'act-ski-crystal', title: 'Skiing / Boarding', location: 'Crystal Mountain', coord: { x: 46.9282, y: -121.5045 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/crystal_mountain.png' },
+                        { id: 'act-paddle-union', title: 'Paddling / Kayaking', location: 'Lake Union', coord: { x: 47.6360, y: -122.3340 }, category: 'Nature', vibe: 'Water Sports', image: '/assets/lake_union.png' },
+                        { id: 'act-paddle-sound', title: 'Paddling / Kayaking', location: 'Puget Sound (Alki)', coord: { x: 47.5815, y: -122.4047 }, category: 'Nature', vibe: 'Water Sports', image: '/assets/puget_sound.png' }
                     ].map(activity => {
                         const isPinned = agenda.some(item => item.id === activity.id);
                         return (

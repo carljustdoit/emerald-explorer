@@ -4,7 +4,7 @@ import { useEvents, useSportsData } from '../hooks/useApi';
 import { fetchTrending } from '../services/api';
 import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
 import EventDetailModal from '../components/EventDetailModal';
-import { TrendingUp, Users, MapPin, Filter, X, Calendar, Search } from 'lucide-react';
+import { TrendingUp, Users, MapPin, Filter, X, Calendar, Search, Plus, Check } from 'lucide-react';
 
 const CATEGORIES = ["All", "EDM", "Concert", "Sports", "Nature", "Wellness", "Arts", "Meetup", "Food", "Others"];
 const TIMEFRAMES = ["All", "Today", "Tomorrow", "This Weekend", "This Week", "Custom"];
@@ -101,6 +101,10 @@ const Discovery = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [filterOpen, setFilterOpen] = useState(false);
     const [viewingEvent, setViewingEvent] = useState(null);
+    const [activityPicker, setActivityPicker] = useState(null); // { activity }
+    const [pickerDate, setPickerDate] = useState('');
+    const [pickerStart, setPickerStart] = useState('09:00');
+    const [pickerEnd, setPickerEnd] = useState('17:00');
 
     const filterRef = useRef(null);
 
@@ -309,7 +313,7 @@ const Discovery = () => {
             <section className="activities-section glass">
                 <div className="section-header">
                     <MapPin size={16} />
-                    <span>Outdoor Activities (Pin to Home)</span>
+                    <span>Outdoor Activities</span>
                 </div>
                 <div className="activity-grid">
                     {[
@@ -341,20 +345,20 @@ const Discovery = () => {
                                     })()}
                                     <button
                                         className={`pin-btn ${isPinned ? 'pinned' : ''}`}
+                                        title={isPinned ? 'Remove from agenda' : 'Add to agenda'}
                                         onClick={() => {
                                             if (isPinned) {
                                                 removeFromAgenda(activity.id);
                                             } else {
-                                                addToAgenda({
-                                                    ...activity,
-                                                    startDate: new Date().toLocaleString('sv').replace(' ', 'T'),
-                                                    description: `Outdoor activity at ${activity.location}. Check weather before heading out!`,
-                                                    time: 'Anytime'
-                                                });
+                                                const today = new Date().toISOString().split('T')[0];
+                                                setPickerDate(today);
+                                                setPickerStart('09:00');
+                                                setPickerEnd('17:00');
+                                                setActivityPicker({ activity });
                                             }
                                         }}
                                     >
-                                        {isPinned ? 'Pinned to Home' : 'Pin to Home'}
+                                        {isPinned ? <Check size={14} /> : <Plus size={14} />}
                                     </button>
                                 </div>
                             </div>
@@ -547,6 +551,63 @@ const Discovery = () => {
                     event={viewingEvent}
                     onClose={() => setViewingEvent(null)}
                 />
+            )}
+
+            {/* Activity date/time picker modal */}
+            {activityPicker && (
+                <div className="activity-modal-backdrop" onClick={() => setActivityPicker(null)}>
+                    <div className="activity-modal glass" onClick={e => e.stopPropagation()}>
+                        <h3>Add to Agenda</h3>
+                        <p className="activity-modal-sub">{activityPicker.activity.title} · {activityPicker.activity.location}</p>
+
+                        <div className="activity-modal-fields">
+                            <label>Date</label>
+                            <input
+                                type="date"
+                                value={pickerDate}
+                                min={new Date().toISOString().split('T')[0]}
+                                onChange={e => setPickerDate(e.target.value)}
+                            />
+
+                            <label>Start time</label>
+                            <input
+                                type="time"
+                                value={pickerStart}
+                                onChange={e => setPickerStart(e.target.value)}
+                            />
+
+                            <label>End time</label>
+                            <input
+                                type="time"
+                                value={pickerEnd}
+                                onChange={e => setPickerEnd(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="activity-modal-actions">
+                            <button className="modal-cancel" onClick={() => setActivityPicker(null)}>Cancel</button>
+                            <button
+                                className="modal-confirm"
+                                disabled={!pickerDate}
+                                onClick={() => {
+                                    const { activity } = activityPicker;
+                                    const startDate = new Date(`${pickerDate}T${pickerStart}`);
+                                    const endDate = new Date(`${pickerDate}T${pickerEnd}`);
+                                    addToAgenda({
+                                        ...activity,
+                                        startDate,
+                                        endDate,
+                                        time: pickerStart,
+                                        description: `Outdoor activity at ${activity.location}. Check weather before heading out!`,
+                                    });
+                                    setActivityPicker(null);
+                                }}
+                            >
+                                Add to Agenda
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
 
             <style>{`
@@ -763,10 +824,61 @@ const Discovery = () => {
         .activity-hours.closed { background: rgba(239,68,68,0.1); color: #ef4444; }
         .activity-hours-note { font-size: 9px; color: var(--text-muted); font-weight: 500; }
         .solo-mode .activity-hours-note { color: var(--solo-text-muted); }
-        .pin-btn { margin-top: 8px; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid var(--accent-primary); background: transparent; color: var(--accent-primary); transition: all 0.2s; }
-        .pin-btn.pinned { background: var(--accent-primary); color: white; }
+        .pin-btn {
+          margin-top: 8px; width: 28px; height: 28px; border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer; border: 1.5px solid var(--accent-primary);
+          background: transparent; color: var(--accent-primary); transition: all 0.2s;
+          flex-shrink: 0;
+        }
+        .pin-btn.pinned { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
         .solo-mode .pin-btn { border-color: var(--solo-accent); color: var(--solo-accent); }
-        .solo-mode .pin-btn.pinned { background: var(--solo-accent); color: black; }
+        .solo-mode .pin-btn.pinned { background: var(--solo-accent); color: black; border-color: var(--solo-accent); }
+
+        /* Activity date/time picker modal */
+        .activity-modal-backdrop {
+          position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+          display: flex; align-items: center; justify-content: center;
+          z-index: 200; padding: 24px;
+        }
+        .activity-modal {
+          width: 100%; max-width: 340px; border-radius: 20px;
+          padding: 24px; display: flex; flex-direction: column; gap: 16px;
+        }
+        .activity-modal h3 { font-size: 17px; font-weight: 700; margin: 0; }
+        .activity-modal-sub { font-size: 13px; color: var(--text-muted); margin: -8px 0 0; }
+        .solo-mode .activity-modal-sub { color: var(--solo-text-muted); }
+        .activity-modal-fields {
+          display: grid; grid-template-columns: 90px 1fr; gap: 10px 12px;
+          align-items: center;
+        }
+        .activity-modal-fields label {
+          font-size: 12px; font-weight: 600; color: var(--text-muted);
+          text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .solo-mode .activity-modal-fields label { color: var(--solo-text-muted); }
+        .activity-modal-fields input {
+          padding: 8px 10px; border-radius: 10px;
+          border: 1px solid var(--glass-border); background: rgba(0,0,0,0.04);
+          color: var(--text-strong); font-size: 13px; font-weight: 500; width: 100%;
+        }
+        .solo-mode .activity-modal-fields input {
+          background: rgba(255,255,255,0.04); color: var(--solo-text-strong); color-scheme: dark;
+        }
+        .activity-modal-actions { display: flex; gap: 10px; }
+        .modal-cancel {
+          flex: 1; padding: 10px; border-radius: 12px;
+          border: 1px solid var(--glass-border); background: transparent;
+          color: var(--text-muted); font-size: 13px; font-weight: 600; cursor: pointer;
+        }
+        .solo-mode .modal-cancel { color: var(--solo-text-muted); }
+        .modal-confirm {
+          flex: 2; padding: 10px; border-radius: 12px; border: none;
+          background: var(--accent-primary); color: white;
+          font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.15s;
+        }
+        .modal-confirm:disabled { opacity: 0.4; cursor: not-allowed; }
+        .solo-mode .modal-confirm { background: var(--solo-accent); color: black; }
       `}</style>
         </div>
     );

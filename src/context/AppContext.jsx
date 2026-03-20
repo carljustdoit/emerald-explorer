@@ -8,6 +8,21 @@ import { mockResources } from '../data';
 
 const AppContext = createContext();
 
+/** Strip undefined values and convert Date objects to ISO strings so Firestore accepts the data. */
+const sanitizeForFirestore = (val) => {
+    if (val === undefined || val === null) return null;
+    if (val instanceof Date) return val.toISOString();
+    if (Array.isArray(val)) return val.map(sanitizeForFirestore);
+    if (typeof val === 'object') {
+        return Object.fromEntries(
+            Object.entries(val)
+                .filter(([, v]) => v !== undefined)
+                .map(([k, v]) => [k, sanitizeForFirestore(v)])
+        );
+    }
+    return val;
+};
+
 export const AppProvider = ({ children }) => {
     const { user } = useAuth();
     const rotation = useRotationEngine();
@@ -33,6 +48,13 @@ export const AppProvider = ({ children }) => {
         return saved || 'auto';
     });
 
+    // Clear local state on logout
+    useEffect(() => {
+        if (!user) {
+            setAgenda([]);
+        }
+    }, [user]);
+
     // Firestore Sync & Migration
     useEffect(() => {
         if (!user || !db) return;
@@ -49,7 +71,7 @@ export const AppProvider = ({ children }) => {
                 const currentPrefs = JSON.parse(localStorage.getItem('emerald_preferences') || 'null');
                 
                 setDoc(userDocRef, {
-                    agenda: currentAgenda,
+                    agenda: sanitizeForFirestore(currentAgenda),
                     preferences: currentPrefs || preferences,
                     lastSynced: new Date().toISOString()
                 });
@@ -77,7 +99,7 @@ export const AppProvider = ({ children }) => {
         const userDocRef = doc(db, 'users', user.uid);
         try {
             await setDoc(userDocRef, {
-                agenda: newAgenda || agenda,
+                agenda: sanitizeForFirestore(newAgenda ?? agenda),
                 preferences: newPrefs || preferences,
                 lastSynced: new Date().toISOString()
             }, { merge: true });

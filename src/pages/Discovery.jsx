@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { useEvents } from '../hooks/useApi';
+import { useEvents, useSportsData } from '../hooks/useApi';
 import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
 import EventDetailModal from '../components/EventDetailModal';
 import { TrendingUp, Users, MapPin, Filter, X, Calendar } from 'lucide-react';
@@ -80,6 +80,7 @@ const Discovery = () => {
     } = useApp();
 
     const { events: realEvents, loading, error } = useEvents({ limit: 500 });
+    const { data: sportsData } = useSportsData();
 
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [selectedTimeframe, setSelectedTimeframe] = useState("All");
@@ -268,9 +269,9 @@ const Discovery = () => {
                 </div>
                 <div className="activity-grid">
                     {[
-                        { id: 'act-ski-snoqualmie', title: 'Skiing / Boarding', location: 'Snoqualmie Pass', coord: { x: 47.4241, y: -121.4137 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/snoqualmie_pass.png' },
-                        { id: 'act-ski-stevens', title: 'Skiing / Boarding', location: 'Stevens Pass', coord: { x: 47.7463, y: -121.0858 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/stevens_pass.png' },
-                        { id: 'act-ski-crystal', title: 'Skiing / Boarding', location: 'Crystal Mountain', coord: { x: 46.9282, y: -121.5045 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/crystal_mountain.png' },
+                        { id: 'act-ski-snoqualmie', title: 'Skiing / Boarding', location: 'Snoqualmie Pass', coord: { x: 47.4241, y: -121.4137 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/snoqualmie_pass.png', hoursKey: 'snoqualmie' },
+                        { id: 'act-ski-stevens', title: 'Skiing / Boarding', location: 'Stevens Pass', coord: { x: 47.7463, y: -121.0858 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/stevens_pass.png', hoursKey: 'stevens' },
+                        { id: 'act-ski-crystal', title: 'Skiing / Boarding', location: 'Crystal Mountain', coord: { x: 46.9282, y: -121.5045 }, category: 'Sports', vibe: 'Winter Sports', image: '/assets/crystal_mountain.png', hoursKey: 'crystal' },
                         { id: 'act-paddle-union', title: 'Paddling / Kayaking', location: 'Lake Union', coord: { x: 47.6360, y: -122.3340 }, category: 'Nature', vibe: 'Water Sports', image: '/assets/lake_union.png' },
                         { id: 'act-paddle-sound', title: 'Paddling / Kayaking', location: 'Puget Sound (Alki)', coord: { x: 47.5815, y: -122.4047 }, category: 'Nature', vibe: 'Water Sports', image: '/assets/puget_sound.png' }
                     ].map(activity => {
@@ -281,6 +282,19 @@ const Discovery = () => {
                                 <div className="activity-info">
                                     <h4>{activity.title}</h4>
                                     <p>{activity.location}</p>
+                                    {activity.hoursKey && (() => {
+                                        const h = sportsData?.resort_hours?.[activity.hoursKey];
+                                        if (!h) return null;
+                                        if (!h.isOpenToday || h.seasonStatus === 'closed') {
+                                            return <span className="activity-hours closed">{h.seasonStatus === 'closed' ? 'Closed for season' : 'Closed today'}</span>;
+                                        }
+                                        return (
+                                            <div className="activity-hours-wrap">
+                                                <span className="activity-hours open">{h.openTime} – {h.closeTime}</span>
+                                                {h.note && <span className="activity-hours-note">{h.note}</span>}
+                                            </div>
+                                        );
+                                    })()}
                                     <button
                                         className={`pin-btn ${isPinned ? 'pinned' : ''}`}
                                         onClick={() => {
@@ -652,6 +666,16 @@ const Discovery = () => {
         .activity-info { padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
         .activity-info h4 { font-size: 14px; font-weight: 600; }
         .activity-info p { font-size: 11px; color: var(--text-muted); }
+        .activity-hours-wrap { display: flex; flex-direction: column; gap: 1px; margin-top: 3px; }
+        .activity-hours {
+          display: inline-block; font-size: 10px; font-weight: 600;
+          padding: 2px 7px; border-radius: 5px; margin-top: 3px; width: fit-content;
+        }
+        .activity-hours.open { background: rgba(45,106,79,0.12); color: var(--accent-primary); }
+        .solo-mode .activity-hours.open { background: rgba(200,230,110,0.1); color: var(--solo-accent); }
+        .activity-hours.closed { background: rgba(239,68,68,0.1); color: #ef4444; }
+        .activity-hours-note { font-size: 9px; color: var(--text-muted); font-weight: 500; }
+        .solo-mode .activity-hours-note { color: var(--solo-text-muted); }
         .pin-btn { margin-top: 8px; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid var(--accent-primary); background: transparent; color: var(--accent-primary); transition: all 0.2s; }
         .pin-btn.pinned { background: var(--accent-primary); color: white; }
         .solo-mode .pin-btn { border-color: var(--solo-accent); color: var(--solo-accent); }

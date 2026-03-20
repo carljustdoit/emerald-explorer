@@ -266,17 +266,29 @@ const UnifiedInsightCard = ({ forecast, envData, sportsData, isParentingWeek, lo
                               </div>
                             </div>
                             <span className="snow-condition">{resort.cond}</span>
-                            {sportsData?.resort_hours && (() => {
-                              const key = resort.name.toLowerCase(); // 'snoqualmie', 'stevens', 'crystal'
-                              const h = sportsData.resort_hours[key];
-                              if (!h) return null;
-                              if (!h.isOpenToday || h.seasonStatus === 'closed') {
-                                return <span className="resort-hours closed-hours">Closed{h.seasonStatus === 'closed' ? ' for season' : ' today'}</span>;
+                            {(() => {
+                              const key = resort.name.toLowerCase();
+                              const h = sportsData?.resort_hours?.[key];
+                              // Fallback defaults while backend data loads
+                              const isWeekend = [0, 6].includes(new Date().getDay());
+                              const defaultOpen = isWeekend ? '8:30 AM' : '9:00 AM';
+                              const defaultClose = '4:00 PM';
+                              if (h) {
+                                if (!h.isOpenToday || h.seasonStatus === 'closed') {
+                                  return <span className="resort-hours closed-hours">Closed{h.seasonStatus === 'closed' ? ' for season' : ' today'}</span>;
+                                }
+                                return (
+                                  <div className="resort-hours-row">
+                                    <span className="resort-hours open-hours">{h.openTime} – {h.closeTime}</span>
+                                    {h.note && <span className="resort-hours-note">{h.note}</span>}
+                                  </div>
+                                );
                               }
+                              // No live data yet — show default hours
                               return (
                                 <div className="resort-hours-row">
-                                  <span className="resort-hours open-hours">{h.openTime} – {h.closeTime}</span>
-                                  {h.note && <span className="resort-hours-note">{h.note}</span>}
+                                  <span className="resort-hours open-hours">{defaultOpen} – {defaultClose}</span>
+                                  <span className="resort-hours-note">Typical hours</span>
                                 </div>
                               );
                             })()}

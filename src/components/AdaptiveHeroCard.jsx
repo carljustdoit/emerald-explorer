@@ -1,5 +1,5 @@
-import React from 'react';
-import { MapPin, Clock, Plus, Check } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Clock, Plus, Check, X } from 'lucide-react';
 
 const AdaptiveHeroCard = ({
   event,
@@ -12,6 +12,8 @@ const AdaptiveHeroCard = ({
   onCommit,
   onClick
 }) => {
+  const [pickingSession, setPickingSession] = useState(false);
+
   const getDynamicDateLabel = () => {
     if (!event.startDate) return event.dateLabel || '';
     
@@ -77,8 +79,37 @@ const AdaptiveHeroCard = ({
                   {isCommitted ? 'Committed' : 'Mark committed'}
                 </button>
               </div>
+            ) : pickingSession ? (
+              <div className="session-picker">
+                <div className="session-picker-header">
+                  <span>Choose a session</span>
+                  <button className="session-picker-cancel" onClick={() => setPickingSession(false)}>
+                    <X size={12} />
+                  </button>
+                </div>
+                {event.sessions.map((session, i) => (
+                  <button
+                    key={i}
+                    className="session-option"
+                    onClick={() => { onAdd(session); setPickingSession(false); }}
+                  >
+                    <span className="session-date">{session.date}</span>
+                    <span className="session-time">{session.start_time}</span>
+                    <span className="session-price">{session.price}</span>
+                  </button>
+                ))}
+              </div>
             ) : (
-              <button className="action-btn add-btn" onClick={onAdd}>
+              <button
+                className="action-btn add-btn"
+                onClick={() => {
+                  if (event.sessions && event.sessions.length > 1) {
+                    setPickingSession(true);
+                  } else {
+                    onAdd();
+                  }
+                }}
+              >
                 <Plus size={13} /> Add to agenda
               </button>
             )}
@@ -128,7 +159,7 @@ const AdaptiveHeroCard = ({
           position: absolute;
           top: 14px;
           right: 14px;
-          background: rgba(255, 255, 255, 0.88);
+          background: var(--glass-bg);
           color: var(--text-strong);
           padding: 5px 12px;
           border-radius: 8px;
@@ -136,10 +167,7 @@ const AdaptiveHeroCard = ({
           font-weight: 600;
           letter-spacing: 0.02em;
           backdrop-filter: blur(8px);
-        }
-        .solo-mode .source-tag {
-          background: rgba(20, 24, 37, 0.85);
-          color: var(--solo-text-strong);
+          border: 1px solid var(--glass-border);
         }
 
         .card-content {
@@ -249,6 +277,16 @@ const AdaptiveHeroCard = ({
           color: #0c0f1a;
           border-color: var(--solo-accent);
         }
+
+        .session-picker { display: flex; flex-direction: column; gap: 6px; }
+        .session-picker-header { display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .session-option { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-strong); font-size: 12px; font-weight: 500; cursor: pointer; text-align: left; transition: var(--transition-fast); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .session-option:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+        .session-date { font-weight: 600; }
+        .session-time { color: var(--text-muted); }
+        .session-price { font-size: 11px; color: var(--accent-primary); font-weight: 600; }
+        .session-picker-cancel { background: none; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; padding: 2px; border-radius: 4px; transition: var(--transition-fast); }
+        .session-picker-cancel:hover { color: var(--text-strong); }
       `}</style>
     </div>
   );

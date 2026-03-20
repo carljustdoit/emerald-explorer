@@ -201,7 +201,9 @@ const EventDetailModal = ({ event, onClose }) => {
         .modal-source {
           padding: 8px 16px; border-radius: 10px; font-size: 11px; font-weight: 600;
           letter-spacing: 0.5px;
-          background: rgba(255,255,255,0.9); color: black;
+          background: var(--glass-bg); color: var(--text-strong);
+          border: 1px solid var(--glass-border);
+          backdrop-filter: blur(8px);
         }
 
         .modal-body { padding: 32px 28px 80px; }
@@ -270,14 +272,12 @@ const EventDetailModal = ({ event, onClose }) => {
             padding-left: 22px;
         }
         .session-pill {
-            background: rgba(0,0,0,0.04);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             padding: 6px 12px;
             border-radius: 6px;
             font-size: 13px;
             color: var(--text-strong);
-        }
-        .solo-mode .session-pill {
-            background: rgba(255,255,255,0.06);
         }
         .modal-price { font-weight: 600; font-size: 15px; color: var(--accent-primary); margin-bottom: 12px; }
         

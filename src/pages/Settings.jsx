@@ -104,6 +104,7 @@ const Settings = () => {
                     </div>
                     <p className="hint">Tap a date to override</p>
                 </div>
+                <p className="section-note">Events on your parenting days are automatically filtered from Discover unless they're kid-friendly. Green = your parenting day, white = solo day.</p>
             </section>
 
             <section className="settings-card glass">
@@ -111,6 +112,7 @@ const Settings = () => {
                     <Clock size={16} strokeWidth={1.5} />
                     <h3>Scheduling Constraints</h3>
                 </div>
+                <p className="section-note">These time windows hide events that start outside your available hours in Discover. The buffer (rest day) setting also reduces back-to-back event suggestions.</p>
 
                 <div className="input-row">
                     <div className="input-group">
@@ -232,6 +234,8 @@ const Settings = () => {
         
         .hint { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 14px; font-weight: 500; }
         .solo-mode .hint { color: var(--solo-text-muted); }
+        .section-note { font-size: 12px; color: var(--text-muted); line-height: 1.55; margin-top: 6px; padding: 10px 14px; border-radius: 10px; background: rgba(0,0,0,0.03); border: 1px solid var(--glass-border); }
+        .solo-mode .section-note { color: var(--solo-text-muted); background: rgba(255,255,255,0.03); }
 
         .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
         .input-group label { font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px; }

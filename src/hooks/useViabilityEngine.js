@@ -1,6 +1,24 @@
 import { useState, useCallback, useEffect } from 'react';
 import { fetchSportsData } from '../services/api';
 
+const getVibe = (temp, condition, snow, isWeekend) => {
+    const cond = (condition || '').toLowerCase();
+    const isSunny = cond.includes('sun') || cond.includes('clear');
+    const isPartlyCloudy = cond.includes('partly cloudy');
+    const isRainy = cond.includes('rain') || cond.includes('shower') || cond.includes('drizzle');
+    const isSnowy = cond.includes('snow');
+
+    if (snow > 2) return isWeekend ? 'Ski Weekend' : 'Powder Day';
+    if (temp > 68 && isSunny) return 'Prime Lake Day';
+    if (temp > 60 && (isSunny || isPartlyCloudy)) return 'Lake Vibes';
+    if (temp > 55) return 'Outdoor Ready';
+    if (temp > 48 && isSunny) return 'Crisp & Clear';
+    if (isRainy) return 'Cozy Indoors';
+    if (isSnowy) return isWeekend ? 'Ski Weekend' : 'Powder Day';
+    if (temp < 40) return 'Bundle Up';
+    return isWeekend ? 'Weekend Explorer' : 'City Explorer';
+};
+
 export const useViabilityEngine = () => {
     const [isGoldenHour, setIsGoldenHour] = useState(false);
     const [forceSummerMode, setForceSummerMode] = useState(false);
@@ -52,30 +70,60 @@ export const useViabilityEngine = () => {
                 });
 
                 // Dynamically update forecast categories based on real tiered data
+                const todaySnow = today.snoqualmie_new_snow_inches || 0;
+                const todayTemp = today.temp_f || 45;
+                const todayCondition = today.conditions || 'Cloudy';
+
+                const tomorrowSnow = data.tomorrow?.snow_forecast_inches || 0;
+                const tomorrowTemp = data.tomorrow?.temp_f || 45;
+                const tomorrowCondition = data.tomorrow?.conditions || 'Cloudy';
+
+                // Find weekend days (Sat/Sun) in weekly_forecast
+                const weeklyForecast = data.weekly_forecast || [];
+                const weekendEntries = weeklyForecast.filter(day => {
+                    const d = new Date(day.date);
+                    return d.getDay() === 0 || d.getDay() === 6; // Sun or Sat
+                });
+                const weekendHigh = weekendEntries.length > 0
+                    ? Math.max(...weekendEntries.map(d => d.high ?? (data.weekend?.temp_f + 5 ?? 57)))
+                    : (data.weekend?.temp_f ?? 52) + 5;
+                const weekendLow = weekendEntries.length > 0
+                    ? Math.min(...weekendEntries.map(d => d.low ?? (data.weekend?.temp_f - 8 ?? 44)))
+                    : (data.weekend?.temp_f ?? 52) - 8;
+                const weekendSnow = data.weekend?.snow_forecast_inches || 0;
+                const weekendTemp = data.weekend?.temp_f || 52;
+                const weekendCondition = data.weekend?.conditions || 'Cloudy';
+
                 setForecast({
                     today: {
-                        temp: Math.round(today.temp_f || 45),
-                        condition: today.conditions || 'Cloudy',
-                        vibe: today.temp_f > 60 ? 'Lake Vibes' : 'Cozy Morning',
-                        insight: today.snoqualmie_new_snow_inches > 0 
-                            ? `Fresh tracks! ${today.snoqualmie_new_snow_inches}" of new snow at Snoqualmie.`
+                        temp: Math.round(todayTemp),
+                        condition: todayCondition,
+                        high: data.weekly_forecast?.[0]?.high,
+                        low: data.weekly_forecast?.[0]?.low,
+                        vibe: getVibe(todayTemp, todayCondition, todaySnow, false),
+                        insight: todaySnow > 0
+                            ? `Fresh tracks! ${todaySnow}" of new snow at Snoqualmie.`
                             : `${today.wave_summary}. Lake temp is ${today.lake_union_temp_f || 62}°.`
                     },
                     tomorrow: data.tomorrow ? {
-                        temp: Math.round(data.tomorrow.temp_f),
-                        condition: data.tomorrow.conditions,
-                        vibe: 'Next Up',
-                        insight: data.tomorrow.snow_forecast_inches > 0
-                            ? `Tomorrow: Expect ${data.tomorrow.snow_forecast_inches}" of fresh snow!`
-                            : `Smooth sailing tomorrow with ${data.tomorrow.conditions.toLowerCase()} skies.`
+                        temp: Math.round(tomorrowTemp),
+                        condition: tomorrowCondition,
+                        high: data.weekly_forecast?.[1]?.high,
+                        low: data.weekly_forecast?.[1]?.low,
+                        vibe: getVibe(tomorrowTemp, tomorrowCondition, tomorrowSnow, false),
+                        insight: tomorrowSnow > 0
+                            ? `Tomorrow: Expect ${tomorrowSnow}" of fresh snow!`
+                            : `Smooth sailing tomorrow with ${tomorrowCondition.toLowerCase()} skies.`
                     } : null,
                     weekend: data.weekend ? {
-                        temp: Math.round(data.weekend.temp_f),
-                        condition: data.weekend.conditions,
-                        vibe: 'Weekend Warrior',
-                        insight: data.weekend.snow_forecast_inches > 0
-                            ? `Big weekend coming! Total ${data.weekend.snow_forecast_inches}" snow forecast.`
-                            : `Outdoor friendly weekend with highs of ${Math.round(data.weekend.temp_f)}°.`
+                        temp: Math.round(weekendTemp),
+                        condition: weekendCondition,
+                        high: weekendHigh,
+                        low: weekendLow,
+                        vibe: getVibe(weekendTemp, weekendCondition, weekendSnow, true),
+                        insight: weekendSnow > 0
+                            ? `Big weekend coming! Total ${weekendSnow}" snow forecast.`
+                            : `Outdoor friendly weekend with highs of ${Math.round(weekendTemp)}°.`
                     } : null,
                     week: {
                         summary: 'Full Week',

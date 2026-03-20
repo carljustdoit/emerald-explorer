@@ -34,7 +34,7 @@ export class SportsDataService {
       
       const [snowData, weatherData, usgsData, mountainForecast] = await Promise.all([
         SnowScraper.getAllSnowData(),
-        this.fetchNWSWeather(), // City weather
+        this.fetchNWSWeather(), // City weather (includes windDirection per period)
         this.fetchWaterData(),
         this.fetchMountainForecast(), // Mountain forecast for snow
       ]);
@@ -49,6 +49,11 @@ export class SportsDataService {
       const weekendSnow = weekendPeriods.reduce((acc: number, p: any) => acc + this.parseSnowInches(p.detailedForecast), 0);
       const weekendTemp = Math.max(...weekendPeriods.map((p: any) => p.temperature));
       const weekendWind = Math.max(...weekendPeriods.map((p: any) => parseInt(p.windSpeed) || 0));
+
+      // NWS windDirection is a string like "SW", "NW", "N", "SSW" etc.
+      const todayWindDir: string = weatherData.periods[0]?.windDirection || usgsData.lake_washington_wind_dir || 'SW';
+      const tomorrowWindDir: string = weatherData.periods[2]?.windDirection || 'SW';
+      const weekendWindDir: string = weekendPeriods[0]?.windDirection || 'SW';
 
       const combinedData: SportsData = {
         today: {
@@ -67,8 +72,10 @@ export class SportsDataService {
           lake_union_temp_f: usgsData.lake_union_temp_f ?? 62,
           lake_washington_temp_f: usgsData.lake_washington_temp_f ?? 60,
           lake_washington_wind_mph: usgsData.lake_washington_wind_mph ?? 4,
+          lake_washington_wind_dir: usgsData.lake_washington_wind_dir ?? todayWindDir,
           puget_sound_temp_f: usgsData.puget_sound_temp_f ?? 52,
           puget_sound_wind_mph: usgsData.puget_sound_wind_mph ?? 8,
+          puget_sound_wind_dir: usgsData.puget_sound_wind_dir ?? todayWindDir,
           wave_summary: this.calculateWaves(usgsData.lake_washington_wind_mph, usgsData.puget_sound_wind_mph),
           cedar_river_flow_cfs: usgsData.cedar_river_flow_cfs ?? 450,
           temp_f: weatherData.periods[0]?.temperature ?? 45,
@@ -94,8 +101,10 @@ export class SportsDataService {
           lake_union_temp_f: usgsData.lake_union_temp_f ?? 62,
           lake_washington_temp_f: usgsData.lake_washington_temp_f ?? 60,
           lake_washington_wind_mph: parseInt(weatherData.periods[2]?.windSpeed) || 5,
+          lake_washington_wind_dir: tomorrowWindDir,
           puget_sound_temp_f: usgsData.puget_sound_temp_f ?? 52,
           puget_sound_wind_mph: parseInt(weatherData.periods[2]?.windSpeed) ? parseInt(weatherData.periods[2]?.windSpeed) + 2 : 7,
+          puget_sound_wind_dir: tomorrowWindDir,
           wave_summary: this.calculateWaves(parseInt(weatherData.periods[2]?.windSpeed) || 5, (parseInt(weatherData.periods[2]?.windSpeed) || 5) + 2),
           cedar_river_flow_cfs: usgsData.cedar_river_flow_cfs ?? 450,
           temp_f: mountainForecast.periods[2]?.temperature || 42,
@@ -122,8 +131,10 @@ export class SportsDataService {
           lake_union_temp_f: usgsData.lake_union_temp_f ?? 62,
           lake_washington_temp_f: usgsData.lake_washington_temp_f ?? 60,
           lake_washington_wind_mph: weekendWind,
+          lake_washington_wind_dir: weekendWindDir,
           puget_sound_temp_f: usgsData.puget_sound_temp_f ?? 52,
           puget_sound_wind_mph: weekendWind + 2,
+          puget_sound_wind_dir: weekendWindDir,
           wave_summary: this.calculateWaves(weekendWind, weekendWind + 2),
           cedar_river_flow_cfs: usgsData.cedar_river_flow_cfs ?? 450,
           temp_f: weekendTemp,
@@ -236,8 +247,10 @@ export class SportsDataService {
           tide_height_ft: tide?.height,
           puget_sound_temp_f: pugetSoundTemp,
           puget_sound_wind_mph: ndbc?.windSpeed,
+          puget_sound_wind_dir: ndbc?.windDir,
           lake_washington_temp_f: lakeWA?.temp,
           lake_washington_wind_mph: lakeWA?.wind,
+          lake_washington_wind_dir: lakeWA?.windDir,
       };
     } catch (e) {
       console.error('[SportsDataService] Error in fetchWaterData:', e);
@@ -247,17 +260,19 @@ export class SportsDataService {
 
   private static async fetchKingCountyBuoy(stationId: string) {
     try {
-      const url = `https://data.kingcounty.gov/resource/kngk-29j2.json?$where=station_id='${stationId}' AND parameter IN ('Water Temperature', 'Wind Speed')&$order=datetime DESC&$limit=10`;
+      const url = `https://data.kingcounty.gov/resource/kngk-29j2.json?$where=station_id='${stationId}' AND parameter IN ('Water Temperature', 'Wind Speed', 'Wind Direction')&$order=datetime DESC&$limit=15`;
       const response = await this.fetchWithTimeout(url);
       if (!response.ok) return undefined;
       const data = await response.json();
-      
+
       const temp = data.find((r: any) => r.parameter === 'Water Temperature')?.value;
       const wind = data.find((r: any) => r.parameter === 'Wind Speed')?.value;
-      
+      const windDirDeg = data.find((r: any) => r.parameter === 'Wind Direction')?.value;
+
       return {
         temp: temp ? parseFloat(temp) : undefined,
-        wind: wind ? parseFloat(wind) : undefined
+        wind: wind ? parseFloat(wind) : undefined,
+        windDir: windDirDeg ? this.degreesToCompass(parseFloat(windDirDeg)) : undefined,
       };
     } catch {
       return undefined;
@@ -266,20 +281,34 @@ export class SportsDataService {
 
   private static async fetchNDBCWind(stationId: string) {
     try {
-      // NDBC RSS is easier to parse in a pinch
       const url = `https://www.ndbc.noaa.gov/data/latest_obs/${stationId.toLowerCase()}.rss`;
       const response = await this.fetchWithTimeout(url);
       if (!response.ok) return undefined;
       const text = await response.text();
-      
-      // Rough regex for wind speed in RSS description
-      const match = text.match(/Wind Speed:<\/strong>\s*([\d.]+)\s*mph/);
+
+      const speedMatch = text.match(/Wind Speed:<\/strong>\s*([\d.]+)\s*mph/);
+      const dirMatch = text.match(/Wind Direction:<\/strong>\s*([\d.]+)\s*deg/i)
+                    || text.match(/Wind Direction:<\/strong>\s*([A-Z]{1,3})/i);
+
+      let windDir: string | undefined;
+      if (dirMatch) {
+        const val = dirMatch[1];
+        windDir = isNaN(Number(val)) ? val : this.degreesToCompass(parseFloat(val));
+      }
+
       return {
-        windSpeed: match ? parseFloat(match[1]) : undefined
+        windSpeed: speedMatch ? parseFloat(speedMatch[1]) : undefined,
+        windDir,
       };
     } catch {
       return undefined;
     }
+  }
+
+  /** Convert meteorological wind direction degrees → compass label (wind blowing FROM that direction) */
+  static degreesToCompass(deg: number): string {
+    const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+    return dirs[Math.round(((deg % 360) / 22.5)) % 16];
   }
 
   private static calculateWaves(lakeWind?: number, soundWind?: number): string {
@@ -320,8 +349,10 @@ export class SportsDataService {
         lake_union_temp_f: 62,
         lake_washington_temp_f: 60,
         lake_washington_wind_mph: 4,
+        lake_washington_wind_dir: 'SW',
         puget_sound_temp_f: 52,
         puget_sound_wind_mph: 8,
+        puget_sound_wind_dir: 'SW',
         wave_summary: 'Calm, glassy conditions',
         cedar_river_flow_cfs: 450,
         wind_speed_mph: 5,
@@ -332,23 +363,25 @@ export class SportsDataService {
         snow_forecast_inches: 0,
       },
       tomorrow: {
-        snoqualmie_base_depth_inches: 40,
-        snoqualmie_mid_depth_inches: 55,
-        snoqualmie_peak_depth_inches: 70,
+        snoqualmie_base_depth_inches: 42,
+        snoqualmie_mid_depth_inches: 57,
+        snoqualmie_peak_depth_inches: 72,
         snoqualmie_snow_condition: 'Packed Powder',
-        stevens_pass_new_snow_inches: 0,
-        stevens_pass_base_depth_inches: 50,
+        stevens_pass_new_snow_inches: 2,
+        stevens_pass_base_depth_inches: 52,
         stevens_pass_snow_condition: 'Machine Groomed',
-        crystal_mountain_new_snow_inches: 0,
-        crystal_mountain_base_depth_inches: 60,
-        crystal_mountain_mid_depth_inches: 75,
-        crystal_mountain_peak_depth_inches: 90,
+        crystal_mountain_new_snow_inches: 2,
+        crystal_mountain_base_depth_inches: 62,
+        crystal_mountain_mid_depth_inches: 77,
+        crystal_mountain_peak_depth_inches: 92,
         crystal_mountain_snow_condition: 'Powder',
         lake_union_temp_f: 62,
         lake_washington_temp_f: 60,
         lake_washington_wind_mph: 6,
+        lake_washington_wind_dir: 'SSW',
         puget_sound_temp_f: 52,
         puget_sound_wind_mph: 10,
+        puget_sound_wind_dir: 'SSW',
         wave_summary: 'Light chop',
         cedar_river_flow_cfs: 450,
         temp_f: 42,
@@ -358,6 +391,36 @@ export class SportsDataService {
         conditions: 'Overcast',
         snow_forecast_inches: 2,
         icon: 'https://api.weather.gov/icons/land/day/snow,50?size=medium',
+      },
+      weekend: {
+        snoqualmie_base_depth_inches: 45,
+        snoqualmie_mid_depth_inches: 60,
+        snoqualmie_peak_depth_inches: 76,
+        snoqualmie_snow_condition: 'Fresh Powder',
+        stevens_pass_new_snow_inches: 5,
+        stevens_pass_base_depth_inches: 55,
+        stevens_pass_snow_condition: 'Fresh Powder',
+        crystal_mountain_new_snow_inches: 5,
+        crystal_mountain_base_depth_inches: 65,
+        crystal_mountain_mid_depth_inches: 80,
+        crystal_mountain_peak_depth_inches: 96,
+        crystal_mountain_snow_condition: 'Deep Powder',
+        lake_union_temp_f: 62,
+        lake_washington_temp_f: 60,
+        lake_washington_wind_mph: 12,
+        lake_washington_wind_dir: 'S',
+        puget_sound_temp_f: 52,
+        puget_sound_wind_mph: 15,
+        puget_sound_wind_dir: 'S',
+        wave_summary: 'Chippy with significant whitecaps',
+        cedar_river_flow_cfs: 480,
+        temp_f: 40,
+        wind_speed_mph: 14,
+        sunset_time: '20:04',
+        tide_height_ft: 1.8,
+        conditions: 'Snow Showers',
+        snow_forecast_inches: 5,
+        icon: 'https://api.weather.gov/icons/land/day/snow,70?size=medium',
       },
       weekly_forecast: [],
     };

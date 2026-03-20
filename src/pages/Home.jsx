@@ -18,6 +18,24 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+// Finds overlapping events by id
+function findOverlaps(events) {
+  const ids = new Set();
+  for (let i = 0; i < events.length; i++) {
+    for (let j = i + 1; j < events.length; j++) {
+      const aStart = new Date(events[i].startDate).getTime();
+      const aEnd = events[i].endDate ? new Date(events[i].endDate).getTime() : aStart + 2 * 3600000;
+      const bStart = new Date(events[j].startDate).getTime();
+      const bEnd = events[j].endDate ? new Date(events[j].endDate).getTime() : bStart + 2 * 3600000;
+      if (aStart < bEnd && bStart < aEnd) {
+        ids.add(events[i].id);
+        ids.add(events[j].id);
+      }
+    }
+  }
+  return ids;
+}
+
 // Auto-fits the map to the given lat/lon positions
 const MapController = ({ positions }) => {
   const map = useMap();
@@ -53,19 +71,8 @@ const Home = () => {
 
   const todayAgenda = useMemo(() => {
     return (agenda || [])
-      .filter(event => {
-        if (!event || !event.startDate) return false;
-        try {
-          return new Date(event.startDate).toDateString() === todayStr;
-        } catch (e) {
-          return false;
-        }
-      })
-      .sort((a, b) => {
-        const dateA = new Date(a.startDate);
-        const dateB = new Date(b.startDate);
-        return dateA - dateB;
-      });
+      .filter(e => e?.startDate && new Date(e.startDate).toDateString() === todayStr)
+      .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
   }, [agenda, todayStr]);
 
   const routePositions = useMemo(() => {
@@ -97,20 +104,53 @@ const Home = () => {
       .catch(() => setDrivingRoute(routePositions));
   }, [JSON.stringify(routePositions)]);
 
-  const weekAgenda = (agenda || []).filter(event => {
-    if (!event || !event.startDate) return false;
-    const eventDate = new Date(event.startDate);
-    const eventTime = eventDate.getTime();
-    const nextWeek = now.getTime() + (7 * 24 * 60 * 60 * 1000);
-    return eventDate.toDateString() !== todayStr && eventTime > now.getTime() && eventTime < nextWeek;
-  });
+  const chainedTodayEvents = useMemo(() => {
+    if (todayAgenda.length === 0) return [];
+    const chains = [];
+    let current = [todayAgenda[0]];
+    for (let i = 1; i < todayAgenda.length; i++) {
+      const prev = current[current.length - 1];
+      const prevEnd = prev.endDate
+        ? new Date(prev.endDate).getTime()
+        : new Date(prev.startDate).getTime() + 2 * 3600000; // 2hr fallback
+      const nextStart = new Date(todayAgenda[i].startDate).getTime();
+      const gapHours = (nextStart - prevEnd) / 3600000;
+      if (gapHours <= 4) {
+        current.push(todayAgenda[i]);
+      } else {
+        chains.push(current);
+        current = [todayAgenda[i]];
+      }
+    }
+    chains.push(current);
+    return chains;
+  }, [todayAgenda]);
 
-  const laterAgenda = (agenda || []).filter(event => {
-    if (!event || !event.startDate) return false;
-    const eventDate = new Date(event.startDate);
-    const nextWeek = now.getTime() + (7 * 24 * 60 * 60 * 1000);
-    return eventDate.getTime() >= nextWeek;
-  });
+  const groupedAgenda = useMemo(() => {
+    const future = (agenda || []).filter(e => {
+      if (!e?.startDate) return false;
+      const d = new Date(e.startDate);
+      return !isNaN(d.getTime());
+    });
+    future.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+    const map = new Map();
+    future.forEach(event => {
+      const d = new Date(event.startDate);
+      const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      if (!map.has(key)) map.set(key, { date: new Date(d.getFullYear(), d.getMonth(), d.getDate()), events: [] });
+      map.get(key).events.push(event);
+    });
+    return Array.from(map.values());
+  }, [agenda]);
+
+  const formatDayLabel = (date) => {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+    if (date.getTime() === today.getTime()) return 'Today';
+    if (date.getTime() === tomorrow.getTime()) return 'Tomorrow';
+    return date.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+  };
 
   return (
     <div className="home-page">
@@ -162,88 +202,71 @@ const Home = () => {
                 />
             )}
           </MapContainer>
-          <p className="map-caption">
-            {todayAgenda.length > 0 
-                ? `Route for ${todayAgenda.length} events today`
-                : "Add events from Discovery to see your daily route"}
-          </p>
+          {todayAgenda.length === 0 ? (
+            <p className="map-caption">Add events from Discovery to see your daily route</p>
+          ) : (
+            <div className="route-timeline">
+              {chainedTodayEvents.map((chain, ci) => (
+                <div key={ci} className="route-chain">
+                  {chain.map((event, ei) => (
+                    <React.Fragment key={event.id}>
+                      <div className="route-stop">
+                        <div className="stop-dot" />
+                        <div className="stop-info">
+                          <span className="stop-time">
+                            {new Date(event.startDate).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+                          </span>
+                          <span className="stop-title">{event.title}</span>
+                        </div>
+                      </div>
+                      {ei < chain.length - 1 && <div className="stop-connector" />}
+                    </React.Fragment>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       <section className="agenda-section">
         <h2>Upcoming</h2>
-        {agenda.length === 0 ? (
+        {groupedAgenda.length === 0 ? (
           <div className="empty-state glass">
             <p>Your agenda is empty. Head to Discovery to add events.</p>
           </div>
         ) : (
-          <>
-            {todayAgenda.length > 0 && (
-              <div className="day-group">
-                <h3>Today</h3>
+          groupedAgenda.map(({ date, events }) => {
+            const overlappingIds = findOverlaps(events);
+            const hasConflicts = overlappingIds.size > 0;
+            return (
+              <div key={date.getTime()} className="day-group">
+                <div className="day-group-header">
+                  <h3>{formatDayLabel(date)}</h3>
+                  {hasConflicts && (
+                    <span className="overlap-warning">⚠ Schedule conflict</span>
+                  )}
+                </div>
                 <div className="event-list">
-                  {todayAgenda.map(event => (
-                    <AdaptiveHeroCard
-                      key={event.id}
-                      event={event}
-                      isParentingWeek={rotation.isParentingWeek}
-                      score={viability.calculateScore ? viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda) : 50}
-                      isAdded={true}
-                      isCommitted={event.status === 'committed'}
-                      onAdd={() => addToAgenda(event)}
-                      onRemove={() => removeFromAgenda(event.id)}
-                      onCommit={() => addToAgenda(event, event.status === 'committed' ? 'added' : 'committed')}
-                      onClick={() => setViewingEvent(event)}
-                    />
+                  {events.map(event => (
+                    <div key={event.id} className={overlappingIds.has(event.id) ? 'event-overlap-highlight' : ''}>
+                      <AdaptiveHeroCard
+                        event={event}
+                        isParentingWeek={rotation.isParentingWeek}
+                        score={viability.calculateScore ? viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda) : 50}
+                        isAdded={true}
+                        isCommitted={event.status === 'committed'}
+                        onAdd={() => addToAgenda(event)}
+                        onRemove={() => removeFromAgenda(event.id)}
+                        onCommit={() => addToAgenda(event, event.status === 'committed' ? 'added' : 'committed')}
+                        onClick={() => setViewingEvent(event)}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
-            )}
-
-            {weekAgenda.length > 0 && (
-              <div className="day-group">
-                <h3>This Week</h3>
-                <div className="event-list">
-                  {weekAgenda.map(event => (
-                    <AdaptiveHeroCard
-                      key={event.id}
-                      event={event}
-                      isParentingWeek={rotation.isParentingWeek}
-                      score={viability.calculateScore ? viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda) : 50}
-                      isAdded={true}
-                      isCommitted={event.status === 'committed'}
-                      onAdd={() => addToAgenda(event)}
-                      onRemove={() => removeFromAgenda(event.id)}
-                      onCommit={() => addToAgenda(event, event.status === 'committed' ? 'added' : 'committed')}
-                      onClick={() => setViewingEvent(event)}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {laterAgenda.length > 0 && (
-              <div className="day-group">
-                <h3>Later</h3>
-                <div className="event-list">
-                  {laterAgenda.map(event => (
-                    <AdaptiveHeroCard
-                      key={event.id}
-                      event={event}
-                      isParentingWeek={rotation.isParentingWeek}
-                      score={viability.calculateScore ? viability.calculateScore(event, mockResources, rotation.isParentingWeek, preferences, agenda) : 50}
-                      isAdded={true}
-                      isCommitted={event.status === 'committed'}
-                      onAdd={() => addToAgenda(event)}
-                      onRemove={() => removeFromAgenda(event.id)}
-                      onCommit={() => addToAgenda(event, event.status === 'committed' ? 'added' : 'committed')}
-                      onClick={() => setViewingEvent(event)}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
+            );
+          })
         )}
       </section>
 
@@ -268,10 +291,33 @@ const Home = () => {
         .map-caption { font-size: 12px; color: var(--text-muted); text-align: center; font-weight: 500; }
         .agenda-section h2 { font-size: 24px; margin-bottom: 14px; font-weight: 700; }
         .day-group { margin-bottom: 28px; }
-        .day-group > h3 { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.04em; font-weight: 600; text-transform: uppercase; }
-        .solo-mode .day-group > h3 { color: var(--solo-text-muted); }
         .event-list { display: flex; flex-direction: column; gap: 20px; }
         .empty-state { padding: 48px 32px; text-align: center; border-radius: var(--radius-xl); color: var(--text-muted); font-size: 14px; }
+
+        /* Day group header */
+        .day-group-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .day-group-header > h3 { font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; font-weight: 600; text-transform: uppercase; margin: 0; }
+        .solo-mode .day-group-header > h3 { color: var(--solo-text-muted); }
+
+        /* Overlap warning */
+        .overlap-warning { font-size: 11px; font-weight: 600; color: #f59e0b; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 3px 8px; border-radius: 8px; }
+
+        /* Overlap highlight on event card wrapper */
+        .event-overlap-highlight { border-radius: var(--radius-xl); outline: 2px solid rgba(245, 158, 11, 0.4); outline-offset: 2px; }
+
+        /* Route timeline */
+        .route-timeline { display: flex; flex-direction: column; gap: 6px; padding: 4px 0; }
+        .route-chain { display: flex; flex-direction: column; background: rgba(0,0,0,0.02); border-radius: 12px; border: 1px solid var(--glass-border); padding: 10px 14px; gap: 0; }
+        .solo-mode .route-chain { background: rgba(255,255,255,0.02); }
+        .route-stop { display: flex; align-items: center; gap: 10px; }
+        .stop-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-primary); flex-shrink: 0; }
+        .solo-mode .stop-dot { background: var(--solo-accent); }
+        .stop-info { display: flex; align-items: baseline; gap: 6px; flex: 1; min-width: 0; }
+        .stop-time { font-size: 12px; font-weight: 600; color: var(--accent-primary); flex-shrink: 0; }
+        .solo-mode .stop-time { color: var(--solo-accent); }
+        .stop-title { font-size: 13px; font-weight: 500; color: var(--text-strong); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .solo-mode .stop-title { color: var(--solo-text-strong); }
+        .stop-connector { width: 2px; height: 14px; background: var(--glass-border); margin-left: 3px; margin-top: 2px; margin-bottom: 2px; }
       `}</style>
     </div>
   );

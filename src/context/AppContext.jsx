@@ -3,7 +3,7 @@ import { useRotationEngine } from '../hooks/useRotationEngine';
 import { useViabilityEngine } from '../hooks/useViabilityEngine';
 import { useAuth } from './AuthContext';
 import { db } from '../firebase';
-import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc, increment } from 'firebase/firestore';
 import { mockResources } from '../data';
 
 const AppContext = createContext();
@@ -109,24 +109,38 @@ export const AppProvider = ({ children }) => {
     };
 
     const addToAgenda = (event, status = 'added') => {
-        const newAgenda = [...agenda];
-        const exists = newAgenda.find(item => item.id === event.id);
-        
+        const exists = agenda.find(item => item.id === event.id);
+        const isNew = !exists;
+
         let updatedAgenda;
         if (exists) {
-            updatedAgenda = newAgenda.map(item => item.id === event.id ? { ...item, status } : item);
+            updatedAgenda = agenda.map(item => item.id === event.id ? { ...item, status } : item);
         } else {
-            updatedAgenda = [...newAgenda, { ...event, status }];
+            updatedAgenda = [...agenda, { ...event, status }];
         }
-        
+
         setAgenda(updatedAgenda);
         syncToFirestore(updatedAgenda);
+
+        // Increment pin count for new adds only (powers trending)
+        if (isNew && user && db) {
+            const pinRef = doc(db, 'pins', String(event.id));
+            setDoc(pinRef, { id: event.id, title: event.title, count: increment(1) }, { merge: true })
+                .catch(err => console.error('Pin increment failed:', err));
+        }
     };
 
     const removeFromAgenda = (eventId) => {
         const updatedAgenda = agenda.filter(item => item.id !== eventId);
         setAgenda(updatedAgenda);
         syncToFirestore(updatedAgenda);
+
+        // Decrement pin count
+        if (user && db) {
+            const pinRef = doc(db, 'pins', String(eventId));
+            setDoc(pinRef, { count: increment(-1) }, { merge: true })
+                .catch(err => console.error('Pin decrement failed:', err));
+        }
     };
 
     const updatePreferences = (newPrefs) => {

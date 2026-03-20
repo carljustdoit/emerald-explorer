@@ -6,12 +6,13 @@ import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
 import EventDetailModal from '../components/EventDetailModal';
 import { TrendingUp, Users, MapPin, Filter, X, Calendar } from 'lucide-react';
 
-const CATEGORIES = ["All", "Concert", "Sports", "Nature", "Wellness", "Arts", "Meetup", "Food", "Others"];
+const CATEGORIES = ["All", "EDM", "Concert", "Sports", "Nature", "Wellness", "Arts", "Meetup", "Food", "Others"];
 const TIMEFRAMES = ["All", "Today", "Tomorrow", "This Weekend", "This Week", "Custom"];
 
 // Category icons (text-based)
 const CATEGORY_ICONS = {
     "All": "·",
+    "EDM": "◈",
     "Concert": "♪",
     "Sports": "▲",
     "Nature": "◉",
@@ -31,8 +32,13 @@ function classifyEvent(event) {
     const tags = (event.vibe_tags || []).map(t => t.toLowerCase());
     const text = `${event.title || ''} ${event.description || ''}`.toLowerCase();
 
+    // --- EDM: 19hz is exclusively electronic dance music events ---
+    if (event.source === '19hz') return 'EDM';
+    if (tags.some(t => ['edm', 'bass', 'house', 'techno', 'trance', 'electronic', 'drum and bass', 'dnb', 'dubstep', 'hardstyle'].includes(t))) return 'EDM';
+    if (/\b(edm|electronic dance|house music|techno|trance|drum and bass|dnb|dubstep|hardstyle|rave|club night|dj set|underground dance)\b/.test(text)) return 'EDM';
+
     // --- Concert: music, live performance, nightlife, dance shows ---
-    if (tags.some(t => ['music', 'concert', 'bass', 'house', 'techno', 'trance', 'electronic', 'nightlife'].includes(t))) return 'Concert';
+    if (tags.some(t => ['music', 'concert', 'nightlife'].includes(t))) return 'Concert';
     if (/\b(concert|live music|live band|live performance|orchestra|symphony|philharmonic|jazz|blues|rock|hip.?hop|folk|indie|dj set|dj night|opera|ballet|comedy show|stand.?up|improv|comedy club|theatre|film screening|movie night|drag show|burlesque|open mic)\b/.test(text)) return 'Concert';
 
     // --- Sports: games, races, competitive/spectator sports ---
@@ -230,6 +236,15 @@ const Discovery = () => {
         }
 
         return true;
+    });
+
+    // Prioritize events with real external images
+    filteredEvents.sort((a, b) => {
+        const aImg = a.image && a.image.startsWith('http');
+        const bImg = b.image && b.image.startsWith('http');
+        if (aImg && !bImg) return -1;
+        if (!aImg && bImg) return 1;
+        return 0;
     });
 
     return (

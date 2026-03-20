@@ -266,6 +266,20 @@ const UnifiedInsightCard = ({ forecast, envData, sportsData, isParentingWeek, lo
                               </div>
                             </div>
                             <span className="snow-condition">{resort.cond}</span>
+                            {sportsData?.resort_hours && (() => {
+                              const key = resort.name.toLowerCase(); // 'snoqualmie', 'stevens', 'crystal'
+                              const h = sportsData.resort_hours[key];
+                              if (!h) return null;
+                              if (!h.isOpenToday || h.seasonStatus === 'closed') {
+                                return <span className="resort-hours closed-hours">Closed{h.seasonStatus === 'closed' ? ' for season' : ' today'}</span>;
+                              }
+                              return (
+                                <div className="resort-hours-row">
+                                  <span className="resort-hours open-hours">{h.openTime} – {h.closeTime}</span>
+                                  {h.note && <span className="resort-hours-note">{h.note}</span>}
+                                </div>
+                              );
+                            })()}
                           </div>
                         ))}
                       </>
@@ -906,6 +920,34 @@ const UnifiedInsightCard = ({ forecast, envData, sportsData, isParentingWeek, lo
         /* On mobile, ensure the strip is always visible */
         @media (max-width: 680px) {
           .card-compact-strip { padding: 12px 16px; }
+        }
+
+        .resort-hours-row { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; }
+        .resort-hours {
+          font-size: 11px;
+          font-weight: 600;
+          padding: 3px 8px;
+          border-radius: 6px;
+          display: inline-block;
+          width: fit-content;
+        }
+        .resort-hours.open-hours {
+          background: rgba(45, 106, 79, 0.12);
+          color: var(--accent-primary);
+        }
+        .solo .resort-hours.open-hours {
+          background: rgba(200, 230, 110, 0.1);
+          color: var(--solo-accent);
+        }
+        .resort-hours.closed-hours {
+          background: rgba(239, 68, 68, 0.1);
+          color: #ef4444;
+        }
+        .resort-hours-note {
+          font-size: 10px;
+          color: var(--text-muted);
+          font-weight: 500;
+          padding-left: 2px;
         }
       `}</style>
     </div>

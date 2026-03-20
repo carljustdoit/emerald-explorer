@@ -14,6 +14,11 @@ export interface SportsData {
     icon: string;
     condition: string;
   }>;
+  resort_hours: {
+    snoqualmie: import('../ingestion/scrapers/ResortHoursScraper.js').ResortHours;
+    stevens: import('../ingestion/scrapers/ResortHoursScraper.js').ResortHours;
+    crystal: import('../ingestion/scrapers/ResortHoursScraper.js').ResortHours;
+  };
 }
 
 export class SportsDataService {
@@ -148,16 +153,16 @@ export class SportsDataService {
         weekly_forecast: (() => {
           const periods = weatherData.periods;
           const dayPeriods = periods.filter((p: any) => p.isDaytime);
-          
+
           return dayPeriods.map((p: any) => {
             const index = periods.indexOf(p);
             const night = periods[index + 1];
-            
+
             let dayName = p.name;
             if (dayName.toLowerCase().startsWith('this')) {
               dayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
             }
-            
+
             return {
               day: dayName.substring(0, 3),
               high: p.temperature,
@@ -167,6 +172,11 @@ export class SportsDataService {
             };
           });
         })(),
+        resort_hours: {
+          snoqualmie: snowData.snoqualmie.hours ?? { isOpenToday: true, openTime: '9:00 AM', closeTime: '4:00 PM', seasonStatus: 'open', note: null },
+          stevens: snowData.stevens.hours ?? { isOpenToday: true, openTime: '9:00 AM', closeTime: '4:00 PM', seasonStatus: 'open', note: null },
+          crystal: snowData.crystal.hours ?? { isOpenToday: true, openTime: '9:00 AM', closeTime: '4:00 PM', seasonStatus: 'open', note: null },
+        },
       };
 
       this.cache = { data: combinedData, timestamp: now };
@@ -423,6 +433,11 @@ export class SportsDataService {
         icon: 'https://api.weather.gov/icons/land/day/snow,70?size=medium',
       },
       weekly_forecast: [],
+      resort_hours: {
+        snoqualmie: { isOpenToday: false, openTime: '9:00 AM', closeTime: '4:00 PM', seasonStatus: 'unknown', note: null },
+        stevens: { isOpenToday: false, openTime: '9:00 AM', closeTime: '4:00 PM', seasonStatus: 'unknown', note: null },
+        crystal: { isOpenToday: false, openTime: '9:00 AM', closeTime: '4:00 PM', seasonStatus: 'unknown', note: null },
+      },
     };
   }
 }

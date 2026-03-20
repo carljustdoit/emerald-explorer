@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { fetchRenderedHTML } from '../firecrawl_scraper.js';
+import { ResortHoursScraper, ResortHours } from './ResortHoursScraper.js';
 
 export interface ResortSnowData {
   newSnow24h: number;
@@ -7,6 +8,7 @@ export interface ResortSnowData {
   midDepth?: number;
   peakDepth?: number;
   condition: string;
+  hours?: ResortHours;
 }
 
 export class SnowScraper {
@@ -109,16 +111,17 @@ export class SnowScraper {
 
   static async getAllSnowData() {
     console.log('[SnowScraper] Fetching snow data for all resorts...');
-    const [snoqualmie, stevens, crystal] = await Promise.all([
+    const [snoqualmie, stevens, crystal, hours] = await Promise.all([
       this.scrapeSnoqualmie(),
       this.scrapeStevensPass(),
       this.scrapeCrystalMountain(),
+      ResortHoursScraper.getAllResortHours(),
     ]);
 
     return {
-      snoqualmie,
-      stevens,
-      crystal,
+      snoqualmie: { ...snoqualmie, hours: hours.snoqualmie },
+      stevens: { ...stevens, hours: hours.stevens },
+      crystal: { ...crystal, hours: hours.crystal },
     };
   }
 }

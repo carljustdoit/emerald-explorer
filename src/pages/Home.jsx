@@ -71,7 +71,12 @@ const Home = () => {
 
   const todayAgenda = useMemo(() => {
     return (agenda || [])
-      .filter(e => e?.startDate && new Date(e.startDate).toDateString() === todayStr)
+      .filter(e => {
+        if (!e?.startDate) return false;
+        if (new Date(e.startDate).toDateString() !== todayStr) return false;
+        const end = e.endDate ? new Date(e.endDate) : new Date(new Date(e.startDate).getTime() + 2 * 3600000);
+        return end > now;
+      })
       .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
   }, [agenda, todayStr]);
 
@@ -130,7 +135,9 @@ const Home = () => {
     const future = (agenda || []).filter(e => {
       if (!e?.startDate) return false;
       const d = new Date(e.startDate);
-      return !isNaN(d.getTime());
+      if (isNaN(d.getTime())) return false;
+      const end = e.endDate ? new Date(e.endDate) : new Date(d.getTime() + 2 * 3600000);
+      return end > now;
     });
     future.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
 

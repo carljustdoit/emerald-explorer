@@ -4,7 +4,7 @@ import { useEvents, useSportsData } from '../hooks/useApi';
 import { fetchTrending } from '../services/api';
 import AdaptiveHeroCard from '../components/AdaptiveHeroCard';
 import EventDetailModal from '../components/EventDetailModal';
-import { TrendingUp, Users, MapPin, Filter, X, Calendar } from 'lucide-react';
+import { TrendingUp, Users, MapPin, Filter, X, Calendar, Search } from 'lucide-react';
 
 const CATEGORIES = ["All", "EDM", "Concert", "Sports", "Nature", "Wellness", "Arts", "Meetup", "Food", "Others"];
 const TIMEFRAMES = ["All", "Today", "Tomorrow", "This Weekend", "This Week", "Custom"];
@@ -97,6 +97,8 @@ const Discovery = () => {
     const [selectedTimeframe, setSelectedTimeframe] = useState("All");
     const [customDate, setCustomDate] = useState("");
     const [locationSearch, setLocationSearch] = useState("");
+    const [sortBy, setSortBy] = useState("time");
+    const [searchQuery, setSearchQuery] = useState("");
     const [filterOpen, setFilterOpen] = useState(false);
     const [viewingEvent, setViewingEvent] = useState(null);
 
@@ -171,10 +173,20 @@ const Discovery = () => {
     // Count active non-category filters (for badge)
     const activeFilterCount = [
         selectedTimeframe !== "All",
-        !!locationSearch
+        !!locationSearch,
+        sortBy !== "time"
     ].filter(Boolean).length;
 
     const filteredEvents = apiEvents.filter(event => {
+        // Search query
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            const matches = event.title.toLowerCase().includes(q)
+                || event.location.toLowerCase().includes(q)
+                || (event.description || '').toLowerCase().includes(q);
+            if (!matches) return false;
+        }
+
         // Category Filter
         if (selectedCategory !== "All" && event.category !== selectedCategory) return false;
 
@@ -238,18 +250,38 @@ const Discovery = () => {
         return true;
     });
 
-    // Prioritize events with real external images
+    // Sort: user-chosen sort, with image-first as tiebreaker for time sort
     filteredEvents.sort((a, b) => {
+        if (sortBy === 'name-az') return a.title.localeCompare(b.title);
+        if (sortBy === 'name-za') return b.title.localeCompare(a.title);
+        if (sortBy === 'location') return a.location.localeCompare(b.location);
+        // Default: time — image-first within same time bucket
+        const timeDiff = new Date(a.startDate) - new Date(b.startDate);
+        if (timeDiff !== 0) return timeDiff;
         const aImg = a.image && a.image.startsWith('http');
         const bImg = b.image && b.image.startsWith('http');
-        if (aImg && !bImg) return -1;
-        if (!aImg && bImg) return 1;
-        return 0;
+        return (aImg ? 0 : 1) - (bImg ? 0 : 1);
     });
 
     return (
         <div className="discovery-page">
             <h1 className="page-title">Discover</h1>
+
+            {/* Search bar */}
+            <div className="search-bar">
+                <Search size={15} className="search-icon" />
+                <input
+                    type="search"
+                    placeholder="Search events, venues, locations…"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                    <button className="search-clear" onClick={() => setSearchQuery("")}>
+                        <X size={13} />
+                    </button>
+                )}
+            </div>
 
             {/* Trending Section — only shown when there is real data */}
             {trending.length > 0 && (
@@ -421,12 +453,34 @@ const Discovery = () => {
                                 </div>
                             </div>
 
+                            {/* Sort */}
+                            <div className="filter-group">
+                                <label>Sort by</label>
+                                <div className="timeframe-row">
+                                    {[
+                                        { value: 'time', label: 'Time' },
+                                        { value: 'name-az', label: 'A → Z' },
+                                        { value: 'name-za', label: 'Z → A' },
+                                        { value: 'location', label: 'Location' },
+                                    ].map(opt => (
+                                        <button
+                                            key={opt.value}
+                                            className={`tf-pill ${sortBy === opt.value ? 'active' : ''}`}
+                                            onClick={() => setSortBy(opt.value)}
+                                        >
+                                            {opt.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                             {/* Reset */}
                             {activeFilterCount > 0 && (
                                 <button className="reset-filters" onClick={() => {
                                     setSelectedTimeframe("All");
                                     setCustomDate("");
                                     setLocationSearch("");
+                                    setSortBy("time");
                                 }}>
                                     Clear filters
                                 </button>
@@ -452,7 +506,7 @@ const Discovery = () => {
                 {filteredEvents.length === 0 ? (
                     <div className="empty-state glass">
                         <p>No events match your filters.</p>
-                        <button onClick={() => { setSelectedCategory("All"); setSelectedTimeframe("All"); setCustomDate(""); setLocationSearch(""); }}>
+                        <button onClick={() => { setSelectedCategory("All"); setSelectedTimeframe("All"); setCustomDate(""); setLocationSearch(""); setSortBy("time"); setSearchQuery(""); }}>
                             Clear all filters
                         </button>
                     </div>
@@ -498,6 +552,27 @@ const Discovery = () => {
             <style>{`
         .discovery-page { display: flex; flex-direction: column; gap: 20px; padding-bottom: 100px; }
         .page-title { font-size: 28px; margin-bottom: 4px; }
+
+        /* Search bar */
+        .search-bar {
+          display: flex; align-items: center; gap: 10px;
+          padding: 10px 14px; border-radius: 14px;
+          background: rgba(0,0,0,0.04); border: 1px solid var(--glass-border);
+        }
+        .solo-mode .search-bar { background: rgba(255,255,255,0.04); }
+        .search-icon { color: var(--text-muted); flex-shrink: 0; }
+        .solo-mode .search-icon { color: var(--solo-text-muted); }
+        .search-bar input {
+          flex: 1; background: transparent; border: none; outline: none;
+          font-size: 14px; color: var(--text-strong);
+        }
+        .solo-mode .search-bar input { color: var(--solo-text-strong); }
+        .search-bar input::placeholder { color: var(--text-muted); }
+        .solo-mode .search-bar input::placeholder { color: var(--solo-text-muted); }
+        .search-clear {
+          background: none; border: none; cursor: pointer; color: var(--text-muted);
+          display: flex; align-items: center; padding: 2px; opacity: 0.7;
+        }
 
         /* Trending */
         .trending-section { padding: 20px 24px; border-radius: var(--radius-xl); }
